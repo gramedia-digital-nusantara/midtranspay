@@ -1,0 +1,29 @@
+*.mo
+*.egg-info
+*.egg
+*.EGG
+*.EGG-INFO
+.bzr
+.svn
+*.pyc
+*.tmp*
+.DS_Store
+*.orig
+
+# Virtual Env
+/.venv/
+/venv/
+/env/
+
+# IDE-related Ignores (Visual Studio/Eclipse/Komodo)
+*.pyproj
+*.pyproj.user
+*.sln
+*.v11.suo
+
+.project
+.pydevproject
+.settings/
+
+.komodotools
+*.komodoproject
