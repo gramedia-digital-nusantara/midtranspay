@@ -2,7 +2,7 @@ import unittest
 
 from faker import Faker
 
-from veritrans import VTDirect
+from veritrans.veritrans import VTDirect
 
 
 fake = Faker()
