@@ -29,3 +29,13 @@ class SerializableMixin(object):
 
     def serialize(self):
         return self.__dict__
+
+
+class RequestEntity(ValidatableMixin, SerializableMixin):
+
+    def serialize(self):
+        ''' Serializes the object, but first validates all
+        the attributes of this class.
+        '''
+        self.validate_all()
+        return SerializableMixin.serialize(self)

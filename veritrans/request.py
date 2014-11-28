@@ -8,7 +8,7 @@ http://docs.veritrans.co.id/sandbox/charge.html#specification
 from . import mixins, validators
 
 
-class Address(mixins.ValidatableMixin, mixins.SerializableMixin):
+class Address(mixins.RequestEntity):
 
     _validators = {'address': r'^(.{1,200})$',
                    'city': r'^(.{1,20})$',
@@ -34,7 +34,7 @@ class Address(mixins.ValidatableMixin, mixins.SerializableMixin):
         super(Address, self).__init__()
 
 
-class TransactionDetails(mixins.ValidatableMixin, mixins.SerializableMixin):
+class TransactionDetails(mixins.RequestEntity):
 
     _validators = {'order_id': r'^.{1,50}$',
                    'gross_amount': validators.DUMMY_VALIDATOR,
@@ -55,7 +55,7 @@ class TransactionDetails(mixins.ValidatableMixin, mixins.SerializableMixin):
                                                           pattern)
 
 
-class CustomerDetails(mixins.ValidatableMixin, mixins.SerializableMixin):
+class CustomerDetails(mixins.RequestEntity):
 
     _validators = {'first_name': validators.NAME_REQUIRED,
                    'last_name': validators.NAME_OPTIONAL,
@@ -75,7 +75,20 @@ class CustomerDetails(mixins.ValidatableMixin, mixins.SerializableMixin):
         self.shipping_address = shipping_address
 
 
-class ChargeRequest(object):
+class ItemDetails(mixins.RequestEntity):
+
+    # yo tests.
+
+    def __init__(self, item_id, price, quantity, name):
+        self.id = item_id
+        self.price = price
+        self.quantity = quantity
+        self.name = name
+
+
+class ChargeRequest(mixins.RequestEntity):
+
+    # todo: probably just remove the serializable mixin since yeah..
 
     def __init__(self, charge_type, transaction_details, customer_details,
                  item_details=[]):
@@ -83,6 +96,12 @@ class ChargeRequest(object):
         self.transaction_details = transaction_details
         self.customer_details = customer_details
         self.item_details = item_details
+
+    def validate_all(self):
+        mixins.ValidatableMixin.validate_all(self)
+
+    def validate_attr(self, name, value, pattern):
+        mixins.ValidatableMixin.validate_attr(self, name, value, pattern)
 
     def serialize(self):
         rv = {}
