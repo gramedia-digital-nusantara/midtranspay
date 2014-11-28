@@ -1,31 +1,14 @@
-import re
+''' 
+Contains sub-entities that are used to create a complete
+charge request to the Veritrans API.
+
+http://docs.veritrans.co.id/sandbox/charge.html#specification
+'''
+
+from . import mixins
 
 
-class RequestEntityBase(object):
-
-    def validate_attr(self, name, value, pattern):
-        if not re.match(pattern, value, re.DOTALL):
-            raise ValueError(
-                "{attr_name} did not pass validation. ("
-                "Expression: {validation_expr} | "
-                "Value: {attr_value})".format(
-                    attr_name=name,
-                    validation_expr=pattern,
-                    attr_value=value))
-
-    def validate_all(self):
-        ''' Validates all of the current instance's properties.
-        If one of the instances does not validate, then a ValueError
-        will be thrown on the first failure.
-        '''
-        for attr_name in self._validators:
-            # in the event of None, we're switching to "" to validate
-            value = getattr(attr_name) or ''
-            validator = self._validators[attr_name]
-            self.validate_attr('attr_name', value, validator)
-
-
-class Address(RequestEntityBase):
+class Address(mixins.ValidatableMixin, mixins.SerializableMixin):
 
     _validators = {'address': r'^(.{1,200})$',
                    'city': r'^(.{1,20})$',
@@ -49,3 +32,24 @@ class Address(RequestEntityBase):
         self.country_code = country_code
 
         super(Address, self).__init__()
+
+
+class TransactionDetails(mixins.ValidatableMixin, mixins.SerializableMixin):
+
+    _validators = {'order_id': r'^.{1,50}$',
+                   # hack: keeps validation interface same for gross_amount
+                   'gross_amount': r'',
+                   }
+
+    def __init__(self, order_id, gross_amount):
+        self.order_id = order_id
+        self.gross_amount = gross_amount
+
+    def validate_attr(self, name, value, pattern):
+        if name == 'gross_amount':
+            if not type(value) in [int, float]:
+                raise ValueError()
+        else:
+            super(TransactionDetails, self).validate_attr(name,
+                                                          value,
+                                                          pattern)

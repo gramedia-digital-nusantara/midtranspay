@@ -11,9 +11,9 @@ class VTDirect(object):
         return 'https://api.sandbox.veritrans.co.id/v2' if self.sandbox_mode \
             else 'https://api.veritrans.co.id/v2'
 
-    def build_request(self, payment_type, customer_details=None,
-                      billing_address=None, shipping_address=None,
-                      item_details=[]):
+    def _build_payload(self, payment_type,
+                       customer_details=None, billing_address=None,
+                       shipping_address=None, item_details=[]):
         rv = {}
         rv['payment_type']
         return rv

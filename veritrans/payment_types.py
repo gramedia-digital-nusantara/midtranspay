@@ -1,5 +1,5 @@
 
-class Base(object):
+class PaymentTypeBase(object):
 
     def serialize(self):
         return {"payment_type": self.PAYMENT_TYPE_KEY,
@@ -7,7 +7,7 @@ class Base(object):
                 }
 
 
-class CreditCard(Base):
+class CreditCard(PaymentTypeBase):
     # http://docs.veritrans.co.id/sandbox/charge.html#vtdirect-cc
     PAYMENT_TYPE_KEY = 'credit_card'
 
@@ -23,7 +23,7 @@ class CreditCard(Base):
         return rv
 
 
-class MandiriClickpay(Base):
+class MandiriClickpay(PaymentTypeBase):
     # http://docs.veritrans.co.id/sandbox/charge.html#vtdirect-mandiri
     PAYMENT_TYPE_KEY = 'mandiri_clickpay'
 
@@ -34,7 +34,7 @@ class MandiriClickpay(Base):
         self.input3 = input3
 
 
-class CimbClicks(Base):
+class CimbClicks(PaymentTypeBase):
     # http://docs.veritrans.co.id/sandbox/charge.html#vtdirect-cimb
 
     PAYMENT_TYPE_KEY = 'cimb_clicks'
