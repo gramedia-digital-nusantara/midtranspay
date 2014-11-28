@@ -5,6 +5,7 @@ import string
 from faker import Faker
 
 from veritrans import request
+from . import dummy_data
 
 fake = Faker()
 
@@ -20,14 +21,8 @@ class Request_Address_Tests(unittest.TestCase):
         # note: we can't use fake-factory's phone_number() because
         # it can occasionally include extensions, which veritrans'
         # documentation says they won't accept.
-        self.phone = random.choice(('+1 (330) 776-8177',
-                                    '+62 812 1272-8059',
-                                    '+65 6221-5742',
-                                    ))
-        self.country_code = random.choice(('USA',
-                                           'IDN',
-                                           'SIN',
-                                           ))
+        self.phone = random.choice(dummy_data.PHONE_NUMBERS)
+        self.country_code = random.choice(dummy_data.COUNTRY_CODES)
 
         self.complete_address = request.Address(first_name=self.first_name,
                                                 last_name=self.last_name,

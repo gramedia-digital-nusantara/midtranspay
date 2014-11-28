@@ -34,9 +34,11 @@ class Request_TransactionDetails_UnitTests(unittest.TestCase):
         pattern = TransactionDetails._validators['order_id']
         td = self.complete_td
 
-        self.assertIsNone(td.validate_attr('order_id',
-                                           fake.random_letter() * 10,
-                                           pattern))
+        self.assertIsNone(
+            td.validate_attr(
+                'order_id',
+                [fake.random_letter() for _ in range(10)],
+                pattern))
 
         bad_blank = ''
         bad_too_long = ''.join([fake.random_letter() for _ in range(51)])
