@@ -13,5 +13,9 @@ class VTDirect(object):
         return 'https://api.sandbox.veritrans.co.id/v2' if self.sandbox_mode \
             else 'https://api.veritrans.co.id/v2'
 
-    def submit_request(self, request):
-        req = request.
+    def _build_request(self, request):
+        pass
+
+    def submit_charge_request(self, request):
+
+        req = self._build_request(request)

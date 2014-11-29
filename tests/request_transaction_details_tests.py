@@ -37,7 +37,7 @@ class Request_TransactionDetails_UnitTests(unittest.TestCase):
         self.assertIsNone(
             td.validate_attr(
                 'order_id',
-                [fake.random_letter() for _ in range(10)],
+                "".join([fake.random_letter() for _ in range(10)]),
                 pattern))
 
         bad_blank = ''
