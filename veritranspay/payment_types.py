@@ -8,7 +8,7 @@ class PaymentTypeBase(object):
 
 
 class CreditCard(PaymentTypeBase):
-    # http://docs.veritrans.co.id/sandbox/charge.html#vtdirect-cc
+    # http://docs.veritranspay.co.id/sandbox/charge.html#vtdirect-cc
     PAYMENT_TYPE_KEY = 'credit_card'
 
     def __init__(self, bank, token_id):
@@ -24,7 +24,7 @@ class CreditCard(PaymentTypeBase):
 
 
 class MandiriClickpay(PaymentTypeBase):
-    # http://docs.veritrans.co.id/sandbox/charge.html#vtdirect-mandiri
+    # http://docs.veritranspay.co.id/sandbox/charge.html#vtdirect-mandiri
     PAYMENT_TYPE_KEY = 'mandiri_clickpay'
 
     def __init__(self, card_number, input1, input2, input3):
@@ -35,7 +35,7 @@ class MandiriClickpay(PaymentTypeBase):
 
 
 class CimbClicks(PaymentTypeBase):
-    # http://docs.veritrans.co.id/sandbox/charge.html#vtdirect-cimb
+    # http://docs.veritranspay.co.id/sandbox/charge.html#vtdirect-cimb
 
     PAYMENT_TYPE_KEY = 'cimb_clicks'
 

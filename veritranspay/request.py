@@ -2,9 +2,8 @@
 Contains entities and sub-entities that are used to create a complete
 charge request to the Veritrans API.
 
-http://docs.veritrans.co.id/sandbox/charge.html#specification
+http://docs.veritranspay.co.id/sandbox/charge.html#specification
 '''
-
 from . import mixins, validators, constraints
 
 

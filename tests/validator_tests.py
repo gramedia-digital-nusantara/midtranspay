@@ -2,7 +2,7 @@ import unittest
 
 from faker import Faker
 
-from veritrans import validators
+from veritranspay import validators
 
 fake = Faker()
 

@@ -13,7 +13,7 @@ TOKEN_ID = 'i-am-a-fake-token'
 
 
 # Testing Cards
-# http://docs.veritrans.co.id/sandbox/card_list.html
+# http://docs.veritranspay.co.id/sandbox/card_list.html
 CC_ACCEPTED = ['4011 1111 1111 1112',
                '5481 1611 1111 1081',
                ]
@@ -32,7 +32,7 @@ CC_EXPIRY_YEAR = '2020'
 
 
 # These examples are pulled straight from the Veritrans documentation
-# http://docs.veritrans.co.id/sandbox/charge.html#the-structure-and-example-of-json-response-vt-direct-using-credit-card
+# http://docs.veritranspay.co.id/sandbox/charge.html#the-structure-and-example-of-json-response-vt-direct-using-credit-card
 CC_REQUEST = {
     "payment_type": "credit_card",
     "credit_card": {

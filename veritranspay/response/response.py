@@ -1,5 +1,5 @@
 from datetime import datetime
-from veritrans import mixins
+from veritranspay import mixins
 
 
 class Response(mixins.SerializableMixin):

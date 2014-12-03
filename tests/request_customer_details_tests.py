@@ -4,7 +4,7 @@
 # from faker import Faker
 # from mock import MagicMock
 #
-# from veritrans import request
+# from veritranspay import request
 # from . import dummy_data
 #
 # fake = Faker()

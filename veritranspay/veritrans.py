@@ -1,6 +1,5 @@
 import json
 import requests
-
 from . import response
 
 
@@ -15,8 +14,8 @@ class VTDirect(object):
     @property
     def base_url(self):
         ''' Returns the Veritrans base URL for API requests.'''
-        return 'https://api.sandbox.veritrans.co.id/v2' if self.sandbox_mode \
-            else 'https://api.veritrans.co.id/v2'
+        return 'https://api.sandbox.veritranspay.co.id/v2' if self.sandbox_mode \
+            else 'https://api.veritranspay.co.id/v2'
 
     def submit_charge_request(self, charge_request):
         '''
