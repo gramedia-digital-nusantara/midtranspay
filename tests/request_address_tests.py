@@ -4,7 +4,7 @@ import string
 
 from faker import Faker
 
-from veritrans import request
+from veritrans import request, validators
 from . import dummy_data
 
 fake = Faker()
@@ -33,6 +33,11 @@ class Request_Address_Tests(unittest.TestCase):
                                                 country_code=self.country_code)
 
         super(Request_Address_Tests, self).setUp()
+
+    def test_validate_all(self):
+        addr = self.complete_address
+        result = addr.validate_all()
+        self.assertIsNone(result)
 
     def test_init_sets_attributes(self):
         ''' Make sure __init__ is persisting it's arguments
@@ -84,15 +89,15 @@ class Request_Address_Tests(unittest.TestCase):
                                pattern))
 
         # these two addresses should raise exceptions
-        bad_blank_address = ''
+        bad_none_address = None
         bad_long_address = ''.join(
             random.choice(string.ascii_letters) for _ in range(201))
 
-        for bad_addr in [bad_blank_address, bad_long_address]:
+        for bad_addr in [bad_none_address, bad_long_address]:
             l = lambda: addr.validate_attr('address',
                                            bad_addr,
                                            pattern)
-            self.assertRaises(ValueError, l)
+            self.assertRaises(validators.ValidationError, l)
 
     def test_validation_city(self):
 
@@ -105,16 +110,15 @@ class Request_Address_Tests(unittest.TestCase):
                                              valid_city,
                                              pattern))
 
-        # invalid values should raise ValueErrors
-        bad_blank_city = ''
+        bad_none_city = None
         bad_long_city = ''.join(
             random.choice(string.ascii_letters) for _ in range(21))
 
-        for bad in [bad_blank_city, bad_long_city]:
+        for bad in [bad_none_city, bad_long_city]:
             l = lambda: addr.validate_attr('city',
                                            bad,
                                            pattern)
-            self.assertRaises(ValueError, l)
+            self.assertRaises(validators.ValidationError, l)
 
     def test_validation_postal_code(self):
 
@@ -136,7 +140,7 @@ class Request_Address_Tests(unittest.TestCase):
             l = lambda: addr.validate_attr('postal_code',
                                            bad,
                                            pattern)
-            self.assertRaises(ValueError, l)
+            self.assertRaises(validators.ValidationError, l)
 
     def test_validation_first_name(self):
 
@@ -160,7 +164,7 @@ class Request_Address_Tests(unittest.TestCase):
             l = lambda: addr.validate_attr('first_name',
                                            bad,
                                            pattern)
-            self.assertRaises(ValueError, l)
+            self.assertRaises(validators.ValidationError, l)
 
     def test_validation_last_name(self):
         pattern = request.Address._validators['last_name']
@@ -183,7 +187,7 @@ class Request_Address_Tests(unittest.TestCase):
             l = lambda: addr.validate_attr('last_name',
                                            bad,
                                            pattern)
-            self.assertRaises(ValueError, l)
+            self.assertRaises(validators.ValidationError, l)
 
     def test_validation_phone_number(self):
         pattern = request.Address._validators['phone']
@@ -191,9 +195,9 @@ class Request_Address_Tests(unittest.TestCase):
 
         # should return without issue
         valid_phone = '+1(330) 776-8177'
-        valid_blank_phone = ''
+        valid_none = None
 
-        for valid in [valid_phone, valid_blank_phone]:
+        for valid in [valid_phone, valid_none]:
             self.assertIsNone(addr.validate_attr('phone',
                                                  valid,
                                                  pattern))
@@ -203,14 +207,14 @@ class Request_Address_Tests(unittest.TestCase):
             l = lambda: addr.validate_attr('phone',
                                            bad,
                                            pattern)
-            self.assertRaises(ValueError, l)
+            self.assertRaises(validators.ValidationError, l)
 
     def test_validation_country_code(self):
         pattern = request.Address._validators['country_code']
         addr = self.complete_address
 
         # should return without issue
-        for valid in ['USA', 'IDN', '']:
+        for valid in [fake.country_code() for _ in range(100)]:
             self.assertIsNone(addr.validate_attr('country_code',
                                                  valid,
                                                  pattern))
@@ -220,4 +224,4 @@ class Request_Address_Tests(unittest.TestCase):
             l = lambda: addr.validate_attr('country_code',
                                            bad,
                                            pattern)
-            self.assertRaises(ValueError, l)
+            self.assertRaises(validators.ValidationError, l)
