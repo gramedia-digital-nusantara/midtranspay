@@ -14,8 +14,8 @@ class VTDirect(object):
     @property
     def base_url(self):
         ''' Returns the Veritrans base URL for API requests.'''
-        return 'https://api.sandbox.veritranspay.co.id/v2' if self.sandbox_mode \
-            else 'https://api.veritranspay.co.id/v2'
+        return 'https://api.sandbox.veritrans.co.id/v2' if self.sandbox_mode \
+            else 'https://api.veritrans.co.id/v2'
 
     def submit_charge_request(self, charge_request):
         '''
@@ -31,11 +31,12 @@ class VTDirect(object):
         # specify the header type.
         payload = json.dumps(charge_request.serialize())
         headers = {'content-type': 'application/json',
+                   'accept': 'application/json',
                    }
 
         # now cross our fingers that all went well!
         http_response = requests.post(
-            '{base_url}/charges'.format(base_url=self.base_url),
+            '{base_url}/charge'.format(base_url=self.base_url),
             auth=(self.server_key, ''),
             headers=headers,
             data=payload)

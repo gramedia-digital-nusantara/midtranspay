@@ -101,19 +101,19 @@ class CustomerDetails(mixins.RequestEntity):
         self.billing_address = billing_address
         self.shipping_address = shipping_address
 
-    def serialize(self):
-        # the serialization process is moderately customized here..
-        # billing_address and shipping_address are both objects,
-        # so we need to call their .serialize() methods and include that
-        # in the response if they're not provided.
-        rv = super(CustomerDetails, self).serialize()
-        rv['billing_address'] = self.billing_address.serialize() \
-            if self.billing_address is not None \
-            else None
-        rv['shipping_address'] = self.shipping_address.serialize() \
-            if self.shipping_address is not None \
-            else None
-        return rv
+#     def serialize(self):
+#         # the serialization process is moderately customized here..
+#         # billing_address and shipping_address are both objects,
+#         # so we need to call their .serialize() methods and include that
+#         # in the response if they're not provided.
+#         rv = super(CustomerDetails, self).serialize()
+#         rv['billing_address'] = self.billing_address.serialize() \
+#             if self.billing_address is not None \
+#             else None
+#         rv['shipping_address'] = self.shipping_address.serialize() \
+#             if self.shipping_address is not None \
+#             else None
+#         return rv
 
 
 class ItemDetails(mixins.RequestEntity):
@@ -135,6 +135,13 @@ class ItemDetails(mixins.RequestEntity):
 
 class ChargeRequest(mixins.RequestEntity):
 
+    # TODO: charge types should probably have validators as well
+    _validators = {'charge_type': validators.DummyValidator(),
+                   'transaction_details': validators.PassthroughValidator(),
+                   'customer_details': validators.PassthroughValidator(),
+                   'item_details': validators.DummyValidator(),
+                   }
+
     def __init__(self, charge_type, transaction_details, customer_details,
                  item_details=[]):
         self.charge_type = charge_type
@@ -142,11 +149,16 @@ class ChargeRequest(mixins.RequestEntity):
         self.customer_details = customer_details
         self.item_details = item_details
 
-    def validate_all(self):
-        mixins.ValidatableMixin.validate_all(self)
-
-    def validate_attr(self, name, value, pattern):
-        mixins.ValidatableMixin.validate_attr(self, name, value, pattern)
+    def validate_attr(self, name, value, validator):
+        '''
+        Manually overrides validation logic for items, since they're a list
+        type and this is a special case.
+        '''
+        if 'name' == 'item_details':
+            for item in self.item_details:
+                item.validate_all()
+        else:
+            super(ChargeRequest, self).validate_attr(name, value, validator)
 
     def serialize(self):
         rv = {}

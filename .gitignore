@@ -28,3 +28,6 @@ _build
 
 .komodotools
 *.komodoproject
+
+# Live Test Credentials
+/tests/live_credentials.py

@@ -24,7 +24,9 @@ class Response(mixins.SerializableMixin):
         self.approval_code = approval_code
         # note: for some reason it's returning this with a fractional
         # portion, but currently only currency supported is IDR so int
-        self.gross_amount = int(gross_amount)
+        # .. plus we need to split off the fractional portion at the end
+        # or python's int conversion will fail
+        self.gross_amount = int(gross_amount.split('.')[0])
 
 
 

@@ -223,6 +223,18 @@ class CountrycodeValidator(RequiredValidator, LengthValidator):
             **kwargs)
 
 
+class PassthroughValidator(RequiredValidator):
+    '''
+    Allows validation of a subentity type that implements validators
+    on it's own properties.  See request.ChargeRequest() for more
+    information
+    '''
+    def validate(self, value):
+        if value is not None:
+            value.validate_all()
+        super(PassthroughValidator, self).validate(value)
+
+
 # TODO: it would be cool to replace this with a pass-through validator instead
 class DummyValidator(ValidatorBase):
     '''

@@ -4,7 +4,7 @@ from faker import Faker
 
 from veritranspay import request, validators, payment_types
 from veritranspay.veritrans import VTDirect
-from . import dummy_data
+from tests import fixtures
 
 
 fake = Faker()
@@ -32,12 +32,12 @@ class VTDirect_Init_Tests(unittest.TestCase):
         self.assertTrue(v.sandbox_mode, "")
 
     def test_sandbox_mode_expected_url(self):
-        expected_url = 'https://api.sandbox.veritranspay.co.id/v2'
+        expected_url = 'https://api.sandbox.veritrans.co.id/v2'
         v = VTDirect(server_key=self.server_key, sandbox_mode=True)
         self.assertEqual(v.base_url, expected_url)
 
     def test_live_mode_expected_url(self):
-        expected_url = 'https://api.veritranspay.co.id/v2'
+        expected_url = 'https://api.veritrans.co.id/v2'
         v = VTDirect(server_key=self.server_key, sandbox_mode=False)
         self.assertEqual(v.base_url, expected_url)
 
@@ -45,7 +45,7 @@ class VTDirect_Init_Tests(unittest.TestCase):
         ''' Given a complete request format--make sure that our ChargeRequest
         is serializing out the same format.
         '''
-        expected = dummy_data.CC_REQUEST
+        expected = fixtures.CC_REQUEST
 
         cc_payment = payment_types.CreditCard(
             bank=expected['credit_card']['bank'],

@@ -5,7 +5,7 @@ import string
 from faker import Faker
 
 from veritranspay import request, validators
-from . import dummy_data
+from tests import fixtures
 
 fake = Faker()
 
@@ -21,8 +21,8 @@ class Request_Address_Tests(unittest.TestCase):
         # note: we can't use fake-factory's phone_number() because
         # it can occasionally include extensions, which veritranspay'
         # documentation says they won't accept.
-        self.phone = random.choice(dummy_data.PHONE_NUMBERS)
-        self.country_code = random.choice(dummy_data.COUNTRY_CODES)
+        self.phone = random.choice(fixtures.PHONE_NUMBERS)
+        self.country_code = random.choice(fixtures.COUNTRY_CODES)
 
         self.complete_address = request.Address(first_name=self.first_name,
                                                 last_name=self.last_name,
