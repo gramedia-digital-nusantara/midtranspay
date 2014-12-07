@@ -41,6 +41,13 @@ class VTDirect(object):
             headers=headers,
             data=payload)
 
-        # send back our response
-        veritrans_response = response.Response(**http_response.json())
-        return veritrans_response
+        response_json = http_response.json()
+
+        if http_response.json()['status_code'] in ['200', '201']:
+            # send back our response
+            veritrans_response = response.Response(**response_json)
+            return veritrans_response
+        else:
+            raise Exception("{status_code} - {status_message}".format(
+                status_code=response_json['status_code'],
+                status_message=response_json['status_message']))

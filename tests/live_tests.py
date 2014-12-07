@@ -68,6 +68,7 @@ class LiveTests(unittest.TestCase):
 
         g = veritrans.VTDirect(live_credentials.SANDBOX_SERVER_KEY,
                                sandbox_mode=True)
+
         resp = g.submit_charge_request(charge_req)
 
         # self.fail(resp)

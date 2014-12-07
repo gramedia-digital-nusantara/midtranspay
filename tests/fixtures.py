@@ -40,7 +40,7 @@ CC_REQUEST = {
         "token_id": TOKEN_ID
     },
     "transaction_details": {
-        "order_id": "C17550",
+        "order_id": "C17552",
         "gross_amount": 145000
     },
     "customer_details": {
