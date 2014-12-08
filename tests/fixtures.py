@@ -1,3 +1,7 @@
+from faker import Faker
+fake = Faker()
+
+
 PHONE_NUMBERS = ('+62 812 1272 8059',
                  '+1 (330) 776-8177',
                  '81212728059',
@@ -40,7 +44,7 @@ CC_REQUEST = {
         "token_id": TOKEN_ID
     },
     "transaction_details": {
-        "order_id": "C17552",
+        "order_id": "".join([fake.random_letter() for _ in range(10)]),
         "gross_amount": 145000
     },
     "customer_details": {

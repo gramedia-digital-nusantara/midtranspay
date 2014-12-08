@@ -2,7 +2,7 @@ from datetime import datetime
 from veritranspay import mixins
 
 
-class Response(mixins.SerializableMixin):
+class ChargeResponse(mixins.SerializableMixin):
 
     def __init__(self, status_code, status_message, transaction_id, order_id,
                  payment_type, transaction_time, transaction_status,
