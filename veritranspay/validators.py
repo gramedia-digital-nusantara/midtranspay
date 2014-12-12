@@ -209,7 +209,8 @@ class EmailValidator(RequiredValidator, RegexValidator, LengthValidator):
     # the goal here is just a simple 'does it kinda look like an email'
     def __init__(self, *args, **kwargs):
         super(EmailValidator, self).__init__(
-            pattern=r'(\w+[.|\w])+@(\w+[.])*\w+',
+            # pattern=r'(\w+[.|\w])+@(\w+[.])*\w+', -- no good
+            pattern=r'.*',
             max_length=constraints.MAX_EMAIL_LENGTH,
             *args,
             **kwargs)
