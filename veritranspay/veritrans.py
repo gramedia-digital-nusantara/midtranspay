@@ -49,11 +49,8 @@ class VTDirect(object):
         response_json = http_response.json()
 
         try:
-            # send back our response
-            veritrans_response = response.ChargeResponse(**response_json)
-
             logging.info("Received the Veritrans Response")
-
+            veritrans_response = response.ChargeResponse(**response_json)
             return veritrans_response
         except Exception as e:
             logging.exception("Couldn't read Veritrans API Response")

@@ -45,10 +45,6 @@ class Address(mixins.RequestEntity):
         self.phone = phone
         self.country_code = country_code
 
-        super(Address, self).__init__()
-
-    def __repr__(self):
-        return "<Address()>".format()
 
 class TransactionDetails(mixins.RequestEntity):
     '''
@@ -71,8 +67,6 @@ class TransactionDetails(mixins.RequestEntity):
         self.order_id = order_id
         self.gross_amount = gross_amount
 
-    def __repr__(self):
-        return "<TransactionDetails(order_id: '{order_id}', gross_amount: '{gross_amount}')>"
 
 class CustomerDetails(mixins.RequestEntity):
     '''
@@ -107,7 +101,9 @@ class CustomerDetails(mixins.RequestEntity):
 
 
 class ItemDetails(mixins.RequestEntity):
-
+    '''
+    Line items details for a transaction.
+    '''
     # todo: yo tests
 
     _validators = {'id': validators.StringValidator(max_length=50),
@@ -124,8 +120,10 @@ class ItemDetails(mixins.RequestEntity):
 
 
 class ChargeRequest(mixins.RequestEntity):
-
-    # TODO: charge types should probably have validators as well
+    '''
+    Encapsulates the 4 other entity types that are involved with submitting
+    a charge request to Veritrans.
+    '''
     _validators = {'charge_type': validators.DummyValidator(),
                    'transaction_details': validators.PassthroughValidator(),
                    'customer_details': validators.PassthroughValidator(),
@@ -142,7 +140,8 @@ class ChargeRequest(mixins.RequestEntity):
     def validate_attr(self, name, value, validator):
         '''
         Manually overrides validation logic for items, since they're a list
-        type and this is a special case.
+        type and this is a special case.  Everything else can be validated
+        normally.
         '''
         if 'name' == 'item_details':
             for item in self.item_details:
@@ -151,6 +150,11 @@ class ChargeRequest(mixins.RequestEntity):
             super(ChargeRequest, self).validate_attr(name, value, validator)
 
     def serialize(self):
+        '''
+        Manually override the standard logic for serialize().  `charge_type`
+        needs to add two keys to the resulting dictionary, and all other types
+        need to be placed under specific dictionary keys.
+        '''
         rv = {}
         rv.update(self.charge_type.serialize())
         rv.update({'transaction_details':

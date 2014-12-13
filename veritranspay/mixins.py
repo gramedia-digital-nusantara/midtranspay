@@ -66,4 +66,6 @@ class RequestEntity(ValidatableMixin, SerializableMixin):
     Provides no functionality, other than incorporating SerializableMixin
     and ValiditableMixin in a single base class.
     '''
-    pass
+
+    def __repr__(self):
+        pass
