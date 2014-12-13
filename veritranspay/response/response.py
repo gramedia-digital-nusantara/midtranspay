@@ -3,7 +3,9 @@ from veritranspay import mixins
 
 
 class ChargeResponse(mixins.SerializableMixin):
-
+    '''
+    Encapsulates the response from Vertrans, returned after a ChargeRequest.
+    '''
     def __init__(self, status_code, status_message, transaction_id, order_id,
                  payment_type, transaction_time, transaction_status,
                  fraud_status, masked_card, bank, approval_code, gross_amount):
@@ -28,5 +30,6 @@ class ChargeResponse(mixins.SerializableMixin):
         # or python's int conversion will fail
         self.gross_amount = int(gross_amount.split('.')[0])
 
-
+    def __repr__(self):
+        return self.__str__()
 

@@ -47,6 +47,8 @@ class Address(mixins.RequestEntity):
 
         super(Address, self).__init__()
 
+    def __repr__(self):
+        return "<Address()>".format()
 
 class TransactionDetails(mixins.RequestEntity):
     '''
@@ -69,6 +71,8 @@ class TransactionDetails(mixins.RequestEntity):
         self.order_id = order_id
         self.gross_amount = gross_amount
 
+    def __repr__(self):
+        return "<TransactionDetails(order_id: '{order_id}', gross_amount: '{gross_amount}')>"
 
 class CustomerDetails(mixins.RequestEntity):
     '''
@@ -101,20 +105,6 @@ class CustomerDetails(mixins.RequestEntity):
         self.billing_address = billing_address
         self.shipping_address = shipping_address
 
-#     def serialize(self):
-#         # the serialization process is moderately customized here..
-#         # billing_address and shipping_address are both objects,
-#         # so we need to call their .serialize() methods and include that
-#         # in the response if they're not provided.
-#         rv = super(CustomerDetails, self).serialize()
-#         rv['billing_address'] = self.billing_address.serialize() \
-#             if self.billing_address is not None \
-#             else None
-#         rv['shipping_address'] = self.shipping_address.serialize() \
-#             if self.shipping_address is not None \
-#             else None
-#         return rv
-
 
 class ItemDetails(mixins.RequestEntity):
 
@@ -139,7 +129,7 @@ class ChargeRequest(mixins.RequestEntity):
     _validators = {'charge_type': validators.DummyValidator(),
                    'transaction_details': validators.PassthroughValidator(),
                    'customer_details': validators.PassthroughValidator(),
-                   'item_details': validators.DummyValidator(),
+                   'item_details': validators.PassthroughValidator(),
                    }
 
     def __init__(self, charge_type, transaction_details, customer_details,

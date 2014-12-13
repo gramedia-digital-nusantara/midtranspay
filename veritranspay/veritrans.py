@@ -1,4 +1,5 @@
 import json
+import logging
 import requests
 from . import response
 
@@ -10,6 +11,8 @@ class VTDirect(object):
     def __init__(self, server_key, sandbox_mode=False):
         self.server_key = server_key
         self.sandbox_mode = sandbox_mode
+
+        logging.info("Created a new Veritrans Gateway: {0}".format(self))
 
     @property
     def base_url(self):
@@ -23,6 +26,8 @@ class VTDirect(object):
         data in the charge_request is validated and if a failure occurs
         a ValidationError will be raised.
         '''
+        logging.info("Submitting new Charge Request to Veritrans")
+
         # run validation against our charge
         # request before submitting
         charge_request.validate_all()
@@ -43,11 +48,20 @@ class VTDirect(object):
 
         response_json = http_response.json()
 
-        if http_response.json()['status_code'] in ['200', '201']:
+        try:
             # send back our response
             veritrans_response = response.ChargeResponse(**response_json)
+
+            logging.info("Received the Veritrans Response")
+
             return veritrans_response
-        else:
-            raise Exception("{status_code} - {status_message}".format(
-                status_code=response_json['status_code'],
-                status_message=response_json['status_message']))
+        except Exception as e:
+            logging.exception("Couldn't read Veritrans API Response")
+            raise e
+
+    def __repr__(self):
+        return ("<VTDirect("
+                "server_key: '{server_key}', "
+                "sandbox_mode: {sandbox_mode})>"
+                .format(server_key=self.server_key,
+                        sandbox_mode=self.sandbox_mode))
