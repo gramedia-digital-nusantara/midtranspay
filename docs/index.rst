@@ -16,7 +16,7 @@ Before You Start
 ----------------
 
 For developing and testing this library's integration with your own code,
-you will need a *SANDBOX ACCOUNT*, which you can sign up for 
+you will need a **SANDBOX ACCOUNT**, which you can sign up for 
 here: `Veritrans Sandbox Signup`_.
 
 
@@ -43,13 +43,17 @@ Python Version
 - 2.7.x
 - No support yet for Python 3.
 
-
 Contents:
 ---------
 
 .. toctree::
    :maxdepth: 2
-
+   
+   quickstart
+   charge-a-customer
+   gateway
+   requests
+   response
 
 
 Indices and tables

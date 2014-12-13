@@ -1,28 +1,68 @@
 Quick Start
 ============================
 
-Once the library is installed and on your python path you will need to sign
-up for an account on Veritrans.
+From this point on, we're going to assume that you've signed up for an account
+with Veritrans (if not, go back to the index page of this documentation), 
+and that you've successfully installed this library somewhere on your python
+path.
 
-from veritrans import veritrans, request, payment_types
+Here is a *mostly-complete* short script that will give you an overview of
+how to use the library.  The only feature that is omitted are the init
+arguments you'll need to provide to 3 objects (CustomerDetails,
+TransactionDetails, and CreditCard).  All three are explained in more 
+detail in --this.. link to the section-- Section.
 
+.. code-block:: python
+    
+    from veritranspay import veritrans, request, validation, payment_type
+    from veritranspay.response import status
+    
+    # this gateway will submit to the sandbox API.
+    gateway = veritrans.VTDirect(api_key='YOUR-API-KEY', sandbox_mode=True)
 
-# create a gateway instance
-gateway = veritrans.VTDirect(api_key='YOU-API-KEY')
+    # constructor args are omitted here for brevity
+    # see sections that follow for more details about building
+    # individual entity types
+    cust = request.CustomerDetails(**cust_args)
+    trans = request.TransactionDetails(**trans_args)
+    cc = payment_type.CreditCard(**cc_args)
 
+    # next, we use those 3 entities to build 
+    # our complete charge request
+    charge_req = request.ChargeRequest(charge_type=cc,
+                                       transaction_details=trans,
+                                       customer_details=cust)
 
-# build the request --
-# first we start with the 3 sub-entities
-cust = request.CustomerDetails()
-trans = request.TransactionDetails()
-cc = payment_type.CreditCard()
+    
+    # lastly, we send our charge request to our gateway
+    try:
+        charge_resp = gateway.submit_charge_request(charge_req)
+        
+        if charge_resp.status_code == status.SUCCESS:
+            # yay!
+            print("GREAT SUCCESS!!  We've got your money!  Hope you ordered "
+                  "something nice!")
+        elif charge_resp.status_code == status.CHALLENGE:
+            # the payment was accepted, but you'll have to manually validate
+            # and approve the transation through http://my.veritrans.co.id
+            print("Your transaction is approved, but we need to "
+                  "check some things out.. just you wait, OK?")
+        elif chrage_resp.status_code == status.DENIED:
+            # bad!
+            print("Aduh masbro! Kredit Kartu tidak bisa")
+        else:
+            # something else entirely
+            print("...Aduh.  Pusing.  Tunggu ya?")
 
-# next, we use those 3 entities to build 
-# our complete charge request
-charge_req = request.ChargeRequest(charge_type=cc,
-                                   transaction_details=trans,
-                                   customer_details=cust)
+    catch validation.ValidationError as e:
+        # We failed client-side validation
+        # This happens automatically before our request is submitted to
+        # veritrans!
+        print("Oops.. you need to check your data")
 
+    catch Exception as e:
+        # something else entirely went wrong
+        print("Uhm.. Bad things")
 
-# lastly, we send our charge request to our gateway
-resp = gateway.submit_charge_request(charge_req)
+Ok, so that's that!
+    
