@@ -6,15 +6,18 @@
 Veritranspay - A Python Client Library for Veritrans.co.id
 ==========================================================
 
-VertransPy is a python library for submitting requests to the
-veritrans.co.id payment gateway.
+Vertranspay is a Python library for submitting requests to the
+http://veritrans.co.id payment gateway.
+
+The only dependency for this library is the `Python Requests`_ package
+
 
 Before You Start
 ----------------
 
 For developing and testing this library's integration with your own code,
 you will need a *SANDBOX ACCOUNT*, which you can sign up for 
-here: VeritransSandboxSignup_.
+here: `Veritrans Sandbox Signup`_.
 
 
 Testing
@@ -26,13 +29,23 @@ will not allow you to generate a charge token and submit a charge request
 from the same API on production (however, currently the sandbox DOES allow
 this)!
 
+
 Development Status
 ------------------
 
-This library is in a very early stage and only supports requests
-submitted to the 
+This library is in a very early stage and only supports credit card charge
+requests/responses via the VT-Direct method.
+
+
+Python Version
+----------------------
+
+- 2.7.x
+- No support yet for Python 3.
+
 
 Contents:
+---------
 
 .. toctree::
    :maxdepth: 2
@@ -47,4 +60,5 @@ Indices and tables
 * :ref:`search`
 
 
-.. _VeritransSandboxSignup: https://my.sandbox.veritrans.co.id/register
+.. _Veritrans Sandbox Signup: https://my.sandbox.veritrans.co.id/register
+.. _Python Requests: https://pypi.python.org/pypi/requests
