@@ -27,15 +27,15 @@ class Address(mixins.RequestEntity):
                  first_name=None, last_name=None, phone=None,
                  country_code=None):
         '''
-        Creates a new instance of Address.
-
-        :param address: REQUIRED - Maximum 200 characters.
-        :param city: REQUIRED - Maximum 20 characters.
-        :param postal_code: REQUIRED - Maximum 10 digits, including '-' and spaces.
-        :param first_name: Maximum 20 characters.
-        :param last_name: Maximum 20 characters
-        :param phone: 5-19 characters (if provided).
-        :param country_code: Maximum 10 characters.  Should be in ISO-3166 alpha-3
+        :param address: Street address (200 chars max).
+        :param city:  City name (20 chars max).
+        :param postal_code: Postal Code (10 chars max; numbers,
+            hyphens '-', spaces ' ')
+        :param first_name: Person given name (20 chars max).
+        :param last_name: Person surname (20 chars max).
+        :param phone: Phone number (5-19 chars; numbers '0-9',
+            hyphens '-', parenthesis '()', spaces ' ', plus symbol '+').
+        :param country_code: ISO-3166 alpha-3 country code (10 chars max)
         '''
         self.address = address
         self.city = city
