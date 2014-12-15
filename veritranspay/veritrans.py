@@ -53,6 +53,9 @@ class VTDirect(object):
             veritrans_response = response.ChargeResponse(**response_json)
             return veritrans_response
         except Exception as e:
+            # just log that the failure occured when trying to parse the
+            # veritrans response and then reraise whatever exception
+            # occurred to client code.
             logging.exception("Couldn't read Veritrans API Response")
             raise e
 

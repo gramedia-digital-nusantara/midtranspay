@@ -62,7 +62,8 @@ class TransactionDetails(mixins.RequestEntity):
         Creates a new instance of TransactionDetails.
 
         :param order_id: REQUIRED - Maximum 50 characters.
-        :param gross_amount: REQUIRED - Numeric value to represent the charge amount.
+        :param gross_amount: REQUIRED - Numeric value to represent the
+            charge amount.
         '''
         self.order_id = order_id
         self.gross_amount = gross_amount
