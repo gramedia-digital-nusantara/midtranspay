@@ -6,10 +6,19 @@ class ChargeResponse(mixins.SerializableMixin):
     '''
     Encapsulates the response from Vertrans, returned after a ChargeRequest.
     '''
-    def __init__(self, status_code, status_message, transaction_id, order_id,
-                 payment_type, transaction_time, transaction_status,
-                 fraud_status, masked_card, bank, approval_code, gross_amount):
-
+    def __init__(self,
+                 payment_type,
+                 status_code, status_message, order_id,
+                 transaction_id, transaction_time, transaction_status,
+                 fraud_status, masked_card, gross_amount,
+                 bank=None, approval_code=None,
+                 redirect_url=None, permata_va_number=None):
+        '''
+        :param bank: only when included in the request
+        :param approval_code: only provided when successful.
+        :param redirect_url: only for cimbs / epay bri
+        :param permata_va_number: only for virtual account
+        '''
         # absolutely everything in the response is string-encoded..
         # so we have to do a little massaging to get the format we want
         self.status_code = int(status_code)
@@ -24,6 +33,8 @@ class ChargeResponse(mixins.SerializableMixin):
         self.masked_card = masked_card
         self.bank = bank
         self.approval_code = approval_code
+        self.redirect_url = redirect_url
+        self.permata_va_number = permata_va_number
         # note: for some reason it's returning this with a fractional
         # portion, but currently only currency supported is IDR so int
         # .. plus we need to split off the fractional portion at the end
