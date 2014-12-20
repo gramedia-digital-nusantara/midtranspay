@@ -28,6 +28,7 @@ test_req = pkg_req + [
     'fake-factory>=0.4.2',
     'mock>=1.0.1',
     'nose>=1.3.4',
+    'coverage>=3.7.1',
 ]
 
 

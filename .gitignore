@@ -10,6 +10,7 @@
 .DS_Store
 *.orig
 _build
+.coverage
 
 # Virtual Env
 /.venv/
