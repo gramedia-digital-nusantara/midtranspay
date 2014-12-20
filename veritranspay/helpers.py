@@ -12,3 +12,13 @@ def parse_veritrans_datetime(vt_datetime):
     return (datetime.strptime(vt_datetime, VERITRANS_DATE_TIME_FORMAT)
             if vt_datetime
             else None)
+
+def parse_veritrans_amount(amount):
+    '''
+    '''
+    if amount not in [None, '']:
+        # only IDR supported -- so split off the fractional portion
+        amt_str = amount.split('.')[0]
+        return int(amt_str)
+    else:
+        return 0

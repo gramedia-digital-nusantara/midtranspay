@@ -27,18 +27,16 @@ class ChargeResponseBase(ResponseBase):
         self.transaction_id = kwargs.get('transaction_id', None)
         self.order_id = kwargs.get('order_id', None)
         self.payment_type = kwargs.get('payment_type', None)
-        self.transaction_time = helpers.parse_veritrans_datetime(
-            kwargs.get('transaction_time', None))
+        self.transaction_time = \
+            helpers.parse_veritrans_datetime(
+                kwargs.get('transaction_time', None))
         self.transaction_status = kwargs.get('transaction_status', None)
         self.fraud_status = kwargs.get('fraud_status', None)
         self.approval_code = kwargs.get('approval_code', None)
+        self.gross_amount = \
+            helpers.parse_veritrans_amount(
+                kwargs.get('gross_amount', None))
 
-        if 'gross_amount' in kwargs:
-            # only IDR supported -- so split off the fractional portion
-            gross_amt_str = kwargs['gross_amount'].split('.')[0]
-            self.gross_amount = int(gross_amt_str)
-        else:
-            self.gross_amount = 0
 
 class CreditCardChargeResponse(ChargeResponseBase):
 
@@ -84,7 +82,24 @@ def build_charge_response(request, *args, **kwargs):
 
 
 class StatusResponse(ResponseBase):
-
+    '''
+    Response to a status request.
+    '''
     def __init__(self, *args, **kwargs):
         super(StatusResponse, self).__init__(*args, **kwargs)
+        self.transaction_id = kwargs.get('transaction_id', None)
+        self.masked_card = kwargs.get('masked_card', None)
+        self.order_id = kwargs.get('order_id', None)
+        self.payment_type = kwargs.get('payment_type', None)
+        self.transaction_time = \
+            helpers.parse_veritrans_datetime(
+                kwargs.get('transaction_time', None))
+        self.transaction_status = kwargs.get('transaction_status', None)
+        self.fraud_status = kwargs.get('fraud_status', None)
+        self.approval_code = kwargs.get('approval_code', None)
+        self.signature_key = kwargs.get('signature_key', None)
+        self.bank = kwargs.get('bank', None)
+        self.gross_amount = \
+            helpers.parse_veritrans_amount(
+                kwargs.get('gross_amount', None))
 

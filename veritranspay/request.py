@@ -165,3 +165,8 @@ class ChargeRequest(mixins.RequestEntity):
             rv.update({'item_details': [item.serialize() for item
                                         in self.item_details]})
         return rv
+
+
+class StatusRequest(mixins.RequestEntity):
+    def __init__(self, order_id):
+        self.order_id = order_id
