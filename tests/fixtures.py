@@ -87,7 +87,7 @@ CC_REQUEST = {
     ]
 }
 
-RESPONSE_SUCCESS = {
+CHARGE_RESPONSE_SUCCESS = {
     "transaction_id": "1a1a66f7-27a7-4844-ba1f-d86dcc16ab27",
     "order_id": "C17550",
     "gross_amount": "145000.00",
@@ -101,7 +101,7 @@ RESPONSE_SUCCESS = {
     "approval_code": "1408869563148"
 }
 
-RESPONSE_FAIL = {
+CHARGE_RESPONSE_FAIL = {
     "transaction_id": "b98fafec-fc2b-436f-bc6d-87853291cb35",
     "order_id": "C17550",
     "gross_amount": "145000.00",
@@ -112,4 +112,20 @@ RESPONSE_FAIL = {
     "masked_card": "491111-1113",
     "status_code": "202",
     "status_message": "Deny by Bank [BNI] with code [05] and message [Do not honour]"
+}
+
+STATUS_RESPONSE = {
+    "status_code": "200",
+    "status_message": "Success, transaction found",
+    "transaction_id": "e3b8c383-55b4-4223-bd77-15c48c0245ca",
+    "masked_card": "481111-1114",
+    "order_id": "2014112112",
+    "payment_type": "credit_card",
+    "transaction_time": "2014-11-21 13:07:50",
+    "transaction_status": "settlement",
+    "fraud_status": "accept",
+    "approval_code": "1416550071152",
+    "signature_key": "4ef8218aad5b64bae2ec9d6b0f0a0b059b88bd298f9e79e662f641bae7cd24992fb67547ea60cc3f9a820ca7e5649cf5e1f0a8e4b5ef24001f951b7a9d1a8f42",
+    "bank": "mandiri",
+    "gross_amount": "10000.00"
 }

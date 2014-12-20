@@ -1,46 +1,90 @@
-from datetime import datetime
-from veritranspay import mixins
+from veritranspay import mixins, helpers, payment_types
 
 
-class ChargeResponse(mixins.SerializableMixin):
+class ResponseBase(mixins.SerializableMixin):
+    '''
+    Base class for all responses from Veritrans.  The only two things
+    we can be safely assured should be in every transaction are status_code
+    and status_message.
+    '''
+    def __init__(self, status_code, status_message, *args, **kwargs):
+        self.status_code = int(status_code)
+        self.status_message = status_message
+
+    def __repr__(self):
+        return "<{klass}(code: {code}, message: {msg})>".format(
+            klass=self.__class__.__name__,
+            code=self.status_code,
+            msg=self.status_message)
+
+
+class ChargeResponseBase(ResponseBase):
     '''
     Encapsulates the response from Vertrans, returned after a ChargeRequest.
     '''
-    def __init__(self,
-                 payment_type,
-                 status_code, status_message, order_id,
-                 transaction_id, transaction_time, transaction_status,
-                 fraud_status, masked_card, gross_amount,
-                 bank=None, approval_code=None,
-                 redirect_url=None, permata_va_number=None):
-        '''
-        :param bank: only when included in the request
-        :param approval_code: only provided when successful.
-        :param redirect_url: only for cimbs / epay bri
-        :param permata_va_number: only for virtual account
-        '''
-        # absolutely everything in the response is string-encoded..
-        # so we have to do a little massaging to get the format we want
-        self.status_code = int(status_code)
-        self.status_message = status_message
-        self.transaction_id = transaction_id
-        self.order_id = order_id
-        self.payment_type = payment_type
-        self.transaction_time = datetime.strptime(transaction_time,
-                                                  '%Y-%m-%d %H:%M:%S')
-        self.transaction_status = transaction_status
-        self.fraud_status = fraud_status
-        self.masked_card = masked_card
-        self.bank = bank
-        self.approval_code = approval_code
-        self.redirect_url = redirect_url
-        self.permata_va_number = permata_va_number
-        # note: for some reason it's returning this with a fractional
-        # portion, but currently only currency supported is IDR so int
-        # .. plus we need to split off the fractional portion at the end
-        # or python's int conversion will fail
-        self.gross_amount = int(gross_amount.split('.')[0])
+    def __init__(self, *args, **kwargs):
+        super(ChargeResponseBase, self).__init__(*args, **kwargs)
+        self.transaction_id = kwargs.get('transaction_id', None)
+        self.order_id = kwargs.get('order_id', None)
+        self.payment_type = kwargs.get('payment_type', None)
+        self.transaction_time = helpers.parse_veritrans_datetime(
+            kwargs.get('transaction_time', None))
+        self.transaction_status = kwargs.get('transaction_status', None)
+        self.fraud_status = kwargs.get('fraud_status', None)
+        self.approval_code = kwargs.get('approval_code', None)
 
-    def __repr__(self):
-        return self.__str__()
+        if 'gross_amount' in kwargs:
+            # only IDR supported -- so split off the fractional portion
+            gross_amt_str = kwargs['gross_amount'].split('.')[0]
+            self.gross_amount = int(gross_amt_str)
+        else:
+            self.gross_amount = 0
+
+class CreditCardChargeResponse(ChargeResponseBase):
+
+    def __init__(self, *args, **kwargs):
+        super(CreditCardChargeResponse, self).__init__(*args, **kwargs)
+        self.masked_card = kwargs.get('masked_card', None)
+        self.bank = kwargs.get('bank', None)
+
+
+class CimbsChargeResponse(ChargeResponseBase):
+
+    def __init__(self, *args, **kwargs):
+        super(CimbsChargeResponse, self).__init__(*args, **kwargs)
+        self.redirect_url = kwargs.get('redirect_url', None)
+
+
+class MandiriChargeResponse(ChargeResponseBase):
+
+    def __init__(self, *args, **kwargs):
+        super(MandiriChargeResponse, self).__init__(*args, **kwargs)
+        self.masked_card = kwargs.get('masked_card', None)
+
+
+class VirtualAccountChargeResponse(ChargeResponseBase):
+
+    def __init__(self, *args, **kwargs):
+        super(VirtualAccountChargeResponse, self).__init__(*args, **kwargs)
+        self.permata_va_number = kwargs.get('permata_va_number', None)
+
+
+def build_charge_response(request, *args, **kwargs):
+    '''
+    Builds a response appropriate for a given type of request.
+    '''
+    if type(request.charge_type) is payment_types.CreditCard:
+        return CreditCardChargeResponse(*args, **kwargs)
+    elif type(request.charge_type) is payment_types.CimbClicks:
+        raise NotImplementedError("CimbClicks not yet supported.")
+    elif type(request.charge_type) is payment_types.MandiriClickpay:
+        raise NotImplementedError("MandiriClickpay not yet supported")
+    else:
+        return ChargeResponseBase(*args, **kwargs)
+
+
+class StatusResponse(ResponseBase):
+
+    def __init__(self, *args, **kwargs):
+        super(StatusResponse, self).__init__(*args, **kwargs)
 
