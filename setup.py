@@ -45,8 +45,7 @@ setup(
               ],
     include_package_data=True,
     platforms='any',
-
     install_requires=pkg_req,
     tests_require=test_req,
-
+    test_suite = 'nose.collector'
     )
