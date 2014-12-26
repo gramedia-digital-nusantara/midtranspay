@@ -209,7 +209,7 @@ class PhoneValidator(RequiredValidator, RegexValidator, LengthValidator):
             **kwargs)
 
 
-class EmailValidator(RequiredValidator, LengthValidator):
+class EmailValidator(RequiredValidator, RegexValidator, LengthValidator):
     '''
     Tests that a given string is less than 45 characters in length and
     vaguely appears to be in the proper format for an e-mail address.
@@ -219,7 +219,7 @@ class EmailValidator(RequiredValidator, LengthValidator):
     # the goal here is just a simple 'does it kinda look like an email'
     def __init__(self, *args, **kwargs):
         super(EmailValidator, self).__init__(
-            pattern=r'.*@.*',
+            pattern=r'^.+@.+$',
             max_length=constraints.MAX_EMAIL_LENGTH,
             *args,
             **kwargs)

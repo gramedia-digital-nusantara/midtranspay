@@ -1,3 +1,10 @@
+'''
+Validation logic tests for our simple validators.
+These generally serve as building block for more complex validator
+types (but not always.  In some cases they're used directly).
+
+All the validators live together in the veritranspay.validators module.
+'''
 from random import randint
 import unittest
 
@@ -5,11 +12,12 @@ from faker import Faker
 
 from veritranspay import validators
 
+
 fake = Faker()
 
 
 class ValidatorBase_UnitTests(unittest.TestCase):
-
+    ''' Unit tests for veritranspay.validators.ValidatorBase. '''
     def test_init_accepts_any_args(self):
         '''
         Init should accept any or no keyword or positionl arguments provided
@@ -55,17 +63,12 @@ class ValidatorBase_UnitTests(unittest.TestCase):
 
 
 class DummyValidator_UnitTests(ValidatorBase_UnitTests):
-    '''
-    The dummy validator does nothing.  It's behavior is identical to
-    ValidatorBase and is used to make client code more readable.
-    '''
+    ''' Unit tests for veritranspay.validators.DummyValidator. '''
     pass
 
 
 class RequiredValidator_UnitTests(unittest.TestCase):
-    '''
-    Checks validators.RequiredValidator's behavior.
-    '''
+    ''' Unit tests for veritranspay.validators.RequiredValidator. '''
     def test_is_required_default_true(self):
         '''
         When the is_required init param is not provided, it's expected
@@ -121,6 +124,7 @@ class RequiredValidator_UnitTests(unittest.TestCase):
 
 
 class LengthValidator_UnitTests(unittest.TestCase):
+    ''' Unit tests for veritranspay.validators.LengthValidator '''
 
     def test_invalid_init_args_raise_ValueError(self):
         ''' max_length cannot be less than min_length on init. '''
@@ -146,9 +150,7 @@ class LengthValidator_UnitTests(unittest.TestCase):
             self.assertRaises(validators.ValidationError, l)
 
     def test_min_enforced(self):
-        '''
-        min_legnth is enforced, when no max_legnth is provided.
-        '''
+        ''' min_legnth is enforced, when no max_legnth is provided. '''
         v = validators.LengthValidator(min_length=5)
 
         good_len = ''.join([fake.random_letter() for _ in range(5)])
@@ -184,7 +186,7 @@ class LengthValidator_UnitTests(unittest.TestCase):
 
 
 class RegexValidator_UnitTests(unittest.TestCase):
-
+    ''' Unit tests for veritranspay.validators.RegexValidator '''
     def test_pattern_matching(self):
         ''' Verify that regex pattern validation is occurring. '''
         test_digit_pattern = r'^\d+$'
@@ -201,13 +203,10 @@ class RegexValidator_UnitTests(unittest.TestCase):
 
 
 class StringValidator_UnitTests(unittest.TestCase):
-    '''
-    Tests that string values are handled properly.
-    '''
+    ''' Unit tests for veritranspay.validators.StringValidator '''
     def test_strings_accepted(self):
         ''' Any string value should be accepted '''
         v = validators.StringValidator()
-
         for val in fake.words(randint(5, 10)) + fake.sentences(randint(5, 10)):
             return_val = v.validate(val)
             self.assertIsNone(return_val)
@@ -219,11 +218,9 @@ class StringValidator_UnitTests(unittest.TestCase):
                           lambda: v.validate(fake.random_number()))
 
 class NumericValidator_UnitTests(unittest.TestCase):
-    '''
-    Validates that a given value is a numeric type (float, integer or long).
-    '''
+    ''' Unit tests for veritranspay.validators.NumericValidator '''
     def test_numbers_accepted(self):
-
+        ''' floats, ints, and longs should all pass validation. '''
         v = validators.NumericValidator()
 
         good_float = fake.pyfloat()
@@ -235,7 +232,7 @@ class NumericValidator_UnitTests(unittest.TestCase):
             self.assertIsNone(result)
 
     def test_letters_rejected(self):
-
+        ''' string/unicode values should raise a ValidationError. '''
         v = validators.NumericValidator()
 
         bad_stringified_int = str(fake.pyint())
@@ -244,5 +241,3 @@ class NumericValidator_UnitTests(unittest.TestCase):
         for bad in [bad_stringified_int, bad_letters]:
             l = lambda: v.validate(bad)
             self.assertRaises(validators.ValidationError, l)
-
-

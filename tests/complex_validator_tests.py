@@ -1,146 +1,160 @@
+'''
+Validation tests for our 'complex' validators.
+These are all built on top of our basic validator types and stand
+to validate a specific type of data as defined by the Veritrans v2 API.
+
+All the validators live together in the veritranspay.validators module.
+'''
+from random import randint
 import unittest
 
 from faker import Faker
+from mock import MagicMock
 
 from veritranspay import validators
+
 
 fake = Faker()
 
 
-class AddressVaildator_UnitTests(unittest.TestCase):
-
+class BaseTest_RequiredValidator(object):
+    '''
+    Mixin for any testing any validators that implement specifying
+    is_required as an init param.
+    Derrived classes must specify a VALIDATOR_CLASS attribute on their class.
+    '''
     def test_required_by_default(self):
-        self.skipTest("")
+        ''' None should raise ValidationError by default '''
+        v = self.VALIDATOR_CLASS()
+        l = lambda: v.validate(None)
+        self.assertRaises(validators.ValidationError, l)
 
     def test_None_passes_when_is_required_False(self):
-        self.skipTest("")
+        ''' A value of None can pass, if is_required=False specified to init '''
+        v = self.VALIDATOR_CLASS(is_required=False)
+        result = v.validate(None)
+        self.assertIsNone(result)
+
+
+class AddressVaildator_UnitTests(BaseTest_RequiredValidator,
+                                 unittest.TestCase):
+    '''
+    Unit tests for veritranspay.validators.AddressValidator.
+    '''
+    VALIDATOR_CLASS = validators.AddressValidator
 
     def test_maximum_200_chars(self):
-        self.skipTest("")
+        ''' Values longer than 200 chars should raise a ValidationError. '''
+        v = validators.AddressValidator()
+        long_val = "".join([fake.random_letter() for _ in range(201)])
+        self.assertRaises(validators.ValidationError,
+                          lambda: v.validate(long_val))
 
-    def test_required_address(self):
-        '''
-        Required addresses cannot be None and must be less than 200 chars.
-        '''
-        v = validators.AddressValidator(is_required=True)
-
-        bad_none = None
-        bad_too_long = ''.join([fake.random_letter() for _ in range(201)])
-
-        for bad in [bad_none, bad_too_long]:
-            l = lambda: v.validate(bad)
-            self.assertRaises(validators.ValidationError, l)
-
-        good_blank = ''
-        good_length = ''.join([fake.random_letter() for _ in range(200)])
-
-        for good in [good_blank, good_length]:
-            self.assertIsNone(v.validate(good))
-
-    def test_optional_address(self):
-        '''
-        Optional addresses can be None, but if not None, must be less
-        than 200 chars.
-        '''
-        v = validators.AddressValidator(is_required=False)
-
-        bad_too_long = ''.join([fake.random_letter() for _ in range(201)])
-
-        for bad in [bad_too_long]:
-            l = lambda: v.validate(bad)
-            self.assertRaises(validators.ValidationError, l)
-
-        good_none = None
-        good_blank = ''
-        good_length = ''.join([fake.random_letter() for _ in range(200)])
-
-        for good in [good_none, good_blank, good_length]:
-            self.assertIsNone(v.validate(good))
+    def test_good_address_validates(self):
+        ''' Addresses 200 chars or less should pass validation. '''
+        v = validators.AddressValidator()
+        good_val = "".join([fake.random_letter() for _ in range(200)])
+        return_val = v.validate(good_val)
+        self.assertIsNone(return_val)
 
 
-class PostalCodeValidator_UnitTests(unittest.TestCase):
+class PostalCodeValidator_UnitTests(BaseTest_RequiredValidator,
+                                    unittest.TestCase):
+    '''
+    Unit tests for veritranspay.validators.PostalcodeValidator
+    '''
+    VALIDATOR_CLASS = validators.PostalcodeValidator
 
-    def test_valid_postalcodes_pass_validation(self):
+    def test_maximum_10_characters(self):
+        ''' Postal codes longer than 10 chars should raise a ValidationError'''
+        v = validators.PostalcodeValidator()
+        long_pc = ''.join([str(fake.random_digit()) for _ in range(11)])
+        l = lambda: v.validate(long_pc)
+        self.assertRaises(validators.ValidationError, l)
+
+    def test_good_postalcodes_validate(self):
         ''' Generates 100 random postal codes and validates them. '''
         v = validators.PostalcodeValidator()
         for pc in [fake.postcode() for _ in range(100)]:
             result = v.validate(pc)
             self.assertIsNone(result)
 
-    def test_required_by_default(self):
-        ''' A value of None should fail validation by default '''
-        v = validators.PostalcodeValidator()
-        l = lambda: v.validate(None)
-        self.assertRaises(validators.ValidationError, l)
 
-    def test_None_passes_when_is_required_False(self):
-        ''' A value of None can pass, if is_required=False specified to init '''
-        v = validators.PostalcodeValidator(is_required=False)
-        result = v.validate(None)
-        self.assertIsNone(result)
-
-    def test_maximum_10_characters(self):
-        '''
-        Postal codes can be at most 10 characters long.
-        Longer values should raise a ValidationError()
-        '''
-        v = validators.PostalcodeValidator()
-        long_pc = ''.join([str(fake.random_digit()) for _ in range(11)])
-        l = lambda: v.validate(long_pc)
-        self.assertRaises(validators.ValidationError, l)
-
-
-class NameValidator_UnitTests(unittest.TestCase):
+class NameValidator_UnitTests(BaseTest_RequiredValidator,
+                              unittest.TestCase):
+    '''
+    Unit tests for veritranspay.validators.NameValidator
+    '''
+    VALIDATOR_CLASS = validators.NameValidator
 
     def test_maximum_20_characters(self):
-        '''
-        City names can be at most 20 characters long.
-        Longer names should raise a ValidationError.
-        '''
+        ''' Names longer than 20 chars should raise ValidationError. '''
+        v = validators.NameValidator()
+        long_name = ''.join([fake.random_letter() for _ in range(21)])
+        l = lambda: v.validate(long_name)
+        self.assertRaises(validators.ValidationError, l)
+
+    def test_good_names_validate(self):
+        ''' Valid names should pass validation. '''
+        v = validators.NameValidator()
+        for _ in range(10):
+            name = ''.join([fake.random_letter()
+                            for _ in range(randint(1, 20))])
+            result = v.validate(name)
+            self.assertIsNone(result)
+
+
+class CityValidator_UnitTests(BaseTest_RequiredValidator,
+                              unittest.TestCase):
+    '''
+    Unit tests for veritranspay.validators.CityValidator
+    '''
+    VALIDATOR_CLASS = validators.CityValidator
+
+    def test_maximum_20_characters(self):
+        ''' Cities longer than 20 chars should raise a ValidationError. '''
         v = validators.CityValidator()
         long_city = ''.join([fake.random_letter() for _ in range(21)])
         l = lambda: v.validate(long_city)
         self.assertRaises(validators.ValidationError, l)
 
-    def test_required_by_default(self):
-        self.skipTest("")
-
-    def test_None_passes_when_is_required_False(self):
-        self.skipTest("")
-
-
-class CityValidator_UnitTests(unittest.TestCase):
-
     def test_valid_cities_pass_validation(self):
-        ''' Generates 100 random cities and validates them. '''
-        # Remove this.. just test w/ characters
+        ''' Valid city names should pass validation '''
         v = validators.CityValidator()
-        for city in [fake.city() for _ in range(100)]:
-            # note: some city names are longer than 20 letters
-            if len(city) > 20:
-                continue
+        for _ in range(10):
+            city = ''.join([fake.random_letter()
+                            for _ in range(randint(1, 20))])
             result = v.validate(city)
             self.assertIsNone(result)
 
-    def test_maximum_20_characters(self):
+
+class PhoneValidator_UnitTests(BaseTest_RequiredValidator,
+                               unittest.TestCase):
+    '''
+    Unit tests for veritranspay.validators.PhoneValidator
+    '''
+    VALIDATOR_CLASS = validators.PhoneValidator
+
+    def test_minimum_5_length(self):
         '''
-        City names can be at most 20 characters long.
-        Longer names should raise a ValidationError.
+        Phone numbers shorter than 5 chars should raise a ValidationError.
         '''
-        v = validators.CityValidator()
-        long_city = ''.join([fake.random_letter() for _ in range(21)])
-        l = lambda: v.validate(long_city)
+        v = validators.PhoneValidator()
+        too_short = ''.join([str(fake.random_digit()) for _ in range(4)])
+        l = lambda: v.validate(too_short)
         self.assertRaises(validators.ValidationError, l)
 
-    def test_required_by_default(self):
-        self.skipTest("")
-
-    def test_None_passes_when_is_required_False(self):
-        self.skipTest("")
-
-class PhoneValidator_UnitTests(unittest.TestCase):
+    def test_maximum_19_length(self):
+        '''
+        Phone numbers longer than 19 chars should raise a ValidationError.
+        '''
+        v = validators.PhoneValidator()
+        too_long = ''.join(str(fake.random_digit()) for _ in range(20))
+        l = lambda: v.validate(too_long)
+        self.assertRaises(validators.ValidationError, l)
 
     def test_valid_phonenumbers_pass_validation(self):
+        ''' Valid phone numbers should pass validation. '''
         # Note: some of the phone numbers provided by our fake library
         # won't validate here!  They contain an extension portion, which the
         # API won't accept, so we have to split them off manually.
@@ -189,30 +203,34 @@ class PhoneValidator_UnitTests(unittest.TestCase):
             l = lambda: v.validate(bad)
             self.assertRaises(validators.ValidationError, l)
 
-    def test_minimum_5_length(self):
-        v = validators.PhoneValidator()
-        too_short = ''.join([str(fake.random_digit()) for _ in range(4)])
-        l = lambda: v.validate(too_short)
-        self.assertRaises(validators.ValidationError, l)
 
-    def test_maximum_19_length(self):
-        v = validators.PhoneValidator()
-        too_long = ''.join(str(fake.random_digit()) for _ in range(20))
+class EmailValidator_UnitTests(BaseTest_RequiredValidator,
+                               unittest.TestCase):
+    '''
+    Unit tests for veritranspay.validators.EmailValidator
+    '''
+    VALIDATOR_CLASS = validators.EmailValidator
+
+    def test_maximum_45_length(self):
+        ''' Values longer than 45 chars should raise ValidationError. '''
+        v = validators.EmailValidator()
+        too_long = "{0}@apps-foundry.com".format(
+                       ''.join(fake.random_letter() for _ in range(50))
+                    )
         l = lambda: v.validate(too_long)
         self.assertRaises(validators.ValidationError, l)
 
-    def test_required_by_default(self):
-        self.skipTest("")
-
-    def test_None_passes_when_is_required_False(self):
-        self.skipTest("")
-
-
-class EmailValidator_UnitTests(unittest.TestCase):
+    def test_invalid_format_raise_ValidationError(self):
+        ''' Invalid E-mail addresses should raise a ValidationError '''
+        v = validators.EmailValidator()
+        bad_email = ''.join(fake.random_letter() for _ in range(25))
+        l = lambda: v.validate(bad_email)
+        self.assertRaises(validators.ValidationError, l)
 
     def test_valid_formats_pass_validation(self):
+        ''' Valid E-mail addresses should pass validation. '''
         v = validators.EmailValidator()
-        for email in [fake.email() for _ in range(100)]:
+        for email in [fake.email() for _ in range(20)]:
             # veritrans can't accept long e-mails.. so we have to skip
             # if generated
             if len(email) > 45:
@@ -220,42 +238,65 @@ class EmailValidator_UnitTests(unittest.TestCase):
             result = v.validate(email)
             self.assertIsNone(result)
 
-    def test_invalid_format_raise_ValidationError(self):
-        self.skipTest("")
 
-    def test_maximum_45_length(self):
-        self.skipTest("")
+class CountrycodeValidator_UnitTests(BaseTest_RequiredValidator,
+                                     unittest.TestCase):
+    '''
+    Unit tests for veritranspay.validators.CountrycodeValidator
+    '''
+    VALIDATOR_CLASS = validators.CountrycodeValidator
 
-    def test_required_by_default(self):
-        self.skipTest("")
-
-    def test_None_passes_when_is_required_False(self):
-        self.skipTest("")
-
-
-class CountrycodeValidator_UnitTests(unittest.TestCase):
-
-    def test_required_by_default(self):
-        self.skipTest("Implement me!")
-
-    def test_None_passes_when_is_required_False(self):
-        self.skipTest("Implement me!")
-
-    def test_long_values_raise_ValidationError(self):
-        self.skipTest("Implement me!")
+    def test_maximum_10_length(self):
+        ''' Country codes longer than 10 chars should raise ValidationError '''
+        v = validators.CountrycodeValidator()
+        too_long = ''.join(fake.random_letter() for _ in range(11))
+        l = lambda: v.validate(too_long)
+        self.assertRaises(validators.ValidationError, l)
 
 
-class PassthroughValidator_UnitTests(unittest.TestCase):
-
-    def test_required_by_default(self):
-        self.skipTest("Implement me!")
-
-    def test_None_passes_when_is_required_False(self):
-        self.skipTest("Implement me!")
+class PassthroughValidator_UnitTests(BaseTest_RequiredValidator,
+                                     unittest.TestCase):
+    '''
+    Unit tests for veritranspay.validators.PassthroughValidator
+    '''
+    VALIDATOR_CLASS = validators.PassthroughValidator
 
     def test_validate_all_called_on_value(self):
-        self.skipTest("")
+        '''
+        When passed a scalar, passthrough validator should call validate_all
+        on the scalar.
+        '''
+        v = validators.PassthroughValidator()
+
+        mock = MagicMock()
+        # mocks are iterable .. we don't want that here
+        mock.attach_mock(MagicMock(side_effect=TypeError), '__iter__')
+        validate_mock = MagicMock()
+        mock.attach_mock(validate_mock, 'validate_all')
+
+        v.validate(mock)
+
+        validate_mock.assert_called_once_with()
 
     def test_validate_all_called_on_iterable_elements(self):
-        self.skipTest("")
+        '''
+        When passed an iterable, validate_all should be called on the elements
+        of the iterable.
+        '''
+        v = validators.PassthroughValidator()
 
+        # note: doesn't matter here whether the mocks are iterable or not
+        mock1 = MagicMock()
+        validate_mock1 = MagicMock()
+        mock1.attach_mock(validate_mock1, 'validate_all')
+
+        mock2 = MagicMock()
+        validate_mock2 = MagicMock()
+        mock2.attach_mock(validate_mock2, 'validate_all')
+
+        mocks = [mock1, mock2]
+
+        v.validate(mocks)
+
+        validate_mock1.assert_called_once_with()
+        validate_mock2.assert_called_once_with()
