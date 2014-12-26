@@ -204,3 +204,26 @@ class VTDirect_UnitTests(unittest.TestCase):
 
         self.assertEqual(actual, expected)
 
+
+class VTDirect_OtherCommands_Base(object):
+
+    # request.validate_all called
+    # validationError bubbles up
+    # has expected headers
+    # calls expected URL sandbox
+    # calls expected URL live
+    # expected auth parameters
+    # returns expected object
+    pass
+
+
+class VTDirect_ApprovalRequest_UnitTests(VTDirect_OtherCommands_Base):
+    pass
+
+
+class VTDirect_CancelRequest_UnitTests(VTDirect_OtherCommands_Base):
+    pass
+
+
+class VTDirect_StatusRequest_UnitTests(VTDirect_OtherCommands_Base):
+    pass
