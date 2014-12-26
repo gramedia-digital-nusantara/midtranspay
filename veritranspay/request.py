@@ -139,11 +139,9 @@ class ChargeRequest(mixins.RequestEntity):
         self.item_details = item_details
 
     def validate_attr(self, name, value, validator):
-        '''
-        Manually overrides validation logic for items, since they're a list
-        type and this is a special case.  Everything else can be validated
-        normally.
-        '''
+        # Manually overrides validation logic for items, since they're a list
+        # type and this is a special case.  Everything else can be validated
+        # normally.
         if 'name' == 'item_details':
             for item in self.item_details:
                 item.validate_all()
@@ -151,11 +149,9 @@ class ChargeRequest(mixins.RequestEntity):
             super(ChargeRequest, self).validate_attr(name, value, validator)
 
     def serialize(self):
-        '''
-        Manually override the standard logic for serialize().  `charge_type`
-        needs to add two keys to the resulting dictionary, and all other types
-        need to be placed under specific dictionary keys.
-        '''
+        # Manually override the standard logic for serialize().  `charge_type`
+        # needs to add two keys to the resulting dictionary, and all
+        # other types need to be placed under specific dictionary keys.
         rv = {}
         rv.update(self.charge_type.serialize())
         rv.update({'transaction_details':
@@ -168,5 +164,9 @@ class ChargeRequest(mixins.RequestEntity):
 
 
 class StatusRequest(mixins.RequestEntity):
+    def __init__(self, order_id):
+        self.order_id = order_id
+
+class CancelRequest(mixins.RequestEntity):
     def __init__(self, order_id):
         self.order_id = order_id
