@@ -1,50 +1,175 @@
 import unittest
 
 from faker import Faker
+from mock import MagicMock
 
 from veritranspay import request, validators, payment_types
 from veritranspay.veritrans import VTDirect
-from tests import fixtures
+
+from . import fixtures
 
 
 fake = Faker()
 
 
-class VTDirect_Init_Tests(unittest.TestCase):
+class VTDirect_UnitTests(unittest.TestCase):
 
     def setUp(self):
+        # always set to None -- diff on things like arrays and hashes
         self.maxDiff = None
-        self.server_key = fake.word()
-        super(VTDirect_Init_Tests, self).setUp()
+        # create ourselves a random server key for use in further tests
+        self.server_key = "".join([fake.random_letter() for _ in range(45)])
+        super(VTDirect_UnitTests, self).setUp()
 
     def test_requires_server_key(self):
-        ''' server_key should be a required parameter. '''
-        self.assertRaises(TypeError, VTDirect)
+        ''' server_key should be a required init parameter. '''
+        self.assertRaises(TypeError,
+                          lambda: VTDirect())
+
+    def test_live_mode_is_default(self):
+        '''
+        When sandbox_mode is NOT explicitally set, VTDirect gateway should
+        default to sandbox_mode=False.
+        '''
+        v = VTDirect(server_key=self.server_key)
+        self.assertFalse(v.sandbox_mode)
 
     def test_instance_attributes_set(self):
-        v = VTDirect(server_key=self.server_key)
-        self.assertEqual(v.server_key, self.server_key, "")
-        self.assertFalse(v.sandbox_mode, "")
+        '''
+        Arguments passed to the constructor should persist themselves as
+        instance attributes of the same name.
+        '''
+        v = VTDirect(server_key=self.server_key,
+                     sandbox_mode=False)
+        self.assertEqual(v.server_key, self.server_key)
+        self.assertFalse(v.sandbox_mode)
+
+        v = VTDirect(server_key=self.server_key,
+                     sandbox_mode=True)
+        self.assertEqual(v.server_key, self.server_key)
+        self.assertTrue(v.sandbox_mode)
 
     def test_sanbox_mode_set_as_attribute(self):
-        v = VTDirect(server_key=self.server_key, sandbox_mode=True)
-        self.assertEqual(v.server_key, self.server_key, "")
-        self.assertTrue(v.sandbox_mode, "")
+        '''
+        The value for 'sandbox_mode' passed to init should be persisted
+        as an attribute with the same name.
+        '''
+        v = VTDirect(server_key=self.server_key,
+                     sandbox_mode=True)
+        self.assertEqual(v.server_key, self.server_key)
+        self.assertTrue(v.sandbox_mode)
 
     def test_sandbox_mode_expected_url(self):
-        expected_url = 'https://api.sandbox.veritrans.co.id/v2'
-        v = VTDirect(server_key=self.server_key, sandbox_mode=True)
-        self.assertEqual(v.base_url, expected_url)
+        '''
+        When sandbox_mode is True, we should receive the veritrans sandbox api
+        URL back from the base_url property.
+        '''
+        v = VTDirect(server_key=self.server_key,
+                     sandbox_mode=True)
+        self.assertEqual(v.base_url, VTDirect.SANDBOX_API_URL)
 
     def test_live_mode_expected_url(self):
-        expected_url = 'https://api.veritrans.co.id/v2'
-        v = VTDirect(server_key=self.server_key, sandbox_mode=False)
-        self.assertEqual(v.base_url, expected_url)
+        '''
+        When sandbox_mode is False, we should receive the veritrans live api
+        URL back from the base_url property.
+        '''
+        v = VTDirect(server_key=self.server_key,
+                     sandbox_mode=False)
+        self.assertEqual(v.base_url, VTDirect.LIVE_API_URL)
+
+    def test_invalid_charge_request_raises_ValidationError(self):
+        '''
+        Make sure that if any of the sub-entities raise a ValidationError
+        that it is bubbled out to calling code.
+        '''
+        gateway = VTDirect(server_key=self.server_key)
+
+        charge_req = MagicMock(spec=request.ChargeRequest)
+        mock_validate = MagicMock(side_effect=validators.ValidationError)
+        charge_req.attach_mock(mock_validate, 'validate_all')
+
+        self.assertRaises(validators.ValidationError,
+                          lambda: gateway.submit_charge_request(charge_req))
+
+        self.assertEqual(mock_validate.call_count, 1)
+
+    def test_invalid_status_request_raises_ValidationError(self):
+        gateway = VTDirect(server_key=self.server_key)
+
+        status_req = MagicMock(spec=request.StatusRequest)
+        mock_validate = MagicMock(side_effect=validators.ValidationError)
+        status_req.attach_mock(mock_validate, 'validate_all')
+
+        self.assertRaises(validators.ValidationError,
+                          lambda: gateway.submit_status_request(status_req))
+
+        self.assertEqual(mock_validate.call_count, 1)
+
+    def test_invalid_cancel_request_raises_ValidationError(self):
+        gateway = VTDirect(server_key=self.server_key)
+
+        cancel_req = MagicMock(spec=request.CancelRequest)
+        mock_validate = MagicMock(side_effect=validators.ValidationError)
+        cancel_req.attach_mock(mock_validate, 'validate_all')
+
+        self.assertRaises(validators.ValidationError,
+                          lambda: gateway.submit_status_request(cancel_req))
+
+        self.assertEqual(mock_validate.call_count, 1)
+
+    def test_invalid_approval_request_raises_ValidationError(self):
+        gateway = VTDirect(server_key=self.server_key)
+
+        approval_req = MagicMock(spec=request.ApprovalRequest)
+        mock_validate = MagicMock(side_effect=validators.ValidationError)
+        approval_req.attach_mock(mock_validate, 'validate_all')
+
+        self.assertRaises(validators.ValidationError,
+                          lambda: gateway.submit_status_request(approval_req))
+
+        self.assertEqual(mock_validate.call_count, 1)
+
+    def test_cancel_request_calls_expected_url(self):
+        self.skipTest("Not Implemented")
+
+    def test_cancel_request_has_expected_accept_headers(self):
+        self.skipTest("Not Implemented")
+
+    def test_cancel_request_has_expected_auth_header(self):
+        self.skipTest("Not Implemented")
+
+    def test_cancel_request_returns_expected_object(self):
+        self.skipTest("Not Implemented")
+
+    def test_approval_request_calls_expected_url(self):
+        self.skipTest("Not Implemented")
+
+    def test_approval_request_has_expected_accept_headers(self):
+        self.skipTest("Not Implemented")
+
+    def test_approval_request_has_expected_auth_headers(self):
+        self.skipTest("Not Implemented")
+
+    def test_approval_request_returns_expected_object(self):
+        self.skipTest("Not Implemented")
+
+    def test_submit_request_calls_expected_url(self):
+        self.skipTest("Not Implemented")
+
+    def test_submit_request_has_expected_accept_headers(self):
+        self.skipTest("Not Implemented")
+
+    def test_submit_request_has_expected_auth_headers(self):
+        self.skipTest("Not Implemented")
+
+    def test_submit_request_returns_expected_object(self):
+        self.skipTest("Not Implemented")
 
     def test_cc_serialization(self):
         ''' Given a complete request format--make sure that our ChargeRequest
         is serializing out the same format.
         '''
+        # TODO: This belongs on ChargeRequest unit tests!
         expected = fixtures.CC_REQUEST
 
         cc_payment = payment_types.CreditCard(

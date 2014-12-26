@@ -7,6 +7,9 @@ class VTDirect(object):
     '''
     Gateway object that we use to communicate VT-Direct type requests.
     '''
+    LIVE_API_URL = 'https://api.veritrans.co.id/v2'
+    SANDBOX_API_URL = 'https://api.sandbox.veritrans.co.id/v2'
+
     def __init__(self, server_key, sandbox_mode=False):
         self.server_key = server_key
         self.sandbox_mode = sandbox_mode
@@ -17,8 +20,8 @@ class VTDirect(object):
         Returns the Veritrans base URL for API requests.  This will
         differ depending on whether sandbox_mode is enabled or not.
         '''
-        return 'https://api.sandbox.veritrans.co.id/v2' if self.sandbox_mode \
-            else 'https://api.veritrans.co.id/v2'
+        return VTDirect.SANDBOX_API_URL if self.sandbox_mode \
+            else VTDirect.LIVE_API_URL
 
     def submit_charge_request(self, charge_request):
         '''
@@ -56,6 +59,8 @@ class VTDirect(object):
         '''
         Gets the status from veritrans for a single transaction.
         '''
+        status_request.validate_all()
+
         request_url_format = '{base_url}/{order_id}/status'
 
         headers = {'accept': 'application/json',
@@ -78,6 +83,8 @@ class VTDirect(object):
         '''
         Sends a request to Veritrans to cancel a single transaction.
         '''
+        cancel_request.validate_all()
+
         request_url_format = '{base_url}/{order_id}/cancel'
 
         headers = {'accept': 'application/json',
@@ -101,6 +108,8 @@ class VTDirect(object):
         Sends a request to Veritrans to approve a single, challenged
         transaction.
         '''
+        approval_request.validate_all()
+
         request_url_format = '{base_url}/{order_id}/approve'
 
         headers = {'accept': 'application/json',

@@ -164,15 +164,30 @@ class ChargeRequest(mixins.RequestEntity):
 
 
 class StatusRequest(mixins.RequestEntity):
+
+    _validators = {'order_id', validators.StringValidator(
+                      max_length=constraints.MAX_ORDERID_LENGTH),
+                   }
+
     def __init__(self, order_id):
         self.order_id = order_id
 
 
 class CancelRequest(mixins.RequestEntity):
+
+    _validators = {'order_id', validators.StringValidator(
+                      max_length=constraints.MAX_ORDERID_LENGTH),
+                   }
+
     def __init__(self, order_id):
         self.order_id = order_id
 
 
 class ApprovalRequest(mixins.RequestEntity):
+
+    _validators = {'order_id', validators.StringValidator(
+                      max_length=constraints.MAX_ORDERID_LENGTH),
+                   }
+
     def __init__(self, order_id):
         self.order_id = order_id
