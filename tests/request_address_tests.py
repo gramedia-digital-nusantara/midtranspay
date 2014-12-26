@@ -1,11 +1,12 @@
-import unittest
 import random
 import string
+import unittest
 
 from faker import Faker
 
-from veritranspay import request, validators
 from tests import fixtures
+from veritranspay import request, validators
+
 
 fake = Faker()
 
@@ -132,11 +133,10 @@ class Request_Address_Tests(unittest.TestCase):
                                              pattern))
 
         # invalid values should raise ValueErrors
-        bad_blank_city = ''
         bad_long_city = ''.join(
             random.choice(string.digits) for _ in range(11))
 
-        for bad in [bad_blank_city, bad_long_city]:
+        for bad in [bad_long_city]:
             l = lambda: addr.validate_attr('postal_code',
                                            bad,
                                            pattern)

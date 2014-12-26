@@ -146,8 +146,9 @@ class LengthValidator_UnitTests(unittest.TestCase):
             self.assertRaises(validators.ValidationError, l)
 
     def test_min_enforced(self):
-        ''' min_legnth is enforced, when no max_legnth is provided. '''
-
+        '''
+        min_legnth is enforced, when no max_legnth is provided.
+        '''
         v = validators.LengthValidator(min_length=5)
 
         good_len = ''.join([fake.random_letter() for _ in range(5)])
@@ -155,19 +156,18 @@ class LengthValidator_UnitTests(unittest.TestCase):
         for good in [good_len]:
             self.assertIsNone(v.validate(good))
 
-        bad_none = None
         bad_empty = ''
         bad_too_short = ''.join([fake.random_letter() for _ in range(3)])
 
-        for bad in [bad_none, bad_empty, bad_too_short]:
+        for bad in [bad_empty, bad_too_short]:
             l = lambda: v.validate(bad)
             self.assertRaises(validators.ValidationError, l)
 
     def test_min_max_enforced(self):
-        ''' min_value and max_value should both apply if both are
+        '''
+        min_value and max_value should both apply if both are
         provided to the constructor.
         '''
-
         v = validators.LengthValidator(min_length=5, max_length=5)
 
         good_len = ''.join([fake.random_letter() for _ in range(5)])
@@ -175,11 +175,10 @@ class LengthValidator_UnitTests(unittest.TestCase):
         for good in [good_len]:
             self.assertIsNone(v.validate(good))
 
-        bad_none = None
         bad_too_short = ''.join([fake.random_letter() for _ in range(4)])
         bad_too_long = ''.join([fake.random_letter() for _ in range(6)])
 
-        for bad in [bad_none, bad_too_short, bad_too_long]:
+        for bad in [bad_too_short, bad_too_long]:
             l = lambda: v.validate(bad)
             self.assertRaises(validators.ValidationError, l)
 
@@ -220,7 +219,9 @@ class StringValidator_UnitTests(unittest.TestCase):
                           lambda: v.validate(fake.random_number()))
 
 class NumericValidator_UnitTests(unittest.TestCase):
-
+    '''
+    Validates that a given value is a numeric type (float, integer or long).
+    '''
     def test_numbers_accepted(self):
 
         v = validators.NumericValidator()

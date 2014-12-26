@@ -70,7 +70,6 @@ class LengthValidator(ValidatorBase):
         :param min_length: Minimum required length for a string.
         :param max_length: Maximum allowed length for a string.
         '''
-
         if None not in [min_length, max_length]:
             if max_length < min_length:
                 raise ValueError()
@@ -82,23 +81,17 @@ class LengthValidator(ValidatorBase):
 
     def validate(self, value):
 
-        if self.max_length:
+        if self.max_length and value is not None:
             if value and len(value) > self.max_length:
                 raise ValidationError(
-                    "{value} longer than max_length"
+                    "{value} longer than max_length "
                     "{max_length}".format(value=value,
                                           max_length=self.max_length))
 
-        if self.min_length:
-            if value is None:
-                raise ValidationError(
-                    "{value} shorter than min_length"
-                    "{min_length}".format(value=value,
-                                          min_length=self.min_length))
-
+        if self.min_length and value is not None:
             if len(value) < self.min_length:
                 raise ValidationError(
-                    "{value} shorter than min_length"
+                    "{value} shorter than min_length "
                     "{min_length}".format(value=value,
                                           min_length=self.min_length))
 
@@ -162,12 +155,13 @@ class AddressValidator(RequiredValidator, LengthValidator):
     constructor.
     '''
     def __init__(self, *args, **kwargs):
-        super(AddressValidator, self).__init__(max_length=200,
-                                               *args,
-                                               **kwargs)
+        super(AddressValidator, self).__init__(
+            max_length=constraints.MAX_ADDRESS_LENGTH,
+            *args,
+            **kwargs)
 
 
-class PostalcodeValidator(RequiredValidator, RegexValidator):
+class PostalcodeValidator(RequiredValidator, RegexValidator, LengthValidator):
     '''
     Tests that a string is a valid length and format for a
     Postal Code.  It can be a maximum of 10 digits and may
@@ -175,7 +169,8 @@ class PostalcodeValidator(RequiredValidator, RegexValidator):
     '''
     def __init__(self, *args, **kwargs):
         super(PostalcodeValidator, self).__init__(
-            pattern=r'^([\d -]{1,10})$',
+            pattern=r'^([\d -])*$',
+            max_length=constraints.MAX_POSTALCODE_LENGTH,
             *args,
             **kwargs)
 
@@ -200,21 +195,21 @@ class CityValidator(NameValidator):
     pass
 
 
-class PhoneValidator(RequiredValidator, RegexValidator):
+class PhoneValidator(RequiredValidator, RegexValidator, LengthValidator):
     '''
     Tests that a string looks like a phone number (between 5 and 19 characters)
     and only contains the characters 0-9, +, -, (, and ).
     '''
     def __init__(self, *args, **kwargs):
-        # todo: this regex is flawed.. + needs to match at the front only
-        # only while still providing validation
         super(PhoneValidator, self).__init__(
-            pattern=r'^([\+\d\-\(\) ]){5,19}$',
+            pattern=r'^\+?[\d\-\(\) ]*$',
+            min_length=constraints.MIN_PHONE_LENGTH,
+            max_length=constraints.MAX_PHONE_LENGTH,
             *args,
             **kwargs)
 
 
-class EmailValidator(RequiredValidator, RegexValidator, LengthValidator):
+class EmailValidator(RequiredValidator, LengthValidator):
     '''
     Tests that a given string is less than 45 characters in length and
     vaguely appears to be in the proper format for an e-mail address.
@@ -224,14 +219,18 @@ class EmailValidator(RequiredValidator, RegexValidator, LengthValidator):
     # the goal here is just a simple 'does it kinda look like an email'
     def __init__(self, *args, **kwargs):
         super(EmailValidator, self).__init__(
-            # pattern=r'(\w+[.|\w])+@(\w+[.])*\w+', -- no good
-            pattern=r'.*',
+            pattern=r'.*@.*',
             max_length=constraints.MAX_EMAIL_LENGTH,
             *args,
             **kwargs)
 
 
 class CountrycodeValidator(RequiredValidator, LengthValidator):
+    '''
+    Validates that a country code is in a format that Veritrans
+    accepts -- which is any string less than 10 characters (note:
+    their API documentation states this should be ISO 3166-1 Alpha 3)
+    '''
     def __init__(self, *args, **kwargs):
         super(CountrycodeValidator, self).__init__(
             max_length=constraints.MAX_COUNTRYCODE_LENGTH,
