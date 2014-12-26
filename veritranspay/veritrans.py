@@ -96,6 +96,29 @@ class VTDirect(object):
 
         return veritrans_response
 
+    def submit_approval_request(self, approval_request):
+        '''
+        Sends a request to Veritrans to approve a single, challenged
+        transaction.
+        '''
+        request_url_format = '{base_url}/{order_id}/approve'
+
+        headers = {'accept': 'application/json',
+                   }
+
+        http_response = requests.get(
+           request_url_format.format(
+               base_url=self.base_url,
+               order_id=approval_request.order_id),
+           auth=(self.server_key, ''),
+           headers=headers)
+
+        response_json = http_response.json()
+
+        veritrans_response = response.ApprovalResponse(**response_json)
+
+        return veritrans_response
+
     def __repr__(self):
         return ("<VTDirect("
                 "server_key: '{server_key}', "
