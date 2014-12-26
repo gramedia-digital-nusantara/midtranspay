@@ -90,7 +90,7 @@ class VTDirect(object):
         headers = {'accept': 'application/json',
                    }
 
-        http_response = requests.get(
+        http_response = requests.post(
            request_url_format.format(
                base_url=self.base_url,
                order_id=cancel_request.order_id),
@@ -115,7 +115,7 @@ class VTDirect(object):
         headers = {'accept': 'application/json',
                    }
 
-        http_response = requests.get(
+        http_response = requests.post(
            request_url_format.format(
                base_url=self.base_url,
                order_id=approval_request.order_id),

@@ -105,8 +105,6 @@ class ItemDetails(mixins.RequestEntity):
     '''
     Line items details for a transaction.
     '''
-    # todo: yo tests
-
     _validators = {'id': validators.StringValidator(max_length=50),
                    'price': validators.NumericValidator(),
                    'quantity': validators.NumericValidator(),

@@ -240,3 +240,8 @@ class VTDirect_CancelRequest_UnitTests(VTDirect_OtherCommandTests_Base):
 
 class VTDirect_StatusRequest_UnitTests(VTDirect_OtherCommandTests_Base):
     pass
+
+
+class VTDirect_OtherTests(unittest.TestCase):
+    # test string/repr methods to make sure they show expected
+    pass

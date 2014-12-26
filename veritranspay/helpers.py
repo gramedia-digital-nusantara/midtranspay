@@ -15,6 +15,11 @@ def parse_veritrans_datetime(vt_datetime):
 
 def parse_veritrans_amount(amount):
     '''
+    Given an input string, returns it as an integer.  Veritrans returns
+    an extra .00 appended to the end of every string, we strip that off
+    because IDR is the only supported currency.
+
+    If None or an empty string is provided, 0 is returned.
     '''
     if amount not in [None, '']:
         # only IDR supported -- so split off the fractional portion
