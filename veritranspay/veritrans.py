@@ -53,7 +53,9 @@ class VTDirect(object):
         return veritrans_response
 
     def submit_status_request(self, status_request):
-
+        '''
+        Gets the status from veritrans for a single transaction.
+        '''
         request_url_format = '{base_url}/{order_id}/status'
 
         headers = {'accept': 'application/json',
@@ -69,6 +71,28 @@ class VTDirect(object):
         response_json = http_response.json()
 
         veritrans_response = response.StatusResponse(**response_json)
+
+        return veritrans_response
+
+    def submit_cancel_request(self, cancel_request):
+        '''
+        Sends a request to Veritrans to cancel a single transaction.
+        '''
+        request_url_format = '{base_url}/{order_id}/cancel'
+
+        headers = {'accept': 'application/json',
+                   }
+
+        http_response = requests.get(
+           request_url_format.format(
+               base_url=self.base_url,
+               order_id=cancel_request.order_id),
+           auth=(self.server_key, ''),
+           headers=headers)
+
+        response_json = http_response.json()
+
+        veritrans_response = response.CancelResponse(**response_json)
 
         return veritrans_response
 
