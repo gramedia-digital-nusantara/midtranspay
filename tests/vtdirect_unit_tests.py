@@ -12,14 +12,14 @@ from . import fixtures
 fake = Faker()
 
 
-class VTDirect_UnitTests(unittest.TestCase):
+class VTDirect_Init_Tests(unittest.TestCase):
 
     def setUp(self):
         # always set to None -- diff on things like arrays and hashes
         self.maxDiff = None
         # create ourselves a random server key for use in further tests
         self.server_key = "".join([fake.random_letter() for _ in range(45)])
-        super(VTDirect_UnitTests, self).setUp()
+        super(VTDirect_Init_Tests, self).setUp()
 
     def test_requires_server_key(self):
         ''' server_key should be a required init parameter. '''
@@ -76,6 +76,9 @@ class VTDirect_UnitTests(unittest.TestCase):
         v = VTDirect(server_key=self.server_key,
                      sandbox_mode=False)
         self.assertEqual(v.base_url, VTDirect.LIVE_API_URL)
+
+    def test_stringifies_as_expected(self):
+        self.skipTest("")
 
     def test_invalid_charge_request_raises_ValidationError(self):
         '''
@@ -205,25 +208,35 @@ class VTDirect_UnitTests(unittest.TestCase):
         self.assertEqual(actual, expected)
 
 
-class VTDirect_OtherCommands_Base(object):
-
+class VTDirect_CommandTests_Base(object):
     # request.validate_all called
     # validationError bubbles up
     # has expected headers
     # calls expected URL sandbox
     # calls expected URL live
     # expected auth parameters
+    # raises urllib3 errors -- look into this
+    # fails if malformed json
+    # returns expected object for request success
+    pass
+
+class VTDirect_ChargeRequest_Tests(VTDirect_CommandTests_Base):
     # returns expected object
+    # returns expected object for test request failure -- need to figure out
+    #     what a failure response actually looks like here!
+    pass
+
+class VTDirect_OtherCommandTests_Base(VTDirect_CommandTests_Base):
     pass
 
 
-class VTDirect_ApprovalRequest_UnitTests(VTDirect_OtherCommands_Base):
+class VTDirect_ApprovalRequest_UnitTests(VTDirect_OtherCommandTests_Base):
     pass
 
 
-class VTDirect_CancelRequest_UnitTests(VTDirect_OtherCommands_Base):
+class VTDirect_CancelRequest_UnitTests(VTDirect_OtherCommandTests_Base):
     pass
 
 
-class VTDirect_StatusRequest_UnitTests(VTDirect_OtherCommands_Base):
+class VTDirect_StatusRequest_UnitTests(VTDirect_OtherCommandTests_Base):
     pass

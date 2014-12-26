@@ -18,7 +18,7 @@ class ValidatorBase(object):
     on super() with reckless abandon!
     '''
     def __init__(self, *args, **kwargs):
-        pass
+        return
 
     def validate(self, value):
         '''
@@ -26,6 +26,15 @@ class ValidatorBase(object):
         returns None.
         :param value: The object to test for Validation.
         '''
+        return
+
+
+class DummyValidator(ValidatorBase):
+    '''
+    This is a special case validator that never fails validation and accepts
+    and parameters passed to it's constructor.
+    '''
+    pass
 
 
 class RequiredValidator(ValidatorBase):
@@ -124,10 +133,16 @@ class StringValidator(RequiredValidator, LengthValidator):
     greater-than-or-equal to a min_length or
     less-than-or-equal-to a max_length.
     '''
-    pass
+    def validate(self, value):
+        if value is not None:
+            if type(value) not in [str, unicode]:
+                raise ValidationError(
+                  "{value} ({type}) is not a string".format(value=value,
+                                                            type=type(value)))
+        super(StringValidator, self).validate(value)
 
 
-class NumericValidator(RequiredValidator, ValidatorBase):
+class NumericValidator(RequiredValidator):
     '''
     Tests that the provided value is a python numeric type.
     '''
@@ -234,13 +249,3 @@ class PassthroughValidator(RequiredValidator):
         if value is not None:
             value.validate_all()
         super(PassthroughValidator, self).validate(value)
-
-
-# TODO: it would be cool to replace this with a pass-through validator instead
-class DummyValidator(ValidatorBase):
-    '''
-    This is a special case validator that never fails validation and accepts
-    and parameters passed to it's constructor.  Useful for attributes that
-    don't contain basic types (), but instead provide their own validation.
-    '''
-    pass
