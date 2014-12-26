@@ -225,7 +225,12 @@ class NumericValidator_UnitTests(unittest.TestCase):
 
         good_float = fake.pyfloat()
         good_int = fake.pyint()
-        good_long = long(good_int)
+
+        # python 3 removes long (ints are longs)
+        if hasattr(__builtins__, 'long'):
+            good_long = long(good_int)
+        else:
+            good_long = fake.pyint()
 
         for good in [good_float, good_int, good_long]:
             result = v.validate(good)

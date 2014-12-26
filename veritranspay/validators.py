@@ -1,3 +1,4 @@
+from numbers import Number
 import re
 
 from . import constraints
@@ -8,7 +9,8 @@ class ValidationError(Exception):
     Raised whenever a validator in this module determines the value passed
     to .validate() fails validation.
     '''
-    pass
+    def __init__(self, message=None):
+        self.message = message
 
 
 class ValidatorBase(object):
@@ -128,7 +130,16 @@ class StringValidator(RequiredValidator, LengthValidator):
     '''
     def validate(self, value):
         if value is not None:
-            if type(value) not in [str, unicode]:
+
+            # python 3 removes basestring
+            try:
+                string_type = basestring
+                # v -- this doesn't work?  works in python but not in nosetests
+                # string_type = getattr(__builtins__, 'basestring', str)
+            except NameError:
+                string_type = str
+
+            if not isinstance(value, string_type):
                 raise ValidationError(
                   "{value} ({type}) is not a string".format(value=value,
                                                             type=type(value)))
@@ -141,7 +152,7 @@ class NumericValidator(RequiredValidator):
     '''
     def validate(self, value):
         if value is not None:
-            if type(value) not in [int, float, long]:
+            if not isinstance(value, Number):
                 raise ValidationError("{value} ({type}) is not numeric".format(
                     value=value,
                     type=type(value)))

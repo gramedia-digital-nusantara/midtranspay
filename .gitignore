@@ -32,3 +32,10 @@ _build
 
 # Live Test Credentials
 /tests/live_credentials.py
+
+# My Python 3 artifacts
+.venv3/
+pip-1.5.6.tar.gz
+pip-1.5.6/
+setuptools-3.4.4.tar.gz
+setuptools-3.4.4/
