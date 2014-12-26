@@ -127,7 +127,25 @@ class CancelResponse(ResponseBase):
                 kwargs.get('gross_amount', None))
 
 
-
-
-
-
+class ApproveResponse(ResponseBase):
+    '''
+    Encapsulates response data for a request to approve a single, challenged
+    transaction.
+    '''
+    def __init__(self, *args, **kwargs):
+        super(ApproveResponse, self).__init__(*args, **kwargs)
+        self.transaction_id = kwargs.get('transaction_id', None)
+        self.masked_card = kwargs.get('masked_card', None)
+        self.order_id = kwargs.get('order_id', None)
+        self.payment_type = kwargs.get('payment_type', None)
+        self.transaction_time = \
+            helpers.parse_veritrans_datetime(
+                kwargs.get('transaction_time', None))
+        self.transaction_status = kwargs.get('transaction_status', None)
+        self.fraud_status = kwargs.get('fraud_status', None)
+        self.approval_code = kwargs.get('approval_code', None)
+        self.signature_key = kwargs.get('signature_key', None)
+        self.bank = kwargs.get('bank', None)
+        self.gross_amount = \
+            helpers.parse_veritrans_amount(
+                kwargs.get('gross_amount', None))
