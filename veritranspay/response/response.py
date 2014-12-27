@@ -71,11 +71,11 @@ def build_charge_response(request, *args, **kwargs):
     '''
     Builds a response appropriate for a given type of request.
     '''
-    if type(request.charge_type) is payment_types.CreditCard:
+    if isinstance(request.charge_type, payment_types.CreditCard):
         return CreditCardChargeResponse(*args, **kwargs)
-    elif type(request.charge_type) is payment_types.CimbClicks:
+    elif isinstance(request.charge_type, payment_types.CimbClicks):
         raise NotImplementedError("CimbClicks not yet supported.")
-    elif type(request.charge_type) is payment_types.MandiriClickpay:
+    elif isinstance(request.charge_type, payment_types.MandiriClickpay):
         raise NotImplementedError("MandiriClickpay not yet supported")
     else:
         return ChargeResponseBase(*args, **kwargs)
