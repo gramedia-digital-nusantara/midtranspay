@@ -161,9 +161,9 @@ class ChargeRequest(mixins.RequestEntity):
         return rv
 
 
-class StatusRequest(mixins.RequestEntity):
+class StatusRequest(mixins.ValidatableMixin):
 
-    _validators = {'order_id', validators.StringValidator(
+    _validators = {'order_id': validators.StringValidator(
                       max_length=constraints.MAX_ORDERID_LENGTH),
                    }
 
@@ -171,9 +171,9 @@ class StatusRequest(mixins.RequestEntity):
         self.order_id = order_id
 
 
-class CancelRequest(mixins.RequestEntity):
+class CancelRequest(mixins.ValidatableMixin):
 
-    _validators = {'order_id', validators.StringValidator(
+    _validators = {'order_id': validators.StringValidator(
                       max_length=constraints.MAX_ORDERID_LENGTH),
                    }
 
@@ -181,9 +181,9 @@ class CancelRequest(mixins.RequestEntity):
         self.order_id = order_id
 
 
-class ApprovalRequest(mixins.RequestEntity):
+class ApprovalRequest(mixins.ValidatableMixin):
 
-    _validators = {'order_id', validators.StringValidator(
+    _validators = {'order_id': validators.StringValidator(
                       max_length=constraints.MAX_ORDERID_LENGTH),
                    }
 
