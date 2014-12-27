@@ -136,16 +136,6 @@ class ChargeRequest(mixins.RequestEntity):
         self.customer_details = customer_details
         self.item_details = item_details
 
-    def validate_attr(self, name, value, validator):
-        # Manually overrides validation logic for items, since they're a list
-        # type and this is a special case.  Everything else can be validated
-        # normally.
-        if 'name' == 'item_details':
-            for item in self.item_details:
-                item.validate_all()
-        else:
-            super(ChargeRequest, self).validate_attr(name, value, validator)
-
     def serialize(self):
         # Manually override the standard logic for serialize().  `charge_type`
         # needs to add two keys to the resulting dictionary, and all
