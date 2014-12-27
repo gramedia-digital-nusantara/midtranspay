@@ -87,7 +87,7 @@ CC_REQUEST = {
     ]
 }
 
-CHARGE_RESPONSE_SUCCESS = {
+CC_CHARGE_RESPONSE_SUCCESS = {
     "transaction_id": "1a1a66f7-27a7-4844-ba1f-d86dcc16ab27",
     "order_id": "C17550",
     "gross_amount": "145000.00",
@@ -101,7 +101,7 @@ CHARGE_RESPONSE_SUCCESS = {
     "approval_code": "1408869563148"
 }
 
-CHARGE_RESPONSE_FAIL = {
+CC_CHARGE_RESPONSE_FAIL = {
     "transaction_id": "b98fafec-fc2b-436f-bc6d-87853291cb35",
     "order_id": "C17550",
     "gross_amount": "145000.00",
@@ -129,3 +129,9 @@ STATUS_RESPONSE = {
     "bank": "mandiri",
     "gross_amount": "10000.00"
 }
+
+ACCEPT_RESPONSE = {
+                   }
+
+DENY_RESPONSE = {
+                 }

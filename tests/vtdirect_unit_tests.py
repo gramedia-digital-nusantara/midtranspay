@@ -1,10 +1,12 @@
+from copy import deepcopy
+import json
 import unittest
 
 from faker import Faker
-from mock import MagicMock
+from mock import MagicMock, patch
 
-from veritranspay import request, validators, payment_types
-from veritranspay.veritrans import VTDirect
+from veritranspay import request, validators, payment_types, veritrans
+from veritranspay.response import response
 
 from . import fixtures
 
@@ -24,14 +26,14 @@ class VTDirect_Init_Tests(unittest.TestCase):
     def test_requires_server_key(self):
         ''' server_key should be a required init parameter. '''
         self.assertRaises(TypeError,
-                          lambda: VTDirect())
+                          lambda: veritrans.VTDirect())
 
     def test_live_mode_is_default(self):
         '''
         When sandbox_mode is NOT explicitally set, VTDirect gateway should
         default to sandbox_mode=False.
         '''
-        v = VTDirect(server_key=self.server_key)
+        v = veritrans.VTDirect(server_key=self.server_key)
         self.assertFalse(v.sandbox_mode)
 
     def test_instance_attributes_set(self):
@@ -39,13 +41,13 @@ class VTDirect_Init_Tests(unittest.TestCase):
         Arguments passed to the constructor should persist themselves as
         instance attributes of the same name.
         '''
-        v = VTDirect(server_key=self.server_key,
-                     sandbox_mode=False)
+        v = veritrans.VTDirect(server_key=self.server_key,
+                               sandbox_mode=False)
         self.assertEqual(v.server_key, self.server_key)
         self.assertFalse(v.sandbox_mode)
 
-        v = VTDirect(server_key=self.server_key,
-                     sandbox_mode=True)
+        v = veritrans.VTDirect(server_key=self.server_key,
+                               sandbox_mode=True)
         self.assertEqual(v.server_key, self.server_key)
         self.assertTrue(v.sandbox_mode)
 
@@ -54,8 +56,8 @@ class VTDirect_Init_Tests(unittest.TestCase):
         The value for 'sandbox_mode' passed to init should be persisted
         as an attribute with the same name.
         '''
-        v = VTDirect(server_key=self.server_key,
-                     sandbox_mode=True)
+        v = veritrans.VTDirect(server_key=self.server_key,
+                               sandbox_mode=True)
         self.assertEqual(v.server_key, self.server_key)
         self.assertTrue(v.sandbox_mode)
 
@@ -64,28 +66,32 @@ class VTDirect_Init_Tests(unittest.TestCase):
         When sandbox_mode is True, we should receive the veritrans sandbox api
         URL back from the base_url property.
         '''
-        v = VTDirect(server_key=self.server_key,
-                     sandbox_mode=True)
-        self.assertEqual(v.base_url, VTDirect.SANDBOX_API_URL)
+        v = veritrans.VTDirect(server_key=self.server_key,
+                               sandbox_mode=True)
+        self.assertEqual(v.base_url, veritrans.VTDirect.SANDBOX_API_URL)
 
     def test_live_mode_expected_url(self):
         '''
         When sandbox_mode is False, we should receive the veritrans live api
         URL back from the base_url property.
         '''
-        v = VTDirect(server_key=self.server_key,
-                     sandbox_mode=False)
-        self.assertEqual(v.base_url, VTDirect.LIVE_API_URL)
+        v = veritrans.VTDirect(server_key=self.server_key,
+                               sandbox_mode=False)
+        self.assertEqual(v.base_url, veritrans.VTDirect.LIVE_API_URL)
 
-    def test_stringifies_as_expected(self):
-        self.skipTest("")
+
+class VTDirect_ChargeRequest_Tests(unittest.TestCase):
+
+    def setUp(self):
+        self.maxDiff = None
+        self.server_key = "".join([fake.random_letter() for _ in range(45)])
 
     def test_invalid_charge_request_raises_ValidationError(self):
         '''
         Make sure that if any of the sub-entities raise a ValidationError
         that it is bubbled out to calling code.
         '''
-        gateway = VTDirect(server_key=self.server_key)
+        gateway = veritrans.VTDirect(server_key=self.server_key)
 
         charge_req = MagicMock(spec=request.ChargeRequest)
         mock_validate = MagicMock(side_effect=validators.ValidationError)
@@ -96,32 +102,60 @@ class VTDirect_Init_Tests(unittest.TestCase):
 
         self.assertEqual(mock_validate.call_count, 1)
 
-    def test_invalid_status_request_raises_ValidationError(self):
-        gateway = VTDirect(server_key=self.server_key)
+    def test_submit_credit_card_charge(self):
 
-        status_req = MagicMock(spec=request.StatusRequest)
-        mock_validate = MagicMock(side_effect=validators.ValidationError)
-        status_req.attach_mock(mock_validate, 'validate_all')
+        with patch('veritranspay.veritrans.requests.post') as mock_post:
 
-        self.assertRaises(validators.ValidationError,
-                          lambda: gateway.submit_status_request(status_req))
+            # create a fake key and request payload
+            payload = {'charge_type': 'I am a little tea cup',
+                       }
 
-        self.assertEqual(mock_validate.call_count, 1)
+            gateway = veritrans.VTDirect(server_key=self.server_key)
 
-    def test_invalid_cancel_request_raises_ValidationError(self):
-        gateway = VTDirect(server_key=self.server_key)
+            req = MagicMock()
+            req.charge_type = MagicMock(spec=payment_types.CreditCard)
+            req.attach_mock(MagicMock(return_value=payload),
+                            'serialize')
 
-        cancel_req = MagicMock(spec=request.CancelRequest)
-        mock_validate = MagicMock(side_effect=validators.ValidationError)
-        cancel_req.attach_mock(mock_validate, 'validate_all')
+            # mock the response data
+            # so thta the JSON method returns a documented response
+            # value
+            mock_resp = MagicMock()
+            mock_post.return_value = mock_resp
+            mock_resp.attach_mock(
+                MagicMock(return_value=fixtures.CC_CHARGE_RESPONSE_SUCCESS),
+                'json')
 
-        self.assertRaises(validators.ValidationError,
-                          lambda: gateway.submit_status_request(cancel_req))
+            resp = gateway.submit_charge_request(req)
 
-        self.assertEqual(mock_validate.call_count, 1)
+            # make sure requests library was called in the expected way.
+            mock_post.assert_called_once_with(
+                'https://api.veritrans.co.id/v2/charge',
+                auth=(self.server_key, ''),
+                headers={'content-type': 'application/json',
+                         'accept': 'application/json'},
+                data=json.dumps(payload))
+
+            # did we get the expected response type?
+            self.assertIsInstance(resp, response.CreditCardChargeResponse)
+
+            # did it look like we expected
+            expected_response_format = response.CreditCardChargeResponse(
+                **fixtures.CC_CHARGE_RESPONSE_SUCCESS)
+
+            # need to compare their dictionary formats
+            self.assertEqual(expected_response_format.__dict__,
+                             resp.__dict__)
+
+
+class VTDirect_ApprovalRequest_UnitTests(unittest.TestCase):
+
+    def setUp(self):
+        self.maxDiff = None
+        self.server_key = "".join([fake.random_letter() for _ in range(45)])
 
     def test_invalid_approval_request_raises_ValidationError(self):
-        gateway = VTDirect(server_key=self.server_key)
+        gateway = veritrans.VTDirect(server_key=self.server_key)
 
         approval_req = MagicMock(spec=request.ApprovalRequest)
         mock_validate = MagicMock(side_effect=validators.ValidationError)
@@ -132,116 +166,40 @@ class VTDirect_Init_Tests(unittest.TestCase):
 
         self.assertEqual(mock_validate.call_count, 1)
 
-    def test_cancel_request_calls_expected_url(self):
-        self.skipTest("Not Implemented")
 
-    def test_cancel_request_has_expected_accept_headers(self):
-        self.skipTest("Not Implemented")
+class VTDirect_CancelRequest_UnitTests(unittest.TestCase):
 
-    def test_cancel_request_has_expected_auth_header(self):
-        self.skipTest("Not Implemented")
+    def setUp(self):
+        self.maxDiff = None
+        self.server_key = "".join([fake.random_letter() for _ in range(45)])
 
-    def test_cancel_request_returns_expected_object(self):
-        self.skipTest("Not Implemented")
+    def test_invalid_cancel_request_raises_ValidationError(self):
+        gateway = veritrans.VTDirect(server_key=self.server_key)
 
-    def test_approval_request_calls_expected_url(self):
-        self.skipTest("Not Implemented")
+        cancel_req = MagicMock(spec=request.CancelRequest)
+        mock_validate = MagicMock(side_effect=validators.ValidationError)
+        cancel_req.attach_mock(mock_validate, 'validate_all')
 
-    def test_approval_request_has_expected_accept_headers(self):
-        self.skipTest("Not Implemented")
+        self.assertRaises(validators.ValidationError,
+                          lambda: gateway.submit_status_request(cancel_req))
 
-    def test_approval_request_has_expected_auth_headers(self):
-        self.skipTest("Not Implemented")
-
-    def test_approval_request_returns_expected_object(self):
-        self.skipTest("Not Implemented")
-
-    def test_submit_request_calls_expected_url(self):
-        self.skipTest("Not Implemented")
-
-    def test_submit_request_has_expected_accept_headers(self):
-        self.skipTest("Not Implemented")
-
-    def test_submit_request_has_expected_auth_headers(self):
-        self.skipTest("Not Implemented")
-
-    def test_submit_request_returns_expected_object(self):
-        self.skipTest("Not Implemented")
-
-    def test_cc_serialization(self):
-        ''' Given a complete request format--make sure that our ChargeRequest
-        is serializing out the same format.
-        '''
-        # TODO: This belongs on ChargeRequest unit tests!
-        expected = fixtures.CC_REQUEST
-
-        cc_payment = payment_types.CreditCard(
-            bank=expected['credit_card']['bank'],
-            token_id=expected['credit_card']['token_id'])
-        trans_details = request.TransactionDetails(
-            order_id=expected['transaction_details']['order_id'],
-            gross_amount=expected['transaction_details']['gross_amount'])
-        cust_details = request.CustomerDetails(
-            first_name=expected['customer_details']['first_name'],
-            last_name=expected['customer_details']['last_name'],
-            email=expected['customer_details']['email'],
-            phone=expected['customer_details']['phone'],
-            billing_address=request.Address(
-                **expected['customer_details']['billing_address']),
-            shipping_address=request.Address(
-                **expected['customer_details']['shipping_address'])
-            )
-        item_details = [request.ItemDetails(item_id=item['id'],
-                                            price=item['price'],
-                                            quantity=item['quantity'],
-                                            name=item['name'])
-                        for item
-                        in expected['item_details']]
-
-        charge_req = request.ChargeRequest(charge_type=cc_payment,
-                                           transaction_details=trans_details,
-                                           customer_details=cust_details,
-                                           item_details=item_details)
-
-        actual = charge_req.serialize()
-
-        self.assertEqual(actual, expected)
+        self.assertEqual(mock_validate.call_count, 1)
 
 
-class VTDirect_CommandTests_Base(object):
-    # request.validate_all called
-    # validationError bubbles up
-    # has expected headers
-    # calls expected URL sandbox
-    # calls expected URL live
-    # expected auth parameters
-    # raises urllib3 errors -- look into this
-    # fails if malformed json
-    # returns expected object for request success
-    pass
+class VTDirect_StatusRequest_UnitTests(unittest.TestCase):
 
-class VTDirect_ChargeRequest_Tests(VTDirect_CommandTests_Base):
-    # returns expected object
-    # returns expected object for test request failure -- need to figure out
-    #     what a failure response actually looks like here!
-    pass
+    def setUp(self):
+        self.maxDiff = None
+        self.server_key = "".join([fake.random_letter() for _ in range(45)])
 
-class VTDirect_OtherCommandTests_Base(VTDirect_CommandTests_Base):
-    pass
+    def test_invalid_status_request_raises_ValidationError(self):
+        gateway = veritrans.VTDirect(server_key=self.server_key)
 
+        status_req = MagicMock(spec=request.StatusRequest)
+        mock_validate = MagicMock(side_effect=validators.ValidationError)
+        status_req.attach_mock(mock_validate, 'validate_all')
 
-class VTDirect_ApprovalRequest_UnitTests(VTDirect_OtherCommandTests_Base):
-    pass
+        self.assertRaises(validators.ValidationError,
+                          lambda: gateway.submit_status_request(status_req))
 
-
-class VTDirect_CancelRequest_UnitTests(VTDirect_OtherCommandTests_Base):
-    pass
-
-
-class VTDirect_StatusRequest_UnitTests(VTDirect_OtherCommandTests_Base):
-    pass
-
-
-class VTDirect_OtherTests(unittest.TestCase):
-    # test string/repr methods to make sure they show expected
-    pass
+        self.assertEqual(mock_validate.call_count, 1)

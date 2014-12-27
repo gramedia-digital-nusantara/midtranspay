@@ -217,6 +217,7 @@ class StringValidator_UnitTests(unittest.TestCase):
         self.assertRaises(validators.ValidationError,
                           lambda: v.validate(fake.random_number()))
 
+
 class NumericValidator_UnitTests(unittest.TestCase):
     ''' Unit tests for veritranspay.validators.NumericValidator '''
     def test_numbers_accepted(self):
