@@ -58,7 +58,7 @@ class TransactionDetails(mixins.RequestEntity):
     the order id and the total amount the customer should be charged.
     '''
     _validators = {'order_id': validators.StringValidator(
-                        max_length=constraints.MAX_ORDERID_LENGTH),
+                       max_length=constraints.MAX_ORDERID_LENGTH),
                    'gross_amount': validators.NumericValidator(),
                    }
 
@@ -114,12 +114,14 @@ class ItemDetails(mixins.RequestEntity):
     '''
     Line items details for a transaction.
     '''
-    _validators = {'id': validators.StringValidator(max_length=50),
+    _validators = {'id': validators.StringValidator(
+                       max_length=constraints.MAX_ITEMID_LENGTH),
                    'price': validators.NumericValidator(),
                    'quantity': validators.NumericValidator(),
-                   'name': validators.StringValidator(max_length=50),
+                   'name': validators.StringValidator(
+                       max_length=constraints.MAX_ITEMNAME_LENGTH),
                    }
-    # TODO: specify both of the above in the constraints section.
+
     def __init__(self, item_id, price, quantity, name):
         '''
         :param item_id: Identifier for a given item.
