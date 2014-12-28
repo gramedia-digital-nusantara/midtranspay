@@ -26,15 +26,22 @@ class Address(mixins.RequestEntity):
                  country_code=None):
         '''
         :param address: Street address.
-        :type address: :py:class:`str` < 200
-        :param city:  City name (20 chars max).
-        :param postal_code: Postal Code (10 chars max; numbers,
-            hyphens '-', spaces ' ')
-        :param first_name: Person given name (20 chars max).
-        :param last_name: Person surname (20 chars max).
-        :param phone: Phone number (5-19 chars; numbers '0-9',
-            hyphens '-', parenthesis '()', spaces ' ', plus symbol '+').
-        :param country_code: ISO-3166 alpha-3 country code (10 chars max)
+        :type address: :py:class:`str` <= 200
+        :param city:  City name.
+        :type city: :py:class:`str` <= 20.
+        :param postal_code: Postal Code.
+        :type postal_code: :py:class:`str` <= 10; numbers, hyphens '-',
+            and spaces ' '
+        :param first_name: Person given name.
+        :type first_name: :py:class:`str` <= 20.
+        :param last_name: Person surname.
+        :type last_name: :py:class:`str` <= 20.
+        :param phone: Phone number.
+        :type phone: :py:class:`str` 5 >=< 19; numbers,
+            hyphens '-', parenthesis '()',
+            spaces ' '; can start with plus symbol '+'
+        :param country_code: ISO-3166 alpha-3 country code.
+        :type country_code: :py:class:`str` <= 10
         '''
         self.address = address
         self.city = city
@@ -47,9 +54,8 @@ class Address(mixins.RequestEntity):
 
 class TransactionDetails(mixins.RequestEntity):
     '''
-    Subcomponent of ChargeRequest.  Indicates a order_id that is provided
-    by the calling code, and a gross_amount indicating the total charge amount
-    in IDR.
+    Basic information about a transaction with a customer, including
+    the order id and the total amount the customer should be charged.
     '''
     _validators = {'order_id': validators.StringValidator(
                         max_length=constraints.MAX_ORDERID_LENGTH),
@@ -58,8 +64,10 @@ class TransactionDetails(mixins.RequestEntity):
 
     def __init__(self, order_id, gross_amount):
         '''
-        :param order_id: UNIQUE order identifier (50 chars max).
-        :param gross_amount: Total amount to bill customer (Integer).
+        :param order_id: **UNIQUE** order identifier.
+        :type order_id: :py:class:`str` <= 50
+        :param gross_amount: Total amount the customer will be charged.
+        :type gross_amount: :py:class:`int`
         '''
         self.order_id = order_id
         self.gross_amount = gross_amount
@@ -67,7 +75,7 @@ class TransactionDetails(mixins.RequestEntity):
 
 class CustomerDetails(mixins.RequestEntity):
     '''
-    Information about a customer that is making a purchase.
+    Personal information about a customer.
     '''
     _validators = {'first_name': validators.NameValidator(),
                    'last_name': validators.NameValidator(is_required=False),
@@ -80,13 +88,19 @@ class CustomerDetails(mixins.RequestEntity):
     def __init__(self, first_name, last_name, email, phone,
                  billing_address=None, shipping_address=None):
         '''
-        :param first_name: Person given name (20 chars max).
-        :param last_name: Person surname (20 chars max).
-        :param email: Max 45 chars.  Must be a valid e-mail address.
-        :param phone: Phone number (5-19 chars; numbers '0-9',
-            hyphens '-', parenthesis '()', spaces ' ', plus symbol '+').
-        :param [billing_address: Address object instance.]
-        :param [shipping_address: Address object instance.]
+        :param first_name: Person given name.
+        :type first_name: :py:class:`str` <= 20.
+        :param last_name: Person surname.
+        :type last_name: :py:class:`str` <= 20.
+        :param email: Person's contact e-mail address.
+        :type email: :py:class:`str` <= 45;  Must be a valid e-mail.
+        :type phone: :py:class:`str` 5 >=< 19; numbers,
+            hyphens '-', parenthesis '()',
+            spaces ' '; can start with plus symbol '+'
+        :param billing_address: Address used to validate the charge.
+        :type billing_address: :py:class:`veritranspay.request.Address`
+        :param shipping_address: Address where order should be shipped.
+        :type shipping_address: :py:class:`veritranspay.request.Address`
         '''
         self.first_name = first_name
         self.last_name = last_name
@@ -174,7 +188,10 @@ class ChargeRequest(mixins.RequestEntity):
 
 
 class StatusRequest(mixins.ValidatableMixin):
-
+    '''
+    Request used to retrieve information about a single charge
+    that has already been submitted to Veritrans.
+    '''
     _validators = {'order_id': validators.StringValidator(
                       max_length=constraints.MAX_ORDERID_LENGTH),
                    }
@@ -184,7 +201,10 @@ class StatusRequest(mixins.ValidatableMixin):
 
 
 class CancelRequest(mixins.ValidatableMixin):
-
+    '''
+    Cancels a transaction.  This can only be submitted if the transaction
+    is currently still pending.
+    '''
     _validators = {'order_id': validators.StringValidator(
                       max_length=constraints.MAX_ORDERID_LENGTH),
                    }
@@ -194,7 +214,9 @@ class CancelRequest(mixins.ValidatableMixin):
 
 
 class ApprovalRequest(mixins.ValidatableMixin):
-
+    '''
+    Approves a transaction that is currently in state 'CHALLENGE'.
+    '''
     _validators = {'order_id': validators.StringValidator(
                       max_length=constraints.MAX_ORDERID_LENGTH),
                    }

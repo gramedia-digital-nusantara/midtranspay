@@ -1,6 +1,9 @@
+from . import mixins
 
-class PaymentTypeBase(object):
-
+class PaymentTypeBase(mixins.SerializableMixin):
+    '''
+    Base type for all payment types.  Not usable by itself.
+    '''
     def serialize(self):
         return {"payment_type": self.PAYMENT_TYPE_KEY,
                 self.PAYMENT_TYPE_KEY: {},
@@ -8,7 +11,10 @@ class PaymentTypeBase(object):
 
 
 class CreditCard(PaymentTypeBase):
-    # http://docs.veritranspay.co.id/sandbox/charge.html#vtdirect-cc
+    '''
+    A payment made with a credit card.
+    http://docs.veritranspay.co.id/sandbox/charge.html#vtdirect-cc
+    '''
     PAYMENT_TYPE_KEY = 'credit_card'
 
     def __init__(self, bank, token_id):

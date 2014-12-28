@@ -2,9 +2,9 @@
 VeritransPay
 -------
 
-This is a helper library for communicating with **VERSION 2** of the
+Client library for communicating with **VERSION 2** of the
 veritrans.co.id payment gateway.  Note, there is no support for the older
-v1 API as this is being dropped around Dec 2014.
+v1 API as this was dropped in Dec 2014.
 
 Notes
 `````
@@ -39,7 +39,7 @@ setup(
     license='BSD',
     author='Derek J. Curtis',
     author_email='derek.curtis@apps-foundry.com',
-    description='Veritrans.co.id API v2 Helper Library ',
+    description='Veritrans.co.id API Client Library ',
     long_description=__doc__,
     packages=['veritranspay',
               'veritranspay.response',
@@ -48,5 +48,5 @@ setup(
     platforms='any',
     install_requires=pkg_req,
     tests_require=test_req,
-    test_suite = 'nose.collector'
+    test_suite='nose.collector'
     )

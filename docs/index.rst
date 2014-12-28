@@ -3,7 +3,7 @@
 Overview
 ========
 
-Vertranspay is a Python library for submitting requests to the
+Vertranspay is a Python client library for submitting requests to the
 http://veritrans.co.id payment gateway.
 
 The only dependency for this library is the `Python Requests`_ package
@@ -34,13 +34,11 @@ Contents:
 ---------
 
 .. toctree::
-    :maxdepth: -1
+    :maxdepth: 2
     
     quickstart
     charge-a-customer
-    gateway
-    requests
-    response
+    api
 
 
 Indices and tables
