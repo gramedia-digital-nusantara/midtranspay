@@ -1,15 +1,34 @@
-# Veritrans VT-Direct API v2 Helper Library
-
-A Python Helper library for communicating with the Veritrans Payment Gateway.
+# Veritranspay 
 
 [![Build Status](https://travis-ci.org/derekjamescurtis/veritranspay.svg?branch=master)](https://travis-ci.org/derekjamescurtis/veritranspay)
-
 [![Documentation Status](https://readthedocs.org/projects/veritranspay/badge/?version=latest)](https://readthedocs.org/projects/veritranspay/?badge=latest)
 
+A Python client library for communicating with the [Veritrans Payment Gateway](http://veritrans.co.id/).
 
-## Current Support
+Please do note, this software is in very early stages of development.
+It's support for all the features provided by the Veritrans API is 
+quite minimal.  
 
-__NORMAL__ Credit Card charges via VT-Direct.
+Also, absolutely EVERYTHING in the API is subject to change in early release
+versions (at least until 1.0), so make sure you have a good test suite
+before upgrading versions!
+
+Previous release versions will be maintained on PyPi, so make sure however
+you're specifying your requirements, that you're using an exact version and
+not just pulling the latest!
+
+If you're needing a specific feature, feel free to submit a new issue, or
+even better, a pull request!  Before submitting code though, make sure it
+includes tests and documentation!
+
+
+## Current Support (version 0.5)
+
+- Submit Credit Card Charges (VTDirect)
+- Request Transaction Status
+- Cancel Transaction
+- Approve Challenged Transaction
+
 
 ## Roadmap
 
@@ -18,23 +37,20 @@ Add support for additional payment methods.
 - VT-Direct
     - Credit Cards
         - 3D Secure
+        - One-click
+        - Two-click
+        - Preauth/Capture workflow
     - Mandiri ClickPay
     - CIMB Clicks
     - Permata Virtual Account
 
-Add support for additional VT-Direct commands.
 
-- Check Transaction Status
-- Approve Transaction
-- Cancel Transaction
+## Links
 
-
-## Note
-
-At the current time, this API is only tailored to making 
-Credit Card requests to the Veritrans V2 API via VT-Direct.
-
-There is no support at the current time for **anything** beyond that.
+- [Project on PyPi](https://pypi.python.org/pypi/VeritransPay)
+- [ReadTheDocs](http://veritranspay.readthedocs.org/en/latest/)
+- [Travis CI](https://travis-ci.org/derekjamescurtis/veritranspay)
+- [Veritrans Indonesia](http://veritrans.co.id)
 
 
 ## Disclaimer
@@ -47,3 +63,12 @@ from Python Code.
 It is entirely USE AT YOUR OWN RISK.
 
 Read the license and documentation for full details.
+
+
+## Acknowledgements
+
+This project has been open sourced with the gracious permission of my
+employer -- [Apps Foundry PTE LTD](http://apps-foundry.com).
+
+My employer makes no assertions about the fitness of this software.
+It is 100% entirely USE AT YOUR OWN RISK.

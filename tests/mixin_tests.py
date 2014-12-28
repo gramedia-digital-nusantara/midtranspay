@@ -28,7 +28,7 @@ class SerializableMixin_UnitTests(unittest.TestCase):
     def test_serialize_returns_expected(self):
 
         obj_with_ser = MagicMock(spec=object)
-        mock_serialize = MagicMock(return_value={'a':'b'})
+        mock_serialize = MagicMock(return_value={'a': 'b'})
         obj_with_ser.attach_mock(mock_serialize, 'serialize')
 
         obj_without_ser = MagicMock(spec=object)
@@ -42,7 +42,7 @@ class SerializableMixin_UnitTests(unittest.TestCase):
 
         actual = serialize_me.serialize()
 
-        expected = {'attr1': {'a':'b', },
+        expected = {'attr1': {'a': 'b', },
                     'attr2': obj_without_ser,
                     }
 
