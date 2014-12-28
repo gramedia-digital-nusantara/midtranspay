@@ -71,10 +71,15 @@ class VTDirect(object):
         Retrieve information from Veritrans about a single transaction.
 
         :param req: Data about a transaction to retrieve the status of.
-        :type req: :py:class:`veritranspay.request.StatusRequest`
+        :type req: :py:class:`veritranspay.request.StatusRequest` **or** Any
+            response class that has an order_id attribute, such as
+            :py:class:`veritranspay.response.response.ChargeResponseBase`
         :rtype: :py:class:`veritranspay.response.response.StatusResponse`
         '''
-        req.validate_all()
+        # specifically skip if it's a response type
+        # we don't have a good reason to validate those.
+        if not isinstance(req, response.ResponseBase):
+            req.validate_all()
 
         request_url_format = '{base_url}/{order_id}/status'
 
@@ -99,10 +104,15 @@ class VTDirect(object):
         Sends a request to Veritrans to cancel a single transaction.
 
         :param req: Data about a transaction to cancel.
-        :type req: :py:class:`veritranspay.request.CancelRequest`
+        :type req: :py:class:`veritranspay.request.CancelRequest` **or** Any
+            response class that has an order_id attribute, such as
+            :py:class:`veritranspay.response.response.ChargeResponseBase`
         :rtype: :py:class:`veritranspay.response.response.CancelResponse`
         '''
-        req.validate_all()
+        # specifically skip if it's a response type
+        # we don't have a good reason to validate those.
+        if not isinstance(req, response.ResponseBase):
+            req.validate_all()
 
         request_url_format = '{base_url}/{order_id}/cancel'
 
@@ -128,10 +138,15 @@ class VTDirect(object):
         transaction.
 
         :param req: Data about a transaction to approve.
-        :type req: :py:class:`veritranspay.request.ApprovalRequest`
+        :type req: :py:class:`veritranspay.request.ApprovalRequest` **or** Any
+            response class that has an order_id attribute, such as
+            :py:class:`veritranspay.response.response.ChargeResponseBase`
         :rtype: :py:class:`veritranspay.response.response.ApproveResponse`
         '''
-        req.validate_all()
+        # specifically skip if it's a response type
+        # we don't have a good reason to validate those.
+        if not isinstance(req, response.ResponseBase):
+            req.validate_all()
 
         request_url_format = '{base_url}/{order_id}/approve'
 

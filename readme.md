@@ -2,6 +2,11 @@
 
 [![Build Status](https://travis-ci.org/derekjamescurtis/veritranspay.svg?branch=master)](https://travis-ci.org/derekjamescurtis/veritranspay)
 [![Documentation Status](https://readthedocs.org/projects/veritranspay/badge/?version=latest)](https://readthedocs.org/projects/veritranspay/?badge=latest)
+[![Latest Version](https://pypip.in/version/VeritransPay/badge.svg)](https://pypi.python.org/pypi/VeritransPay/)
+[![License](https://pypip.in/license/VeritransPay/badge.svg)](https://pypi.python.org/pypi/VeritransPay/)
+[![Download format](https://pypip.in/format/VeritransPay/badge.svg)](https://pypi.python.org/pypi/VeritransPay/)
+[![Supported Python versions](https://pypip.in/py_versions/VeritransPay/badge.svg)](https://pypi.python.org/pypi/VeritransPay/)
+[![Downloads](https://pypip.in/download/VeritransPay/badge.svg)](https://pypi.python.org/pypi/VeritransPay/)
 
 A Python client library for communicating with the [Veritrans Payment Gateway](http://veritrans.co.id/).
 
@@ -28,6 +33,10 @@ includes tests and documentation!
 - Request Transaction Status
 - Cancel Transaction
 - Approve Challenged Transaction
+- Python Versions
+    - 2.7
+    - 3.3
+    - 3.4
 
 
 ## Roadmap

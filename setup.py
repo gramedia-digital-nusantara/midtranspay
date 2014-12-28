@@ -46,6 +46,11 @@ setup(
               ],
     include_package_data=True,
     platforms='any',
+    classifiers=['Development Status :: 3 - Alpha',
+                 'Programming Language :: Python :: 2.7',
+                 'Programming Language :: Python :: 3.3',
+                 'Programming Language :: Python :: 3.4',
+                 ],
     install_requires=pkg_req,
     tests_require=test_req,
     test_suite='nose.collector'

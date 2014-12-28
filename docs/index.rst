@@ -30,7 +30,10 @@ Contents:
     
     quickstart
     charge-a-customer
+    get-transaction-status
+    approve-reject-challenged-transaction
     api
+    changes
 
 Supported Python Versions:
 --------------------------

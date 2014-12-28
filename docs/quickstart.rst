@@ -1,5 +1,5 @@
 Quick Start
-============================
+===========
 
 From this point on, we're going to assume that you've signed up for an account
 with Veritrans (if not, go back to the index page of this documentation), 
@@ -49,7 +49,7 @@ detail in --this.. link to the section-- Section.
                   "check some things out.. just you wait, OK?")
         elif chrage_resp.status_code == status.DENIED:
             # bad!
-            print("Aduh masbro! Kredit Kartu tidak bisa")
+            print("Aduh masbro! Kartu kredit tidak bisa")
         else:
             # something else entirely
             print("...Aduh.  Pusing.  Tunggu ya?")
