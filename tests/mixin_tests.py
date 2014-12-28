@@ -1,26 +1,71 @@
 import unittest
 
 from mock import MagicMock
+from faker import Faker
 
-from veritranspay import mixins
+from veritranspay import mixins, validators
+
+
+fake = Faker()
 
 
 class ValidatableMixin_UnitTests(unittest.TestCase):
 
+    def setUp(self):
+        self.name = ''.join([fake.random_letter() for _ in range(20)])
+        self.value = ''.join([fake.random_letter() for _ in range(20)])
+        self.mock_validator = MagicMock()
+        self.mock_validate_method = MagicMock()
+        self.mock_validator.attach_mock(self.mock_validate_method,
+                                        'validate')
+
     def test_validate_attr_calls_validate_as_expected(self):
-        self.skipTest("")
+        mixin = mixins.ValidatableMixin()
+        mixin.validate_attr(self.name, self.value, self.mock_validator)
+
+        self.mock_validate_method.assert_called_once_with(self.value)
 
     def test_validate_attr_raises_validation_error(self):
-        self.skipTest("")
+        mixin = mixins.ValidatableMixin()
+
+        self.mock_validate_method.side_effect = validators.ValidationError()
+
+        self.assertRaises(validators.ValidationError,
+                          lambda: mixin.validate_attr(
+                              self.name,
+                              self.value,
+                              self.mock_validator))
 
     def test_validate_attr_validation_error_message_format(self):
-        self.skipTest("")
+        mixin = mixins.ValidatableMixin()
+
+        self.mock_validate_method.side_effect = \
+            validators.ValidationError("I'm a little tea pot")
+
+        try:
+            mixin.validate_attr(
+                self.name,
+                self.value,
+                self.mock_validator)
+        except validators.ValidationError as e:
+            self.assertEqual(e.message,
+                             "{name} failed validation: {msg}".format(
+                                 name=self.name,
+                                 msg="I'm a little tea pot"))
 
     def test_validate_attr_raises_other_errors(self):
-        self.skipTest("")
+        mixin = mixins.ValidatableMixin()
+
+        self.mock_validate_method.side_effect = TypeError()
+
+        self.assertRaises(TypeError,
+                          lambda: mixin.validate_attr(
+                              self.name,
+                              self.value,
+                              self.mock_validator))
 
     def test_validate_all_hits_all_validators(self):
-        self.skipTest("")
+        self.skipTest("Not implemented")
 
 
 class SerializableMixin_UnitTests(unittest.TestCase):
@@ -65,6 +110,3 @@ class RequestEntityMixin_UnitTests(unittest.TestCase):
 
         actual = repr(hi)
         self.assertEqual(actual, expected)
-
-
-

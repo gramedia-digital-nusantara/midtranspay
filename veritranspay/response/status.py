@@ -5,7 +5,7 @@ returned from the API to indicate errors.
 http://docs.veritranspay.co.id/sandbox/status_code.html
 '''
 # 20x - successful submission to api
-SUCCESS = 200
+SUCCESS = 200  # NOTE: this is returned when manually cancelled too!
 CHALLENGE = 201
 DENIED = 202
 
@@ -23,7 +23,6 @@ UNAVAILABLE_PAYMENT_TYPE = 402
 DUPLICATE_ORDER_ID = 406
 ACCOUNT_INACTIVE = 410
 TOKEN_ERROR = 411
-
 
 
 # 50x
