@@ -49,6 +49,7 @@ class RequiredValidator(ValidatorBase):
         Creates a new instance of RequiredValidator.
         :param is_required: When True (or not provided), validate()
             will fail on None values.
+        :type is_required: :py:class:`bool`
         '''
         self.is_required = is_required
         super(RequiredValidator, self).__init__(**kwargs)
@@ -62,15 +63,16 @@ class RequiredValidator(ValidatorBase):
 class LengthValidator(ValidatorBase):
     '''
     Asserts that a string's length is between a given
-    minimum and maximum length.  If no minimum length is given,
-    the string may be None.
+    minimum and/or maximum length.
     '''
     def __init__(self, min_length=None, max_length=None, *args, **kwargs):
         '''
         Creates a new instance of LengthValidator.
 
         :param min_length: Minimum required length for a string.
+        :type min_length: :py:class:`int`
         :param max_length: Maximum allowed length for a string.
+        :type min_length: :py:class:`int`
         '''
         if None not in [min_length, max_length]:
             if max_length < min_length:
@@ -103,9 +105,12 @@ class LengthValidator(ValidatorBase):
 class RegexValidator(ValidatorBase):
     '''
     Tests a given string value against a regular expression.
-    The test is skipped if validate() receives a value of None
     '''
     def __init__(self, pattern, *args, **kwargs):
+        '''
+        :param pattern: A regular expression pattern.
+        :type pattern: :py:class:`str`
+        '''
         self.pattern = pattern
         super(RegexValidator, self).__init__(**kwargs)
 
