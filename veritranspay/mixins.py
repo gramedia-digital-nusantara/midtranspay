@@ -6,7 +6,7 @@ class ValidatableMixin(object):
     Provides a mechanism for validating the attributes of an object instance.
     Expects a dictionary named _validators to be provided with keys that
     represent the names of attributes to be validated, mapped to an instance
-    of a class in the module veritranspay.validators.
+    of a class in the module :py:mod:`veritranspay.validators`.
     '''
     def validate_attr(self, name, value, validator):
         '''
@@ -16,9 +16,13 @@ class ValidatableMixin(object):
 
         :arg name: Name of the attribute being validated. This is only used
             for the error message when validation fails.
+        :type name: :py:class:`str`
         :arg value: The value that will actually be validated.
         :arg validator: The appropriate validator instance that
             value will be checked with.
+        :type validator: Subclass of
+            :py:class:`veritranspay.validators.ValidatorBase`
+        :raises: :py:class:`veritranspay.validators.ValidationError`
         '''
         try:
             validator.validate(value)
@@ -47,7 +51,12 @@ class SerializableMixin(object):
     '''
     def serialize(self):
         '''
-        Returns a dictionary representation of an object.
+        Returns a dictionary representing the current object.  If attributes
+        of the current object also implement a serialize method, their
+        dictionary representation will be added as well, instead of the object
+        itself.
+        :returns: Dictionary representation of an object.
+        :rtype: :py:class:`dict`
         '''
         rv = {}
         for key in self.__dict__:
@@ -69,4 +78,4 @@ class RequestEntity(ValidatableMixin, SerializableMixin):
     and ValiditableMixin in a single base class.
     '''
     def __repr__(self):
-        pass
+        return '<{klass}>'.format(klass=self.__class__.__name__)

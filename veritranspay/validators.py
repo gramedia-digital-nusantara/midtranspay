@@ -1,3 +1,20 @@
+'''
+A simple set of validation classes that are used to check entities in
+:py:mod:`veritranspay.request`, to give us some assurance they have
+provided the required data, in the required format, for Veritrans to
+accept the request.
+
+(Although Veritrans will validate this data as well, this is done so we
+don't waste time submitting data we can already know will be rejected).
+
+When any of the Validators defined in this module fail, they raise a
+:py:class:`veritranspay.validators.ValidationError`.
+
+See the following for more details:
+
+- http://docs.veritrans.co.id/sandbox/other_commands.html
+- http://docs.veritrans.co.id/sandbox/charge.html
+'''
 from numbers import Number
 import re
 
@@ -26,6 +43,7 @@ class ValidatorBase(object):
         '''
         Given a value, raises a ValueError if validation fails, otherwise
         returns None.
+
         :param value: The object to test for Validation.
         '''
         return
@@ -47,6 +65,7 @@ class RequiredValidator(ValidatorBase):
     def __init__(self, is_required=True, *args, **kwargs):
         '''
         Creates a new instance of RequiredValidator.
+
         :param is_required: When True (or not provided), validate()
             will fail on None values.
         :type is_required: :py:class:`bool`

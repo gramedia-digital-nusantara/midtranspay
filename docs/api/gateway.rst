@@ -12,4 +12,5 @@ by passing the appropriate value to it's __init__() method.
     Currently, only the VT-Direct gateway is supported.
 
 .. automodule:: veritranspay.veritrans
-   :members:
+    :members:
+    :show-inheritance:

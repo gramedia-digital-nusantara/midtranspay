@@ -5,12 +5,19 @@ from . import response
 
 class VTDirect(object):
     '''
-    Gateway object that we use to communicate VT-Direct type requests.
+    Gateway used to submit requests to Veritrans via the VTDirect method.
     '''
     LIVE_API_URL = 'https://api.veritrans.co.id/v2'
     SANDBOX_API_URL = 'https://api.sandbox.veritrans.co.id/v2'
 
     def __init__(self, server_key, sandbox_mode=False):
+        '''
+        :param server_key: Your Veritrans account server key.
+        :type server_key: :py:class:`str`
+        :param sandbox_mode: If True, requests will be submitted to the
+            Veritrans sandbox API, instead of the live API.
+        :type sandbox_mode: :py:class:`bool`
+        '''
         self.server_key = server_key
         self.sandbox_mode = sandbox_mode
 
@@ -23,19 +30,23 @@ class VTDirect(object):
         return VTDirect.SANDBOX_API_URL if self.sandbox_mode \
             else VTDirect.LIVE_API_URL
 
-    def submit_charge_request(self, charge_request):
+    def submit_charge_request(self, req):
         '''
         Submits a charge request to the API.  Before submitting, all the
-        data in the charge_request is validated and if a failure occurs
+        data in the req is validated and if a failure occurs
         a ValidationError will be raised.
+
+        :param req: Information about a transaction and a customer to charge.
+        :type req: :py:class:`veritranspay.request.ChargeRequest`
+        :rtype: :py:class:`veritranspay.response.response.ChargeResponseBase`
         '''
         # run validation against our charge
         # request before submitting
-        charge_request.validate_all()
+        req.validate_all()
 
         # build up our application payload and manually
         # specify the header type.
-        payload = json.dumps(charge_request.serialize())
+        payload = json.dumps(req.serialize())
         headers = {'content-type': 'application/json',
                    'accept': 'application/json',
                    }
@@ -50,16 +61,20 @@ class VTDirect(object):
         response_json = http_response.json()
 
         veritrans_response = response.build_charge_response(
-            request=charge_request,
+            request=req,
             **response_json)
 
         return veritrans_response
 
-    def submit_status_request(self, status_request):
+    def submit_status_request(self, req):
         '''
-        Gets the status from veritrans for a single transaction.
+        Retrieve information from Veritrans about a single transaction.
+
+        :param req: Data about a transaction to retrieve the status of.
+        :type req: :py:class:`veritranspay.request.StatusRequest`
+        :rtype: :py:class:`veritranspay.response.response.StatusResponse`
         '''
-        status_request.validate_all()
+        req.validate_all()
 
         request_url_format = '{base_url}/{order_id}/status'
 
@@ -67,11 +82,11 @@ class VTDirect(object):
                    }
 
         http_response = requests.get(
-           request_url_format.format(
-               base_url=self.base_url,
-               order_id=status_request.order_id),
-           auth=(self.server_key, ''),
-           headers=headers)
+            request_url_format.format(
+                base_url=self.base_url,
+                order_id=req.order_id),
+            auth=(self.server_key, ''),
+            headers=headers)
 
         response_json = http_response.json()
 
@@ -79,11 +94,15 @@ class VTDirect(object):
 
         return veritrans_response
 
-    def submit_cancel_request(self, cancel_request):
+    def submit_cancel_request(self, req):
         '''
         Sends a request to Veritrans to cancel a single transaction.
+
+        :param req: Data about a transaction to cancel.
+        :type req: :py:class:`veritranspay.request.CancelRequest`
+        :rtype: :py:class:`veritranspay.response.response.CancelResponse`
         '''
-        cancel_request.validate_all()
+        req.validate_all()
 
         request_url_format = '{base_url}/{order_id}/cancel'
 
@@ -91,11 +110,11 @@ class VTDirect(object):
                    }
 
         http_response = requests.post(
-           request_url_format.format(
-               base_url=self.base_url,
-               order_id=cancel_request.order_id),
-           auth=(self.server_key, ''),
-           headers=headers)
+            request_url_format.format(
+                base_url=self.base_url,
+                order_id=req.order_id),
+            auth=(self.server_key, ''),
+            headers=headers)
 
         response_json = http_response.json()
 
@@ -103,12 +122,16 @@ class VTDirect(object):
 
         return veritrans_response
 
-    def submit_approval_request(self, approval_request):
+    def submit_approval_request(self, req):
         '''
         Sends a request to Veritrans to approve a single, challenged
         transaction.
+
+        :param req: Data about a transaction to approve.
+        :type req: :py:class:`veritranspay.request.ApprovalRequest`
+        :rtype: :py:class:`veritranspay.response.response.ApproveResponse`
         '''
-        approval_request.validate_all()
+        req.validate_all()
 
         request_url_format = '{base_url}/{order_id}/approve'
 
@@ -116,11 +139,11 @@ class VTDirect(object):
                    }
 
         http_response = requests.post(
-           request_url_format.format(
-               base_url=self.base_url,
-               order_id=approval_request.order_id),
-           auth=(self.server_key, ''),
-           headers=headers)
+            request_url_format.format(
+                base_url=self.base_url,
+                order_id=req.order_id),
+            auth=(self.server_key, ''),
+            headers=headers)
 
         response_json = http_response.json()
 
