@@ -4,13 +4,6 @@ Requests
 Request objects are passed to a Gateway object to perform an action or
 retrieve some data from the Veritrans API.
 
-All of these objects inherit from the RequestEntity mixin class and have
-the ability to return a dictionary representation of themselves (later used
-by the gateway to create the JSON body for a request), and also have the
-ability to perform some validation of their attribute values (so time isn't
-wasted submitting an HTTP request to the Veritrans API only to discover that
-some of your input data was invalid).
-
 Request Types
 -------------
 
@@ -36,9 +29,11 @@ Sub Entities
 Subentities are logically smaller components that are used to generate
 a request.  Currently, sub-entities are only used when making a ChargeRequest.
 
-
 Payment Types
 ^^^^^^^^^^^^^
+
+.. warning::
+    At the current time **ONLY** Credit Card payments are supported.
 
 .. automodule:: veritranspay.payment_types
     :members:
@@ -46,6 +41,10 @@ Payment Types
 
 Others
 ^^^^^^
+
+.. note::
+    These have no use beyond building a 
+    :py:class:`veritranspay.request.ChargeRequest`.
 
 .. autoclass:: veritranspay.request.Address
     :members:
@@ -62,7 +61,3 @@ Others
 .. autoclass:: veritranspay.request.ItemDetails
     :members:
     :show-inheritance:
-
-
-
-

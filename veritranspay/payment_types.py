@@ -1,5 +1,6 @@
 from . import mixins
 
+
 class PaymentTypeBase(mixins.SerializableMixin):
     '''
     Base type for all payment types.  Not usable by itself.
@@ -18,6 +19,13 @@ class CreditCard(PaymentTypeBase):
     PAYMENT_TYPE_KEY = 'credit_card'
 
     def __init__(self, bank, token_id):
+        '''
+        :param bank: Represents the acquiring bank.
+        :type bank: :py:class:`str`
+        :param token_id: A token retrieved from the Veritrans
+            JavaScript library, after submitting the credit card details.
+        :type token_id: :py:class:`str`
+        '''
         self.bank = bank
         self.token_id = token_id
 
@@ -28,22 +36,22 @@ class CreditCard(PaymentTypeBase):
                                      }
         return rv
 
+#
+# NOTE:
+# The following types are not yet supported!
+# They will be added to the documentation as support is added
+#
 
 class MandiriClickpay(PaymentTypeBase):
     # http://docs.veritranspay.co.id/sandbox/charge.html#vtdirect-mandiri
     PAYMENT_TYPE_KEY = 'mandiri_clickpay'
 
     def __init__(self, card_number, input1, input2, input3):
-        self.card_number = card_number
-        self.input1 = input1
-        self.input2 = input2
-        self.input3 = input3
-
+        raise NotImplementedError("Only CreditCard is implemented.")
 
 class CimbClicks(PaymentTypeBase):
     # http://docs.veritranspay.co.id/sandbox/charge.html#vtdirect-cimb
-
     PAYMENT_TYPE_KEY = 'cimb_clicks'
 
     def __init__(self, description):
-        self.description = description
+        raise NotImplementedError("Only CreditCard is implemented.")

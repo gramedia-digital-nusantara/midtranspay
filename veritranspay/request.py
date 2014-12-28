@@ -197,6 +197,10 @@ class StatusRequest(mixins.ValidatableMixin):
                    }
 
     def __init__(self, order_id):
+        '''
+        :param order_id: The unique order id of the transaction.
+        :type order_id: :py:class:`str` <= 50
+        '''
         self.order_id = order_id
 
 
@@ -210,6 +214,10 @@ class CancelRequest(mixins.ValidatableMixin):
                    }
 
     def __init__(self, order_id):
+        '''
+        :param order_id: The unique order id of the transaction.
+        :type order_id: :py:class:`str` <= 50
+        '''
         self.order_id = order_id
 
 
@@ -222,4 +230,8 @@ class ApprovalRequest(mixins.ValidatableMixin):
                    }
 
     def __init__(self, order_id):
+        '''
+        :param order_id: The unique order id of the transaction.
+        :type order_id: :py:class:`str` <= 50
+        '''
         self.order_id = order_id
