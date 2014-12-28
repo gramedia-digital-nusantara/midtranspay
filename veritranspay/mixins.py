@@ -78,4 +78,4 @@ class RequestEntity(ValidatableMixin, SerializableMixin):
     and ValiditableMixin in a single base class.
     '''
     def __repr__(self):
-        return '<{klass}>'.format(klass=self.__class__.__name__)
+        return '<{klass}()>'.format(klass=self.__class__.__name__)
