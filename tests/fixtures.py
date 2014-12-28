@@ -97,7 +97,8 @@ CC_CHARGE_RESPONSE_SUCCESS = {
     "fraud_status": "accept",
     "masked_card": "481111-1114",
     "status_code": "200",
-    "status_message": "Success, Credit Card 3D Secure transaction is successful",
+    "status_message": "Success, Credit Card 3D Secure "
+                      "transaction is successful",
     "approval_code": "1408869563148"
 }
 
@@ -111,7 +112,8 @@ CC_CHARGE_RESPONSE_FAIL = {
     "fraud_status": "accept",
     "masked_card": "491111-1113",
     "status_code": "202",
-    "status_message": "Deny by Bank [BNI] with code [05] and message [Do not honour]"
+    "status_message": "Deny by Bank [BNI] with code [05] "
+                      "and message [Do not honour]"
 }
 
 STATUS_RESPONSE = {
@@ -125,7 +127,10 @@ STATUS_RESPONSE = {
     "transaction_status": "settlement",
     "fraud_status": "accept",
     "approval_code": "1416550071152",
-    "signature_key": "4ef8218aad5b64bae2ec9d6b0f0a0b059b88bd298f9e79e662f641bae7cd24992fb67547ea60cc3f9a820ca7e5649cf5e1f0a8e4b5ef24001f951b7a9d1a8f42",
+    "signature_key":
+        "4ef8218aad5b64bae2ec9d6b0f0a0b059b88bd298f9e79e662f641b"
+        "ae7cd24992fb67547ea60cc3f9a820ca7e5649cf5e1"
+        "f0a8e4b5ef24001f951b7a9d1a8f42",
     "bank": "mandiri",
     "gross_amount": "10000.00"
 }

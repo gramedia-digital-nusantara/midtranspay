@@ -2,7 +2,6 @@
 Tests the main type of request entities, ChargeRequest, StatusRequest,
 AcceptRequest, and CancelRequest
 '''
-from copy import deepcopy
 import unittest
 
 from faker import Faker

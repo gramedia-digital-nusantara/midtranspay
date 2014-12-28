@@ -165,8 +165,8 @@ class StringValidator(RequiredValidator, LengthValidator):
 
             if not isinstance(value, string_type):
                 raise ValidationError(
-                  "{value} ({type}) is not a string".format(value=value,
-                                                            type=type(value)))
+                    "{value} ({type}) is not "
+                    "a string".format(value=value, type=type(value)))
         super(StringValidator, self).validate(value)
 
 

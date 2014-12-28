@@ -57,7 +57,8 @@ class TransactionDetails(mixins.RequestEntity):
     Basic information about a transaction with a customer, including
     the order id and the total amount the customer should be charged.
     '''
-    _validators = {'order_id': validators.StringValidator(
+    _validators = {'order_id':
+                   validators.StringValidator(
                        max_length=constraints.MAX_ORDERID_LENGTH),
                    'gross_amount': validators.NumericValidator(),
                    }
@@ -114,11 +115,13 @@ class ItemDetails(mixins.RequestEntity):
     '''
     Line items details for a transaction.
     '''
-    _validators = {'id': validators.StringValidator(
+    _validators = {'id':
+                   validators.StringValidator(
                        max_length=constraints.MAX_ITEMID_LENGTH),
                    'price': validators.NumericValidator(),
                    'quantity': validators.NumericValidator(),
-                   'name': validators.StringValidator(
+                   'name':
+                   validators.StringValidator(
                        max_length=constraints.MAX_ITEMNAME_LENGTH),
                    }
 
@@ -194,8 +197,9 @@ class StatusRequest(mixins.ValidatableMixin):
     Request used to retrieve information about a single charge
     that has already been submitted to Veritrans.
     '''
-    _validators = {'order_id': validators.StringValidator(
-                      max_length=constraints.MAX_ORDERID_LENGTH),
+    _validators = {'order_id':
+                   validators.StringValidator(
+                       max_length=constraints.MAX_ORDERID_LENGTH),
                    }
 
     def __init__(self, order_id):
@@ -211,8 +215,9 @@ class CancelRequest(mixins.ValidatableMixin):
     Cancels a transaction.  This can only be submitted if the transaction
     is currently still pending.
     '''
-    _validators = {'order_id': validators.StringValidator(
-                      max_length=constraints.MAX_ORDERID_LENGTH),
+    _validators = {'order_id':
+                   validators.StringValidator(
+                       max_length=constraints.MAX_ORDERID_LENGTH),
                    }
 
     def __init__(self, order_id):
@@ -227,8 +232,9 @@ class ApprovalRequest(mixins.ValidatableMixin):
     '''
     Approves a transaction that is currently in state 'CHALLENGE'.
     '''
-    _validators = {'order_id': validators.StringValidator(
-                      max_length=constraints.MAX_ORDERID_LENGTH),
+    _validators = {'order_id':
+                   validators.StringValidator(
+                       max_length=constraints.MAX_ORDERID_LENGTH),
                    }
 
     def __init__(self, order_id):
