@@ -130,8 +130,31 @@ STATUS_RESPONSE = {
     "gross_amount": "10000.00"
 }
 
-ACCEPT_RESPONSE = {
-                   }
+APPROVE_RESPONSE = {
+    "status_code": "200",
+    "status_message": "Success, transaction is approved",
+    "transaction_id": "2af158d4-b82e-46ac-808b-be19aaa96ce3",
+    "masked_card": "451111-1117",
+    "order_id": "2014112112",
+    "payment_type": "credit_card",
+    "transaction_time": "2014-11-27 10:05:10",
+    "transaction_status": "capture",
+    "fraud_status": "accept",
+    "approval_code": "1417057511311",
+    "bank": "bni",
+    "gross_amount": "10000.00"
+}
 
-DENY_RESPONSE = {
-                 }
+CANCEL_RESPONSE = {
+    "status_code": "200",
+    "status_message": "Success, transaction is canceled",
+    "transaction_id": "2af158d4-b82e-46ac-808b-be19aaa96ce3",
+    "masked_card": "451111-1117",
+    "order_id": "2014112112",
+    "payment_type": "credit_card",
+    "transaction_time": "2014-11-27 10:05:10",
+    "transaction_status": "cancel",
+    "fraud_status": "accept",
+    "bank": "bni",
+    "gross_amount": "10000.00"
+}

@@ -18,8 +18,9 @@ fake = Faker()
 class ChargeRequest_UnitTests(unittest.TestCase):
 
     def test_serialization(self):
-        ''' Given a complete request format--make sure that our ChargeRequest
-        is serializing out the same format.
+        '''
+        This test covers the serialization of ChargeRequest and all of it's
+        subentities.
         '''
         expected = fixtures.CC_REQUEST
 

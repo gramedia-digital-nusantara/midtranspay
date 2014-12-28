@@ -124,7 +124,7 @@ class VTDirect(object):
 
         response_json = http_response.json()
 
-        veritrans_response = response.ApprovalResponse(**response_json)
+        veritrans_response = response.ApproveResponse(**response_json)
 
         return veritrans_response
 
