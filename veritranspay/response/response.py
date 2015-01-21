@@ -69,7 +69,10 @@ class CreditCardChargeResponse(ChargeResponseBase):
         super(CreditCardChargeResponse, self).__init__(*args, **kwargs)
         self.masked_card = kwargs.get('masked_card', None)
         self.bank = kwargs.get('bank', None)
-
+        self.masked_card = kwargs.get('masked_card', None)
+        self.saved_token_id = kwargs.get('saved_token_id')
+        self.saved_token_id_expired_at = helpers.parse_veritrans_datetime(
+            kwargs.get("saved_token_id_expired_at", None))
 
 class CimbsChargeResponse(ChargeResponseBase):
     # not implemented -- not documented

@@ -18,22 +18,33 @@ class CreditCard(PaymentTypeBase):
     '''
     PAYMENT_TYPE_KEY = 'credit_card'
 
-    def __init__(self, bank, token_id):
+    def __init__(self, bank, token_id, save_token_id=False):
         '''
         :param bank: Represents the acquiring bank.
         :type bank: :py:class:`str`
         :param token_id: A token retrieved from the Veritrans
             JavaScript library, after submitting the credit card details.
         :type token_id: :py:class:`str`
+        :param bool save_token_id: Used in conjunction with a 2-click to
+            indicate whether or not this token is to be made reusable.
         '''
         self.bank = bank
         self.token_id = token_id
+        self.save_token_id = save_token_id
 
     def serialize(self):
+
         rv = super(CreditCard, self).serialize()
+
         rv[self.PAYMENT_TYPE_KEY] = {'bank': self.bank,
                                      'token_id': self.token_id,
                                      }
+
+        # append save_token_id to the request, only if it's set to True
+        if self.save_token_id:
+            rv[self.PAYMENT_TYPE_KEY].update(
+                {'save_token_id': self.save_token_id})
+
         return rv
 
 #
