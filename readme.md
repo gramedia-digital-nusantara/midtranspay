@@ -10,10 +10,6 @@
 
 A Python client library for communicating with the [Veritrans Payment Gateway](http://veritrans.co.id/).
 
-Please do note, this software is in very early stages of development.
-It's support for all the features provided by the Veritrans API is 
-quite minimal.  
-
 Also, absolutely EVERYTHING in the API is subject to change in early release
 versions (at least until 1.0), so make sure you have a good test suite
 before upgrading versions!
@@ -27,28 +23,29 @@ even better, a pull request!  Before submitting code though, make sure it
 includes tests and documentation!
 
 
-## Current Support (version 0.5)
+## Current Support (version 0.7)
 
 - Submit Credit Card Charges (VTDirect)
-- Request Transaction Status
-- Cancel Transaction
-- Approve Challenged Transaction
+
 - Python Versions
     - 2.7
     - 3.3
     - 3.4
-
+- VT-Direct
+    - Credit Cards
+        - 3D Secure
+        - One-Click
+        - Two-Click
+        - Indomaret
+    - Request Transaction Status
+    - Cancel Transaction
+    - Approve Challenged Transaction
 
 ## Roadmap
 
 Add support for additional payment methods.
 
 - VT-Direct
-    - Credit Cards
-        - 3D Secure
-        - One-click
-        - Two-click
-        - Preauth/Capture workflow
     - Mandiri ClickPay
     - CIMB Clicks
     - Permata Virtual Account
