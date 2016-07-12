@@ -1,23 +1,22 @@
-'''
+"""
 VeritransPay
--------
+============
 
-Client library for communicating with **VERSION 2** of the
-veritrans.co.id payment gateway.  Note, there is no support for the older
-v1 API as this was dropped in Dec 2014.
+Client library for communicating with **VERSION 2** of the veritrans.co.id payment gateway.
 
 Notes
-`````
+-----
+
 This is still an early release and does not provide access to all the
 functionality of the Veritrans.co.id API.  Currently, only submitting
 credit-card payments, and receiving that response is supported.
 
 Links
-`````
+-----
 
 * `veritrans website <http://veritrans.co.id/>`_
 
-'''
+"""
 from setuptools import setup
 
 
@@ -50,8 +49,9 @@ setup(
                  'Programming Language :: Python :: 2.7',
                  'Programming Language :: Python :: 3.3',
                  'Programming Language :: Python :: 3.4',
+                 'Programming Language :: Python :: 3.5',
                  ],
     install_requires=pkg_req,
     tests_require=test_req,
     test_suite='nose.collector'
-    )
+)
