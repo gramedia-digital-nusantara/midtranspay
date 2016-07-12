@@ -153,6 +153,49 @@ class VTDirect_ChargeRequest_Tests(unittest.TestCase):
             self.assertEqual(expected_response_format.__dict__,
                              resp.__dict__)
 
+    def test_submit_indomaret_charge(self):
+        with patch('veritranspay.veritrans.requests.post') as mock_post:
+            # create a fake key and request payload
+            payload = {'charge_type': 'I am a little tea cup',
+                       }
+
+            gateway = veritrans.VTDirect(server_key=self.server_key)
+
+            req = MagicMock()
+            req.charge_type = MagicMock(spec=payment_types.Indomaret)
+            req.attach_mock(MagicMock(return_value=payload), 'serialize')
+
+            # mock the response data
+            # so thta the JSON method returns a documented response
+            # value
+            mock_resp = MagicMock()
+            mock_post.return_value = mock_resp
+            mock_resp.attach_mock(
+                MagicMock(return_value=fixtures.INDOMARET_CHARGE_RESPONSE_SUCCESS),
+                'json')
+
+            resp = gateway.submit_charge_request(req)
+
+            # make sure requests library was called in the expected way.
+            mock_post.assert_called_once_with(
+                'https://api.veritrans.co.id/v2/charge',
+                auth=(self.server_key, ''),
+                headers={'content-type': 'application/json',
+                         'accept': 'application/json'},
+                data=json.dumps(payload))
+
+            # did we get the expected response type?
+            self.assertIsInstance(resp, response.IndomaretChargeResponse)
+
+            # did it look like we expected
+            expected_response_format = response.IndomaretChargeResponse(
+                **fixtures.INDOMARET_CHARGE_RESPONSE_SUCCESS)
+
+            # need to compare their dictionary formats
+            self.assertEqual(expected_response_format.__dict__,
+                             resp.__dict__)
+
+
 
 class VTDirect_ApprovalRequest_UnitTests(unittest.TestCase):
 

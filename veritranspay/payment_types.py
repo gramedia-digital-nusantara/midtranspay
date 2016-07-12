@@ -47,6 +47,22 @@ class CreditCard(PaymentTypeBase):
 
         return rv
 
+
+class Indomaret(PaymentTypeBase):
+    PAYMENT_TYPE_KEY = 'cstore'
+
+    def __init__(self, message):
+        self.store = 'Indomaret'
+        self.message = message
+
+    def serialize(self):
+        rv = super(Indomaret, self).serialize()
+        rv[self.PAYMENT_TYPE_KEY].update({
+            'store': self.store,
+            'message': self.message
+        })
+        return rv
+
 #
 # NOTE:
 # The following types are not yet supported!
