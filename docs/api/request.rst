@@ -32,9 +32,6 @@ a request.  Currently, sub-entities are only used when making a ChargeRequest.
 Payment Types
 ^^^^^^^^^^^^^
 
-.. warning::
-    At the current time **ONLY** Credit Card payments are supported.
-
 .. automodule:: veritranspay.payment_types
     :members:
     :show-inheritance:

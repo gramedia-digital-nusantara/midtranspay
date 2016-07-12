@@ -1,6 +1,19 @@
 Changes
 =======
 
+
+0.7
+---
+
+Added support for Indomaret Payments.
+
+
+0.6
+---
+
+Added support for One-Click, Two-Click and 3D-Secure Transactions.
+
+
 0.5
 ---
 

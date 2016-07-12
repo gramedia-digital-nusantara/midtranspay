@@ -8,9 +8,8 @@ from . import mixins, validators, constraints
 
 
 class Address(mixins.RequestEntity):
-    '''
-    Represents a physical address somewhere in the world.
-    '''
+    """ Sub-entity that represents a postal address.
+    """
     _validators = {'address': validators.AddressValidator(),
                    'city': validators.CityValidator(),
                    'postal_code': validators.PostalcodeValidator(),
@@ -21,28 +20,17 @@ class Address(mixins.RequestEntity):
                        is_required=False),
                    }
 
-    def __init__(self, address, city, postal_code,
-                 first_name=None, last_name=None, phone=None,
-                 country_code=None):
-        '''
-        :param address: Street address.
-        :type address: :py:class:`str` <= 200
-        :param city:  City name.
-        :type city: :py:class:`str` <= 20.
-        :param postal_code: Postal Code.
-        :type postal_code: :py:class:`str` <= 10; numbers, hyphens '-',
-            and spaces ' '
-        :param first_name: Person given name.
-        :type first_name: :py:class:`str` <= 20.
-        :param last_name: Person surname.
-        :type last_name: :py:class:`str` <= 20.
-        :param phone: Phone number.
-        :type phone: :py:class:`str` 5 >=< 19; numbers,
-            hyphens '-', parenthesis '()',
-            spaces ' '; can start with plus symbol '+'
-        :param country_code: ISO-3166 alpha-3 country code.
-        :type country_code: :py:class:`str` <= 10
-        '''
+    def __init__(self, address, city, postal_code, first_name=None, last_name=None, phone=None, country_code=None):
+        """
+        :param `six.string_types` address: (200 chars max) Street address.
+        :param `six.string_types` city:  (20 chars max) City name.
+        :param `six.string_types` postal_code: (10 chars max; numbers, hyphens, spaces) Postal Code.
+        :param `six.string_types` first_name: (20 chars max; Optional) Person given name.
+        :param `six.string_types` last_name: (20 chars max; Optional) Person surname.
+        :param `six.string_types` phone:
+            (5 to 19 chars; numbers, hyphens, parenthesis, spaces, plus symbol; Optional) Phone number.
+        :param `six.string_types` country_code: (10 chars max; Optional) ISO-3166 alpha-3 country code.
+        """
         self.address = address
         self.city = city
         self.postal_code = postal_code
@@ -53,10 +41,10 @@ class Address(mixins.RequestEntity):
 
 
 class TransactionDetails(mixins.RequestEntity):
-    '''
+    """
     Basic information about a transaction with a customer, including
     the order id and the total amount the customer should be charged.
-    '''
+    """
     _validators = {'order_id':
                    validators.StringValidator(
                        max_length=constraints.MAX_ORDERID_LENGTH),
@@ -64,12 +52,12 @@ class TransactionDetails(mixins.RequestEntity):
                    }
 
     def __init__(self, order_id, gross_amount):
-        '''
+        """
         :param order_id: **UNIQUE** order identifier.
         :type order_id: :py:class:`str` <= 50
         :param gross_amount: Total amount the customer will be charged.
         :type gross_amount: :py:class:`int`
-        '''
+        """
         self.order_id = order_id
         self.gross_amount = gross_amount
 

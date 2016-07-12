@@ -3,13 +3,13 @@
 Overview
 ========
 
-Vertranspay is a Python client library for submitting requests to the
-http://veritrans.co.id payment gateway.
+Vertranspay is a Python client library for submitting requests to the http://veritrans.co.id payment gateway.
 
-The only dependency for this library is the `Python Requests`_ package
+This library only focuses on supporting the VT-Direct payment flow.
 
-This library is in a very early stage and only supports credit card charge
-requests/responses via the VT-Direct method.  
+To fully understand the features provided by this library, it is highly recommended that you read over the
+official `Veritrans API Documentation`_.  This documentation does not explain concepts that can otherwise
+be found there.
 
 .. note::
     For developing and testing this library's integration with your own code,
@@ -21,6 +21,7 @@ requests/responses via the VT-Direct method.
     None of the contributers accept any responsiblity for any losses incurred
     by using this software, unless local laws say otherwise.  Use at your own
     risk.
+
 
 Contents:
 ---------
@@ -35,14 +36,17 @@ Contents:
     api
     changes
 
+
 Supported Python Versions:
 --------------------------
 
 - 2.7
 - 3.3
 - 3.4
+- 3.5
 
 https://travis-ci.org/derekjamescurtis/veritranspay
+
 
 Testing:
 --------
@@ -57,6 +61,7 @@ If you're interested in running the live tests, see
 tests/live_credentials.sample for further instructions on how to run these
 in the source code of this library.
 
+
 Indices and tables
 ==================
 
@@ -65,4 +70,4 @@ Indices and tables
 * :ref:`search`
 
 .. _Veritrans Sandbox Signup: https://my.sandbox.veritrans.co.id/register
-.. _Python Requests: https://pypi.python.org/pypi/requests
+.. _Veritrans API Documentation: http://docs.veritrans.co.id/en/vtdirect/integration.html
