@@ -52,6 +52,9 @@ class Indomaret(PaymentTypeBase):
     PAYMENT_TYPE_KEY = 'cstore'
 
     def __init__(self, message):
+        """
+        :param `six.string_types` message: Label to be displayed in Indomaret POS
+        """
         self.store = 'Indomaret'
         self.message = message
 
