@@ -2,11 +2,11 @@
 
 [![Build Status](https://travis-ci.org/derekjamescurtis/veritranspay.svg?branch=master)](https://travis-ci.org/derekjamescurtis/veritranspay)
 [![Documentation Status](https://readthedocs.org/projects/veritranspay/badge/?version=latest)](https://readthedocs.org/projects/veritranspay/?badge=latest)
-[![Latest Version](https://pypip.in/version/VeritransPay/badge.svg)](https://pypi.python.org/pypi/VeritransPay/)
-[![License](https://pypip.in/license/VeritransPay/badge.svg)](https://pypi.python.org/pypi/VeritransPay/)
-[![Download format](https://pypip.in/format/VeritransPay/badge.svg)](https://pypi.python.org/pypi/VeritransPay/)
-[![Supported Python versions](https://pypip.in/py_versions/VeritransPay/badge.svg)](https://pypi.python.org/pypi/VeritransPay/)
-[![Downloads](https://pypip.in/download/VeritransPay/badge.svg)](https://pypi.python.org/pypi/VeritransPay/)
+[![Latest Version](https://img.shields.io/pypi/v/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
+[![License](https://img.shields.io/pypi/l/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
+[![Download format](https://img.shields.io/pypi/format/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
+[![Downloads](https://img.shields.io/pypi/dm/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
 
 A Python client library for communicating with the [Veritrans Payment Gateway](http://veritrans.co.id/).
 
