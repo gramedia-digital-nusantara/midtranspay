@@ -12,6 +12,11 @@ the documentation at:
 - http://docs.veritrans.co.id/sandbox/other_commands.html
 - http://docs.veritrans.co.id/sandbox/charge.html
 '''
+__all__ = ['ResponseBase', 'ChargeResponseBase', 'CreditCardChargeResponse',
+           'IndomaretChargeResponse', 'CimbsChargeResponse', 'MandiriChargeResponse', 
+           'StatusResponse', 'CancelResponse', 'VirtualAccountChargeResponse', 'build_charge_response',
+           'ApproveResponse',]
+
 from veritranspay import mixins, helpers, payment_types
 
 
@@ -74,6 +79,17 @@ class CreditCardChargeResponse(ChargeResponseBase):
         self.saved_token_id_expired_at = helpers.parse_veritrans_datetime(
             kwargs.get("saved_token_id_expired_at", None))
 
+
+class IndomaretChargeResponse(ChargeResponseBase):
+    """ CStore charge response when using payment_type.Indomaret
+
+    http://docs.veritrans.co.id/en/vtdirect/integration_indomrt.html#response-transaction-indomrt
+    """
+    def __init__(self, *args, **kwargs):
+        self.payment_code = kwargs.get('payment_code')
+        super(IndomaretChargeResponse, self).__init__(*args, **kwargs)
+
+
 class CimbsChargeResponse(ChargeResponseBase):
     # not implemented -- not documented
     def __init__(self, *args, **kwargs):
@@ -106,6 +122,8 @@ def build_charge_response(request, *args, **kwargs):
     '''
     if isinstance(request.charge_type, payment_types.CreditCard):
         return CreditCardChargeResponse(*args, **kwargs)
+    elif isinstance(request.charge_type, payment_types.Indomaret):
+        return IndomaretChargeResponse(*args, **kwargs)
     elif isinstance(request.charge_type, payment_types.CimbClicks):
         raise NotImplementedError("CimbClicks not yet supported.")
     elif isinstance(request.charge_type, payment_types.MandiriClickpay):

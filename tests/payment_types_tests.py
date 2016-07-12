@@ -2,7 +2,7 @@ import unittest
 
 from faker import Faker
 
-from veritranspay.payment_types import CreditCard, MandiriClickpay, CimbClicks
+from veritranspay.payment_types import CreditCard, Indomaret
 
 
 fake = Faker()
@@ -36,4 +36,32 @@ class CreditCardTests(unittest.TestCase):
                     }}
 
         self.assertEqual(serialized, expected)
+
+
+class CStoreIndomaretTests(unittest.TestCase):
+
+    def test_init(self):
+        message = fake.word()
+
+        indomrt = Indomaret(message=message)
+
+        self.assertEqual(indomrt.store, 'Indomaret')
+        self.assertEqual(indomrt.message, message)
+
+    def test_serialization(self):
+        message = fake.word()
+
+        indomrt = Indomaret(message=message)
+
+        expected = {
+            'payment_type': 'cstore',
+            'cstore': {
+                'store': 'Indomaret',
+                'message': message
+            }
+        }
+
+        self.assertDictEqual(expected, indomrt.serialize())
+
+
 
