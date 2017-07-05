@@ -136,7 +136,7 @@ class VTDirect_ChargeRequest_Tests(unittest.TestCase):
 
             # make sure requests library was called in the expected way.
             mock_post.assert_called_once_with(
-                'https://api.veritrans.co.id/v2/charge',
+                'https://api.midtrans.com/v2/charge',
                 auth=(self.server_key, ''),
                 headers={'content-type': 'application/json',
                          'accept': 'application/json'},
@@ -178,7 +178,7 @@ class VTDirect_ChargeRequest_Tests(unittest.TestCase):
 
             # make sure requests library was called in the expected way.
             mock_post.assert_called_once_with(
-                'https://api.veritrans.co.id/v2/charge',
+                'https://api.midtrans.com/v2/charge',
                 auth=(self.server_key, ''),
                 headers={'content-type': 'application/json',
                          'accept': 'application/json'},
@@ -195,6 +195,131 @@ class VTDirect_ChargeRequest_Tests(unittest.TestCase):
             self.assertEqual(expected_response_format.__dict__,
                              resp.__dict__)
 
+    def test_submit_virtualaccountpermata_charge(self):
+        with patch('veritranspay.veritrans.requests.post') as mock_post:
+            # create a fake key and request payload
+            payload = {'charge_type': 'I am a little tea cup',
+                       }
+
+            gateway = veritrans.VTDirect(server_key=self.server_key)
+
+            req = MagicMock()
+            req.charge_type = MagicMock(spec=payment_types.VirtualAccountPermata)
+            req.attach_mock(MagicMock(return_value=payload), 'serialize')
+
+            # mock the response data
+            # so thta the JSON method returns a documented response
+            # value
+            mock_resp = MagicMock()
+            mock_post.return_value = mock_resp
+            mock_resp.attach_mock(
+                MagicMock(return_value=fixtures.VIRTUALACCOUNTPERMATA_CHARGE_RESPONSE_SUCCESS),
+                'json')
+
+            resp = gateway.submit_charge_request(req)
+
+            # make sure requests library was called in the expected way.
+            mock_post.assert_called_once_with(
+                'https://api.midtrans.com/v2/charge',
+                auth=(self.server_key, ''),
+                headers={'content-type': 'application/json',
+                         'accept': 'application/json'},
+                data=json.dumps(payload))
+
+            # did we get the expected response type?
+            self.assertIsInstance(resp, response.VirtualAccountPermataChargeResponse)
+
+            # did it look like we expected
+            expected_response_format = response.VirtualAccountPermataChargeResponse(
+                **fixtures.VIRTUALACCOUNTPERMATA_CHARGE_RESPONSE_SUCCESS)
+
+            # need to compare their dictionary formats
+            self.assertEqual(expected_response_format.__dict__,
+                             resp.__dict__)
+
+    def test_submit_virtualaccountmandiri_charge(self):
+        with patch('veritranspay.veritrans.requests.post') as mock_post:
+            # create a fake key and request payload
+            payload = {'charge_type': 'I am a little tea cup',
+                       }
+
+            gateway = veritrans.VTDirect(server_key=self.server_key)
+
+            req = MagicMock()
+            req.charge_type = MagicMock(spec=payment_types.VirtualAccountMandiri)
+            req.attach_mock(MagicMock(return_value=payload), 'serialize')
+
+            # mock the response data
+            # so thta the JSON method returns a documented response
+            # value
+            mock_resp = MagicMock()
+            mock_post.return_value = mock_resp
+            mock_resp.attach_mock(
+                MagicMock(return_value=fixtures.VIRTUALACCOUNTMANDIRI_CHARGE_RESPONSE_SUCCESS),
+                'json')
+
+            resp = gateway.submit_charge_request(req)
+
+            # make sure requests library was called in the expected way.
+            mock_post.assert_called_once_with(
+                'https://api.midtrans.com/v2/charge',
+                auth=(self.server_key, ''),
+                headers={'content-type': 'application/json',
+                         'accept': 'application/json'},
+                data=json.dumps(payload))
+
+            # did we get the expected response type?
+            self.assertIsInstance(resp, response.VirtualAccountMandiriChargeResponse)
+
+            # did it look like we expected
+            expected_response_format = response.VirtualAccountMandiriChargeResponse(
+                **fixtures.VIRTUALACCOUNTMANDIRI_CHARGE_RESPONSE_SUCCESS)
+
+            # need to compare their dictionary formats
+            self.assertEqual(expected_response_format.__dict__,
+                             resp.__dict__)
+
+    def test_submit_briepay_charge(self):
+        with patch('veritranspay.veritrans.requests.post') as mock_post:
+            # create a fake key and request payload
+            payload = {'charge_type': 'I am a little tea cup',
+                       }
+
+            gateway = veritrans.VTDirect(server_key=self.server_key)
+
+            req = MagicMock()
+            req.charge_type = MagicMock(spec=payment_types.BriEpay)
+            req.attach_mock(MagicMock(return_value=payload), 'serialize')
+
+            # mock the response data
+            # so that the JSON method returns a documented response
+            # value
+            mock_resp = MagicMock()
+            mock_post.return_value = mock_resp
+            mock_resp.attach_mock(
+                MagicMock(return_value=fixtures.BRIEPAY_CHARGE_RESPONSE_SUCCESS),
+                'json')
+
+            resp = gateway.submit_charge_request(req)
+
+            # make sure requests library was called in the expected way.
+            mock_post.assert_called_once_with(
+                'https://api.midtrans.com/v2/charge',
+                auth=(self.server_key, ''),
+                headers={'content-type': 'application/json',
+                         'accept': 'application/json'},
+                data=json.dumps(payload))
+
+            # did we get the expected response type?
+            self.assertIsInstance(resp, response.EpayBriChargeResponse)
+
+            # did it look like we expected
+            expected_response_format = response.EpayBriChargeResponse(
+                **fixtures.BRIEPAY_CHARGE_RESPONSE_SUCCESS)
+
+            # need to compare their dictionary formats
+            self.assertEqual(expected_response_format.__dict__,
+                             resp.__dict__)
 
 
 class VTDirect_ApprovalRequest_UnitTests(unittest.TestCase):
@@ -248,7 +373,7 @@ class VTDirect_ApprovalRequest_UnitTests(unittest.TestCase):
 
             # did we make our HTTP request properly?
             mock_post.assert_called_once_with(
-                'https://api.veritrans.co.id/v2/'
+                'https://api.midtrans.com/v2/'
                 '{order_id}/approve'.format(order_id=order_id),
                 auth=(self.server_key, ''),
                 headers={'accept': 'application/json'}
@@ -332,7 +457,7 @@ class VTDirect_CancelRequest_UnitTests(unittest.TestCase):
 
             # did we make our HTTP request properly?
             mock_post.assert_called_once_with(
-                'https://api.veritrans.co.id/v2/'
+                'https://api.midtrans.com/v2/'
                 '{order_id}/cancel'.format(order_id=order_id),
                 auth=(self.server_key, ''),
                 headers={'accept': 'application/json'}
@@ -415,7 +540,7 @@ class VTDirect_StatusRequest_UnitTests(unittest.TestCase):
 
             # did we make our HTTP request properly?
             mock_post.assert_called_once_with(
-                'https://api.veritrans.co.id/v2/'
+                'https://api.midtrans.com/v2/'
                 '{order_id}/approve'.format(order_id=order_id),
                 auth=(self.server_key, ''),
                 headers={'accept': 'application/json'}

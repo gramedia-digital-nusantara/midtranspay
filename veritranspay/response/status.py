@@ -7,7 +7,7 @@ http://docs.veritranspay.co.id/sandbox/status_code.html
 # 20x - successful submission to api
 SUCCESS = 200  # NOTE: this is returned when manually cancelled too!
 CHALLENGE = 201
-DENIED = 202
+PENDING = 201  # NOTE: returned when payment ype is VirtualAccount, Cimb, Bri Epay, KlikBCA, Klikpay BCA,
 
 
 # 30x

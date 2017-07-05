@@ -116,6 +116,340 @@ CC_CHARGE_RESPONSE_FAIL = {
                       "and message [Do not honour]"
 }
 
+VIRTUALACCOUNTPERMATA_REQUEST = {
+    "payment_type": "bank_transfer",
+    "bank_transfer": {
+        "bank": "permata"
+    },
+    "transaction_details": {
+        "order_id": "".join([fake.random_letter() for _ in range(10)]),
+        "gross_amount": 145000
+    },
+    "customer_details": {
+        "first_name": "Andri",
+        "last_name": "Litani",
+        "email": "andri@litani.com",
+        "phone": "081122334455",
+        "billing_address": {
+            "first_name": "Andri",
+            "last_name": "Litani",
+            "address": "Mangga 20",
+            "city": "Jakarta",
+            "postal_code": "16602",
+            "phone": "081122334455",
+            "country_code": "IDN"
+        },
+        "shipping_address": {
+            "first_name": "Obet",
+            "last_name": "Supriadi",
+            "address": "Manggis 90",
+            "city": "Jakarta",
+            "postal_code": "16601",
+            "phone": "08113366345",
+            "country_code": "IDN"
+        }
+    },
+    "item_details": [
+        {
+            "id": "a1",
+            "price": 50000,
+            "quantity": 2,
+            "name": "Apel"
+        },
+        {
+            "id": "a2",
+            "price": 45000,
+            "quantity": 1,
+            "name": "Jeruk"
+        }
+    ]
+}
+
+VIRTUALACCOUNTPERMATA_CHARGE_RESPONSE_SUCCESS = {
+  "status_code": "201",
+  "status_message": "Success, PERMATA VA transaction is successful",
+  "transaction_id": "6fd88567-62da-43ff-8fe6-5717e430ffc7",
+  "order_id": "H17550",
+  "gross_amount": "145000.00",
+  "payment_type": "bank_transfer",
+  "transaction_time": "2016-06-19 13:42:29",
+  "transaction_status": "pending",
+  "fraud_status": "accept",
+  "permata_va_number": "8562000087926752"
+}
+
+VIRTUALACCOUNTBCA_REQUEST = {
+    "payment_type": "bank_transfer",
+    "transaction_details": {
+        "order_id": "".join([fake.random_letter() for _ in range(10)]),
+        "gross_amount": 145000
+    },
+    "customer_details": {
+        "first_name": "Andri",
+        "last_name": "Litani",
+        "email": "andri@litani.com",
+        "phone": "081122334455",
+        "billing_address": {
+            "first_name": "Andri",
+            "last_name": "Litani",
+            "address": "Mangga 20",
+            "city": "Jakarta",
+            "postal_code": "16602",
+            "phone": "081122334455",
+            "country_code": "IDN"
+        },
+        "shipping_address": {
+            "first_name": "Obet",
+            "last_name": "Supriadi",
+            "address": "Manggis 90",
+            "city": "Jakarta",
+            "postal_code": "16601",
+            "phone": "08113366345",
+            "country_code": "IDN"
+        }
+    },
+    "item_details": [
+        {
+            "id": "a1",
+            "price": 50000,
+            "quantity": 2,
+            "name": "Apel"
+        },
+        {
+            "id": "a2",
+            "price": 45000,
+            "quantity": 1,
+            "name": "Jeruk"
+        }
+    ],
+    "bank_transfer": {
+        "bank": "bca",
+        "va_number": "111111",
+        "free_text": {
+            "inquiry": [
+                {
+                    "id": "Free Text ID Free Text ID Free Text ID",
+                    "en": "Free Text EN Free Text EN Free Text EN"
+                }
+            ],
+            "payment": [
+                {
+                    "id": "Free Text ID Free Text ID Free Text ID",
+                    "en": "Free Text EN Free Text EN Free Text EN"
+                }
+            ]
+        }
+    }
+}
+VIRTUALACCOUNTBCA_CHARGE_RESPONSE_SUCCESS = {
+  "status_code": "201",
+  "status_message": "Success, Bank Transfer transaction is created",
+  "transaction_id": "9aed5972-5b6a-401e-894b-a32c91ed1a3a",
+  "order_id": "1466323342",
+  "gross_amount": "20000.00",
+  "payment_type": "bank_transfer",
+  "transaction_time": "2016-06-19 15:02:22",
+  "transaction_status": "pending",
+  "va_numbers": [
+    {
+      "bank": "bca",
+      "va_number": "91019021579"
+    }
+  ],
+  "fraud_status": "accept"
+}
+
+VIRTUALACCOUNTBNI_REQUEST = {
+    "payment_type": "bank_transfer",
+    "transaction_details": {
+        "order_id": "".join([fake.random_letter() for _ in range(10)]),
+        "gross_amount": 145000
+    },
+    "customer_details": {
+        "first_name": "Andri",
+        "last_name": "Litani",
+        "email": "andri@litani.com",
+        "phone": "081122334455",
+        "billing_address": {
+            "first_name": "Andri",
+            "last_name": "Litani",
+            "address": "Mangga 20",
+            "city": "Jakarta",
+            "postal_code": "16602",
+            "phone": "081122334455",
+            "country_code": "IDN"
+        },
+        "shipping_address": {
+            "first_name": "Obet",
+            "last_name": "Supriadi",
+            "address": "Manggis 90",
+            "city": "Jakarta",
+            "postal_code": "16601",
+            "phone": "08113366345",
+            "country_code": "IDN"
+        }
+    },
+    "item_details": [
+        {
+            "id": "a1",
+            "price": 50000,
+            "quantity": 2,
+            "name": "Apel"
+        },
+        {
+            "id": "a2",
+            "price": 45000,
+            "quantity": 1,
+            "name": "Jeruk"
+        }
+    ],
+    "bank_transfer": {
+        "bank": "bni",
+        "va_number": "111111"
+    },
+}
+
+VIRTUALACCOUNTBNI_CHARGE_RESPONSE_SUCCESS = {
+  "status_code": "201",
+  "status_message": "Success, Bank Transfer transaction is created",
+  "transaction_id": "9aed5972-5b6a-401e-894b-a32c91ed1a3a",
+  "order_id": "1466323342",
+  "gross_amount": "20000.00",
+  "payment_type": "bank_transfer",
+  "transaction_time": "2016-06-19 15:02:22",
+  "transaction_status": "pending",
+  "va_numbers": [
+    {
+      "bank": "bni",
+      "va_number": "8578000000111111"
+    }
+  ],
+  "fraud_status": "accept"
+}
+
+VIRTUALACCOUNTMANDIRI_REQUEST = {
+    "payment_type": "echannel",
+    "transaction_details": {
+        "order_id": "".join([fake.random_letter() for _ in range(10)]),
+        "gross_amount": 145000
+    },
+    "customer_details": {
+        "first_name": "Andri",
+        "last_name": "Litani",
+        "email": "andri@litani.com",
+        "phone": "081122334455",
+        "billing_address": {
+            "first_name": "Andri",
+            "last_name": "Litani",
+            "address": "Mangga 20",
+            "city": "Jakarta",
+            "postal_code": "16602",
+            "phone": "081122334455",
+            "country_code": "IDN"
+        },
+        "shipping_address": {
+            "first_name": "Obet",
+            "last_name": "Supriadi",
+            "address": "Manggis 90",
+            "city": "Jakarta",
+            "postal_code": "16601",
+            "phone": "08113366345",
+            "country_code": "IDN"
+        }
+    },
+    "item_details": [
+        {
+            "id": "a1",
+            "price": 50000,
+            "quantity": 2,
+            "name": "Apel"
+        },
+        {
+            "id": "a2",
+            "price": 45000,
+            "quantity": 1,
+            "name": "Jeruk"
+        }
+    ],
+    "echannel": {
+        "bill_info1": "Payment For:",
+        "bill_info2": "debt"
+    }
+}
+
+VIRTUALACCOUNTMANDIRI_CHARGE_RESPONSE_SUCCESS = {
+  "status_code": "201",
+  "status_message": "Success, Mandiri Bill transaction is successful",
+  "transaction_id": "883af6a4-c1b4-4d39-9bd8-b148fcebe853",
+  "order_id": "tes",
+  "gross_amount": "1000.00",
+  "payment_type": "echannel",
+  "transaction_time": "2016-06-19 14:40:19",
+  "transaction_status": "pending",
+  "fraud_status": "accept",
+  "bill_key": "990000000260",
+  "biller_code": "70012"
+}
+
+BRIEPAY_REQUEST = {
+    "payment_type": "bri_epay",
+    "transaction_details": {
+        "order_id": "".join([fake.random_letter() for _ in range(10)]),
+        "gross_amount": 145000
+    },
+    "customer_details": {
+        "first_name": "Andri",
+        "last_name": "Litani",
+        "email": "andri@litani.com",
+        "phone": "081122334455",
+        "billing_address": {
+            "first_name": "Andri",
+            "last_name": "Litani",
+            "address": "Mangga 20",
+            "city": "Jakarta",
+            "postal_code": "16602",
+            "phone": "081122334455",
+            "country_code": "IDN"
+        },
+        "shipping_address": {
+            "first_name": "Obet",
+            "last_name": "Supriadi",
+            "address": "Manggis 90",
+            "city": "Jakarta",
+            "postal_code": "16601",
+            "phone": "08113366345",
+            "country_code": "IDN"
+        }
+    },
+    "item_details": [
+        {
+            "id": "a1",
+            "price": 50000,
+            "quantity": 2,
+            "name": "Apel"
+        },
+        {
+            "id": "a2",
+            "price": 45000,
+            "quantity": 1,
+            "name": "Jeruk"
+        }
+    ],
+}
+
+BRIEPAY_CHARGE_RESPONSE_SUCCESS = {
+    "status_code": "201",
+    "status_message": "Success, BRI E-Pay transaction is successful",
+    "transaction_id": "f8635cd7-615d-4a6d-a806-c9ca4a56257e",
+    "order_id": "2014111702",
+    "redirect_url": "https://api.veritrans.co.id/v3/bri/epay/redirect/f8635cd7-615d-4a6d-a806-c9ca4a56257e",
+    "gross_amount": "145000.00",
+    "payment_type": "bri_epay",
+    "transaction_time": "2016-06-19 16:00:05",
+    "transaction_status": "pending",
+    "fraud_status": "accept"
+}
+
 INDOMARET_CHARGE_RESPONSE_SUCCESS = {
     "status_code": "201",
     "status_message": "Success, CSTORE transaction is successful",

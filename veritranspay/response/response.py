@@ -13,9 +13,11 @@ the documentation at:
 - http://docs.veritrans.co.id/sandbox/charge.html
 '''
 __all__ = ['ResponseBase', 'ChargeResponseBase', 'CreditCardChargeResponse',
-           'IndomaretChargeResponse', 'CimbsChargeResponse', 'MandiriChargeResponse', 
-           'StatusResponse', 'CancelResponse', 'VirtualAccountChargeResponse', 'build_charge_response',
-           'ApproveResponse',]
+           'IndomaretChargeResponse', 'CimbsChargeResponse', 'MandiriChargeResponse',
+           'StatusResponse', 'CancelResponse', 'VirtualAccountChargeResponse',
+           'VirtualAccountPermataChargeResponse', 'VirtualAccountBcaChargeResponse', 'VirtualAccountBniChargeResponse',
+           'VirtualAccountMandiriChargeResponse', 'EpayBriChargeResponse',
+           'build_charge_response', 'ApproveResponse', ]
 
 from veritranspay import mixins, helpers, payment_types
 
@@ -26,6 +28,7 @@ class ResponseBase(mixins.SerializableMixin):
     we can be safely assured should be in every transaction are status_code
     and status_message.
     '''
+
     def __init__(self, status_code, status_message, *args, **kwargs):
         '''
         :param status_code: Transaction status code supplied by Veritrans.
@@ -48,6 +51,7 @@ class ChargeResponseBase(ResponseBase):
     Encapsulates the response from Vertrans, returned after a
     :py:class:`veritranspay.request.ChargeRequest`.
     '''
+
     def __init__(self, *args, **kwargs):
         super(ChargeResponseBase, self).__init__(*args, **kwargs)
         self.transaction_id = kwargs.get('transaction_id', None)
@@ -70,6 +74,7 @@ class CreditCardChargeResponse(ChargeResponseBase):
     :py:class:`veritrans.request.ChargeRequest` with a charge type of
     :py:class:`veritrans.payment_types.CreditCard`.
     '''
+
     def __init__(self, *args, **kwargs):
         super(CreditCardChargeResponse, self).__init__(*args, **kwargs)
         self.masked_card = kwargs.get('masked_card', None)
@@ -81,10 +86,11 @@ class CreditCardChargeResponse(ChargeResponseBase):
 
 
 class IndomaretChargeResponse(ChargeResponseBase):
-    """ CStore charge response when using payment_type.Indomaret
+    """ CStore charge response when using payment_types.Indomaret
 
     http://docs.veritrans.co.id/en/vtdirect/integration_indomrt.html#response-transaction-indomrt
     """
+
     def __init__(self, *args, **kwargs):
         self.payment_code = kwargs.get('payment_code')
         super(IndomaretChargeResponse, self).__init__(*args, **kwargs)
@@ -111,6 +117,74 @@ class VirtualAccountChargeResponse(ChargeResponseBase):
         self.permata_va_number = kwargs.get('permata_va_number', None)
 
 
+class VirtualAccountPermataChargeResponse(ChargeResponseBase):
+    """
+        Response from Veritrans, returned after a
+        :py:class:`veritrans.request.ChargeRequest` with a charge type of
+        :py:class:`veritrans.payment_types.VirtualAccountPermata`.
+
+        https://api-docs.midtrans.com/#permata-virtual-account
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(VirtualAccountPermataChargeResponse, self).__init__(*args, **kwargs)
+        self.bank = 'Permata'
+        self.permata_va_number = kwargs.get('permata_va_number', None)
+
+
+class VirtualAccountBcaChargeResponse(ChargeResponseBase):
+    """
+        Response from Veritrans, returned after a
+        :py:class:`veritrans.request.ChargeRequest` with a charge type of
+        :py:class:`veritrans.payment_types.VirtualAccountBca`.
+
+        https://api-docs.midtrans.com/#bca-virtual-account
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(VirtualAccountBcaChargeResponse, self).__init__(*args, **kwargs)
+        self.bank = 'Bca'
+        self.va_numbers = kwargs.get('va_numbers', None)
+
+
+class VirtualAccountBniChargeResponse(ChargeResponseBase):
+    """
+        Response from Veritrans, returned after a
+        :py:class:`veritrans.request.ChargeRequest` with a charge type of
+        :py:class:`veritrans.payment_types.VirtualAccountBni`.
+
+        https://api-docs.midtrans.com/#bni-virtual-account
+    """
+    def __init__(self, *args, **kwargs):
+        super(VirtualAccountBniChargeResponse, self).__init__(*args, **kwargs)
+        self.bank = 'Bni'
+        self.va_numbers = kwargs.get('va_numbers', None)
+
+
+class VirtualAccountMandiriChargeResponse(ChargeResponseBase):
+    """
+        Response from Veritrans, returned after a
+        :py:class:`veritrans.request.ChargeRequest` with a charge type of
+        :py:class:`veritrans.payment_types.VirtualAccountMandiri`.
+
+        https://api-docs.midtrans.com/#bni-virtual-account
+    """
+    def __init__(self, *args, **kwargs):
+        super(VirtualAccountMandiriChargeResponse, self).__init__(*args, **kwargs)
+        self.bank = 'Mandiri'
+        self.bill_key = kwargs.get('bill_key', None)
+        self.biller_code = kwargs.get('biller_code', None)
+
+
+class EpayBriChargeResponse(ChargeResponseBase):
+    """
+        https://api-docs.midtrans.com/#epay-bri
+    """
+    def __init__(self, *args, **kwargs):
+        super(EpayBriChargeResponse, self).__init__(*args, **kwargs)
+        self.redirect_url = kwargs.get('redirect_url', None)
+
+
 def build_charge_response(request, *args, **kwargs):
     '''
     Builds a response appropriate for a given type of request.
@@ -124,6 +198,16 @@ def build_charge_response(request, *args, **kwargs):
         return CreditCardChargeResponse(*args, **kwargs)
     elif isinstance(request.charge_type, payment_types.Indomaret):
         return IndomaretChargeResponse(*args, **kwargs)
+    elif isinstance(request.charge_type, payment_types.VirtualAccountPermata):
+        return VirtualAccountPermataChargeResponse(*args, **kwargs)
+    elif isinstance(request.charge_type, payment_types.VirtualAccountBca):
+        return VirtualAccountBcaChargeResponse(*args, **kwargs)
+    elif isinstance(request.charge_type, payment_types.VirtualAccountBni):
+        return VirtualAccountBniChargeResponse(*args, **kwargs)
+    elif isinstance(request.charge_type, payment_types.VirtualAccountMandiri):
+        return VirtualAccountMandiriChargeResponse(*args, **kwargs)
+    elif isinstance(request.charge_type, payment_types.BriEpay):
+        return EpayBriChargeResponse(*args, **kwargs)
     elif isinstance(request.charge_type, payment_types.CimbClicks):
         raise NotImplementedError("CimbClicks not yet supported.")
     elif isinstance(request.charge_type, payment_types.MandiriClickpay):
@@ -138,6 +222,7 @@ class StatusResponse(ResponseBase):
     Returned from Veritrans after submitting a
     :py:class:`veritranspay.request.StatusRequest`
     '''
+
     def __init__(self, *args, **kwargs):
         super(StatusResponse, self).__init__(*args, **kwargs)
         self.transaction_id = kwargs.get('transaction_id', None)
@@ -152,6 +237,11 @@ class StatusResponse(ResponseBase):
         self.approval_code = kwargs.get('approval_code', None)
         self.signature_key = kwargs.get('signature_key', None)
         self.bank = kwargs.get('bank', None)
+        self.permata_va_number = kwargs.get('permata_va_number', None)
+        self.va_number = kwargs.get('va_number', None)
+        self.bill_key = kwargs.get('bill_key', None)
+        self.biller_code = kwargs.get('biller_code', None)
+        self.redirect_url = kwargs.get('redirect_url', None)
         self.gross_amount = \
             helpers.parse_veritrans_amount(
                 kwargs.get('gross_amount', None))
@@ -162,6 +252,7 @@ class CancelResponse(ResponseBase):
     Data returned from Veritrans after submitting a
     :py:class:`veritranspay.request.CancelRequest`.
     '''
+
     def __init__(self, *args, **kwargs):
         super(CancelResponse, self).__init__(*args, **kwargs)
         self.transaction_id = kwargs.get('transaction_id', None)
@@ -176,6 +267,11 @@ class CancelResponse(ResponseBase):
         self.approval_code = kwargs.get('approval_code', None)
         self.signature_key = kwargs.get('signature_key', None)
         self.bank = kwargs.get('bank', None)
+        self.permata_va_number = kwargs.get('permata_va_number', None)
+        self.va_number = kwargs.get('va_number', None)
+        self.bill_key = kwargs.get('bill_key', None)
+        self.biller_code = kwargs.get('biller_code', None)
+        self.redirect_url = kwargs.get('redirect_url', None)
         self.gross_amount = \
             helpers.parse_veritrans_amount(
                 kwargs.get('gross_amount', None))
@@ -186,6 +282,7 @@ class ApproveResponse(ResponseBase):
     Data returned from Veritrans after submitting a
     :py:class:`veritranspay.request.ApprovalRequest`
     '''
+
     def __init__(self, *args, **kwargs):
         super(ApproveResponse, self).__init__(*args, **kwargs)
         self.transaction_id = kwargs.get('transaction_id', None)
@@ -200,6 +297,11 @@ class ApproveResponse(ResponseBase):
         self.approval_code = kwargs.get('approval_code', None)
         self.signature_key = kwargs.get('signature_key', None)
         self.bank = kwargs.get('bank', None)
+        self.permata_va_number = kwargs.get('permata_va_number', None)
+        self.va_number = kwargs.get('va_number', None)
+        self.bill_key = kwargs.get('bill_key', None)
+        self.biller_code = kwargs.get('biller_code', None)
+        self.redirect_url = kwargs.get('redirect_url', None)
         self.gross_amount = \
             helpers.parse_veritrans_amount(
                 kwargs.get('gross_amount', None))

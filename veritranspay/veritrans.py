@@ -7,8 +7,8 @@ class VTDirect(object):
     '''
     Gateway used to submit requests to Veritrans via the VTDirect method.
     '''
-    LIVE_API_URL = 'https://api.veritrans.co.id/v2'
-    SANDBOX_API_URL = 'https://api.sandbox.veritrans.co.id/v2'
+    LIVE_API_URL = 'https://api.midtrans.com/v2'
+    SANDBOX_API_URL = 'https://api.sandbox.midtrans.com/v2'
 
     def __init__(self, server_key, sandbox_mode=False):
         '''

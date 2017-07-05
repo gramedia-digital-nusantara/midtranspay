@@ -3,5 +3,5 @@ python:
   - "2.7"
   - "3.3"
   - "3.4"
-install: pip install -r requirements.txt --use-mirrors
+install: pip install -r requirements.txt
 script:  python setup.py nosetests --with-coverage --cover-package=veritranspay

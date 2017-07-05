@@ -63,11 +63,87 @@ class Indomaret(PaymentTypeBase):
         })
         return rv
 
+
+class VirtualAccount(PaymentTypeBase, mixins.SerializableMixin):
+    """
+        Base class for payment using virtual account
+    """
+    PAYMENT_TYPE_KEY = 'bank_transfer'
+
+    def serialize(self):
+        rv = super(VirtualAccount, self).serialize()
+        rv[self.PAYMENT_TYPE_KEY].update({
+           'bank': self.bank
+        })
+        return rv
+
+
+class VirtualAccountPermata(VirtualAccount):
+    """
+    A payment made with a virtual account Permata.
+
+    https://api-docs.midtrans.com/#permata-virtual-account
+    """
+    def __init__(self):
+        self.bank = 'permata'
+
+
+class VirtualAccountBca(VirtualAccount):
+    """
+    A payment made with a virtual account BCA.
+    NOTE: untested in sandbox, not available
+    https://api-docs.midtrans.com/#bca-virtual-account
+    """
+    def __init__(self):
+        self.bank = 'bca'
+
+
+class VirtualAccountBni(VirtualAccount):
+    """
+    A payment made with a virtual account BNI
+    NOTE: untested in sandbox, not available
+    https://api-docs.midtrans.com/#bni-virtual-account
+    """
+    def __init__(self):
+        self.bank = 'bni'
+
+
+class VirtualAccountMandiri(PaymentTypeBase):
+    """
+     A payment made with a virtual account Mandiri (BillPayment Mandiri)
+
+    https://api-docs.midtrans.com/#mandiri-bill-payment
+    """
+    PAYMENT_TYPE_KEY = 'echannel'
+
+    def __init__(self, bill_info1, bill_info2):
+        self.bill_info1 = bill_info1
+        self.bill_info2 = bill_info2
+
+    def serialize(self):
+        rv = super(VirtualAccountMandiri, self).serialize()
+        rv[self.PAYMENT_TYPE_KEY].update({
+            'bill_info1': self.bill_info1,
+            'bill_info2': self.bill_info2
+        })
+        return rv
+
+
+class BriEpay(PaymentTypeBase):
+    """
+    A payment made with a Epay BRI
+
+    https://api-docs.midtrans.com/#epay-bri
+    """
+    PAYMENT_TYPE_KEY = 'bri_epay'
+
+
 #
 # NOTE:
 # The following types are not yet supported!
 # They will be added to the documentation as support is added
 #
+
 
 class MandiriClickpay(PaymentTypeBase):
     # http://docs.veritranspay.co.id/sandbox/charge.html#vtdirect-mandiri
