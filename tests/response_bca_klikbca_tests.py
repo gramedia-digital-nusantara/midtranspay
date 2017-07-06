@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from veritranspay.response.response import EpayBriChargeResponse
+from midtranspay.response.response import EpayBriChargeResponse
 
 
 class EpayBriChargeResponseTests_v0_9(TestCase):
@@ -16,7 +16,7 @@ class EpayBriChargeResponseTests_v0_9(TestCase):
             "status_message": "OK, BCA KlikPay transaction is successful",
             "transaction_id": "ada84cd9-2233-4c67-877a-01884eece45e",
             "order_id": "orderid-01",
-            "redirect_url": "https://api.sandbox.veritrans.co.id/v3/bca/klikpay/redirect/ada84cd9-2233-4c67-877a-01884eece45e",
+            "redirect_url": "https://api.sandbox.midtrans.co.id/v3/bca/klikpay/redirect/ada84cd9-2233-4c67-877a-01884eece45e",
             "gross_amount": "11000.00",
             "payment_type": "bca_klikpay",
             "transaction_time": "2016-06-19 15:42:36",
@@ -33,5 +33,5 @@ class EpayBriChargeResponseTests_v0_9(TestCase):
         self.assertEqual('bca_klikpay', self.parsed_response.payment_type)
 
     def test_redirect_url(self):
-        self.assertEqual('https://api.sandbox.veritrans.co.id/v3/bca/klikpay/redirect/ada84cd9-2233-4c67-877a-01884eece45e', self.parsed_response.redirect_url)
+        self.assertEqual('https://api.sandbox.midtrans.co.id/v3/bca/klikpay/redirect/ada84cd9-2233-4c67-877a-01884eece45e', self.parsed_response.redirect_url)
 

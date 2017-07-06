@@ -1,6 +1,6 @@
 Validators
 ==========
 
-.. automodule:: veritranspay.validators
+.. automodule:: midtranspay.validators
     :members:
     :show-inheritance:

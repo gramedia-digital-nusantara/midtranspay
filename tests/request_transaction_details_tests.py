@@ -2,8 +2,8 @@
 #
 # from faker import Faker
 #
-# from veritranspay import request
-# from veritranspay.request import TransactionDetails
+# from midtranspay import request
+# from midtranspay.request import TransactionDetails
 #
 #
 # fake = Faker()

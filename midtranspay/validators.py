@@ -1,19 +1,19 @@
 '''
 A simple set of validation classes that are used to check entities in
-:py:mod:`veritranspay.request`, to give us some assurance they have
-provided the required data, in the required format, for Veritrans to
+:py:mod:`midtranspay.request`, to give us some assurance they have
+provided the required data, in the required format, for midtrans to
 accept the request.
 
-(Although Veritrans will validate this data as well, this is done so we
+(Although midtrans will validate this data as well, this is done so we
 don't waste time submitting data we can already know will be rejected).
 
 When any of the Validators defined in this module fail, they raise a
-:py:class:`veritranspay.validators.ValidationError`.
+:py:class:`midtranspay.validators.ValidationError`.
 
 See the following for more details:
 
-- http://docs.veritrans.co.id/sandbox/other_commands.html
-- http://docs.veritrans.co.id/sandbox/charge.html
+- http://docs.midtrans.co.id/sandbox/other_commands.html
+- http://docs.midtrans.co.id/sandbox/charge.html
 '''
 from numbers import Number
 import re
@@ -262,7 +262,7 @@ class EmailValidator(RequiredValidator, RegexValidator, LengthValidator):
 
 class CountrycodeValidator(RequiredValidator, LengthValidator):
     '''
-    Validates that a country code is in a format that Veritrans
+    Validates that a country code is in a format that midtrans
     accepts -- which is any string less than 10 characters (note:
     their API documentation states this should be ISO 3166-1 Alpha 3)
     '''

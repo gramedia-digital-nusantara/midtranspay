@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from veritranspay.response import CimbsChargeResponse
+from midtranspay.response import CimbsChargeResponse
 
 
 class CimbsChargeResponseTests_v0_9(TestCase):

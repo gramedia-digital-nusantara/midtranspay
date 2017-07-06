@@ -5,7 +5,7 @@ import unittest
 from faker import Faker
 
 from tests import fixtures
-from veritranspay import request, validators
+from midtranspay import request, validators
 
 
 fake = Faker()
@@ -20,7 +20,7 @@ class Request_Address_Tests(unittest.TestCase):
         self.city = fake.city()
         self.postal_code = fake.postcode()
         # note: we can't use fake-factory's phone_number() because
-        # it can occasionally include extensions, which veritranspay'
+        # it can occasionally include extensions, which midtranspay'
         # documentation says they won't accept.
         self.phone = random.choice(fixtures.PHONE_NUMBERS)
         self.country_code = random.choice(fixtures.COUNTRY_CODES)

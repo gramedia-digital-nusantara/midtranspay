@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from veritranspay.response import KlikBCAChargeResponse
+from midtranspay.response import KlikBCAChargeResponse
 
 
 class KlikBCAChargeResponseTests_v0_9(TestCase):

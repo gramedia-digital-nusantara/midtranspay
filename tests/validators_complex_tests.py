@@ -1,9 +1,9 @@
 '''
 Validation tests for our 'complex' validators.
 These are all built on top of our basic validator types and stand
-to validate a specific type of data as defined by the Veritrans v2 API.
+to validate a specific type of data as defined by the Midtrans v2 API.
 
-All the validators live together in the veritranspay.validators module.
+All the validators live together in the midtranspay.validators module.
 '''
 from random import randint
 import unittest
@@ -11,7 +11,7 @@ import unittest
 from faker import Faker
 from mock import MagicMock
 
-from veritranspay import validators
+from midtranspay import validators
 
 
 fake = Faker()
@@ -39,7 +39,7 @@ class BaseTest_RequiredValidator(object):
 class AddressVaildator_UnitTests(BaseTest_RequiredValidator,
                                  unittest.TestCase):
     '''
-    Unit tests for veritranspay.validators.AddressValidator.
+    Unit tests for midtranspay.validators.AddressValidator.
     '''
     VALIDATOR_CLASS = validators.AddressValidator
 
@@ -61,7 +61,7 @@ class AddressVaildator_UnitTests(BaseTest_RequiredValidator,
 class PostalCodeValidator_UnitTests(BaseTest_RequiredValidator,
                                     unittest.TestCase):
     '''
-    Unit tests for veritranspay.validators.PostalcodeValidator
+    Unit tests for midtranspay.validators.PostalcodeValidator
     '''
     VALIDATOR_CLASS = validators.PostalcodeValidator
 
@@ -83,7 +83,7 @@ class PostalCodeValidator_UnitTests(BaseTest_RequiredValidator,
 class NameValidator_UnitTests(BaseTest_RequiredValidator,
                               unittest.TestCase):
     '''
-    Unit tests for veritranspay.validators.NameValidator
+    Unit tests for midtranspay.validators.NameValidator
     '''
     VALIDATOR_CLASS = validators.NameValidator
 
@@ -107,7 +107,7 @@ class NameValidator_UnitTests(BaseTest_RequiredValidator,
 class CityValidator_UnitTests(BaseTest_RequiredValidator,
                               unittest.TestCase):
     '''
-    Unit tests for veritranspay.validators.CityValidator
+    Unit tests for midtranspay.validators.CityValidator
     '''
     VALIDATOR_CLASS = validators.CityValidator
 
@@ -131,7 +131,7 @@ class CityValidator_UnitTests(BaseTest_RequiredValidator,
 class PhoneValidator_UnitTests(BaseTest_RequiredValidator,
                                unittest.TestCase):
     '''
-    Unit tests for veritranspay.validators.PhoneValidator
+    Unit tests for midtranspay.validators.PhoneValidator
     '''
     VALIDATOR_CLASS = validators.PhoneValidator
 
@@ -207,7 +207,7 @@ class PhoneValidator_UnitTests(BaseTest_RequiredValidator,
 class EmailValidator_UnitTests(BaseTest_RequiredValidator,
                                unittest.TestCase):
     '''
-    Unit tests for veritranspay.validators.EmailValidator
+    Unit tests for midtranspay.validators.EmailValidator
     '''
     VALIDATOR_CLASS = validators.EmailValidator
 
@@ -231,7 +231,7 @@ class EmailValidator_UnitTests(BaseTest_RequiredValidator,
         ''' Valid E-mail addresses should pass validation. '''
         v = validators.EmailValidator()
         for email in [fake.email() for _ in range(20)]:
-            # veritrans can't accept long e-mails.. so we have to skip
+            # midtrans can't accept long e-mails.. so we have to skip
             # if generated
             if len(email) > 45:
                 continue
@@ -242,7 +242,7 @@ class EmailValidator_UnitTests(BaseTest_RequiredValidator,
 class CountrycodeValidator_UnitTests(BaseTest_RequiredValidator,
                                      unittest.TestCase):
     '''
-    Unit tests for veritranspay.validators.CountrycodeValidator
+    Unit tests for midtranspay.validators.CountrycodeValidator
     '''
     VALIDATOR_CLASS = validators.CountrycodeValidator
 
@@ -257,7 +257,7 @@ class CountrycodeValidator_UnitTests(BaseTest_RequiredValidator,
 class PassthroughValidator_UnitTests(BaseTest_RequiredValidator,
                                      unittest.TestCase):
     '''
-    Unit tests for veritranspay.validators.PassthroughValidator
+    Unit tests for midtranspay.validators.PassthroughValidator
     '''
     VALIDATOR_CLASS = validators.PassthroughValidator
 

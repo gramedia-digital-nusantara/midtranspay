@@ -14,7 +14,7 @@ class PaymentTypeBase(mixins.SerializableMixin):
 class CreditCard(PaymentTypeBase):
     '''
     A payment made with a credit card.
-    http://docs.veritranspay.co.id/sandbox/charge.html#vtdirect-cc
+    http://docs.midtranspay.co.id/sandbox/charge.html#vtdirect-cc
     '''
     PAYMENT_TYPE_KEY = 'credit_card'
 
@@ -22,7 +22,7 @@ class CreditCard(PaymentTypeBase):
         '''
         :param bank: Represents the acquiring bank.
         :type bank: :py:class:`str`
-        :param token_id: A token retrieved from the Veritrans
+        :param token_id: A token retrieved from the Midtrans
             JavaScript library, after submitting the credit card details.
         :type token_id: :py:class:`str`
         :param bool save_token_id: Used in conjunction with a 2-click to

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from veritranspay.response.response import EpayBriChargeResponse
+from midtranspay.response.response import EpayBriChargeResponse
 
 
 class EpayBriChargeResponseTests(TestCase):
@@ -16,7 +16,7 @@ class EpayBriChargeResponseTests(TestCase):
             "status_message": "Success, BRI E-Pay transaction is successful",
             "transaction_id": "f8635cd7-615d-4a6d-a806-c9ca4a56257e",
             "order_id": "2014111702",
-            "redirect_url": "https://api.veritrans.co.id/v3/bri/epay/redirect/f8635cd7-615d-4a6d-a806-c9ca4a56257e",
+            "redirect_url": "https://api.midtrans.co.id/v3/bri/epay/redirect/f8635cd7-615d-4a6d-a806-c9ca4a56257e",
             "gross_amount": "145000.00",
             "payment_type": "bri_epay",
             "transaction_time": "2016-06-19 16:00:05",
@@ -33,5 +33,5 @@ class EpayBriChargeResponseTests(TestCase):
         self.assertEqual('bri_epay', self.parsed_response.payment_type)
 
     def test_redirect_url(self):
-        self.assertEqual('https://api.veritrans.co.id/v3/bri/epay/redirect/f8635cd7-615d-4a6d-a806-c9ca4a56257e', self.parsed_response.redirect_url)
+        self.assertEqual('https://api.midtrans.co.id/v3/bri/epay/redirect/f8635cd7-615d-4a6d-a806-c9ca4a56257e', self.parsed_response.redirect_url)
 

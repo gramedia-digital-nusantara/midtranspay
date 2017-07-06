@@ -1,6 +1,6 @@
 Mixins
 ======
 
-.. automodule:: veritranspay.mixins
+.. automodule:: midtranspay.mixins
     :members:
     :show-inheritance:

@@ -2,7 +2,7 @@ import unittest
 
 from faker import Faker
 
-from veritranspay.payment_types import CreditCard, Indomaret, VirtualAccountPermata, VirtualAccountBca, \
+from midtranspay.payment_types import CreditCard, Indomaret, VirtualAccountPermata, VirtualAccountBca, \
     VirtualAccountBni, VirtualAccountMandiri, BriEpay, MandiriClickpay, CimbClicks, BCAKlikPay, KlikBCA
 
 fake = Faker()

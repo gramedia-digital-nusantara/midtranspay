@@ -1,14 +1,14 @@
-# Veritranspay 
+# Midtranspay
 
-[![Build Status](https://travis-ci.org/derekjamescurtis/veritranspay.svg?branch=master)](https://travis-ci.org/derekjamescurtis/veritranspay)
-[![Documentation Status](https://readthedocs.org/projects/veritranspay/badge/?version=latest)](https://readthedocs.org/projects/veritranspay/?badge=latest)
-[![Latest Version](https://img.shields.io/pypi/v/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
-[![License](https://img.shields.io/pypi/l/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
-[![Download format](https://img.shields.io/pypi/format/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
-[![Supported Python versions](https://img.shields.io/pypi/pyversions/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
-[![Downloads](https://img.shields.io/pypi/dm/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
+[![Build Status](https://travis-ci.org/derekjamescurtis/midtranspay.svg?branch=master)](https://travis-ci.org/derekjamescurtis/midtranspay)
+[![Documentation Status](https://readthedocs.org/projects/midtranspay/badge/?version=latest)](https://readthedocs.org/projects/midtranspay/?badge=latest)
+[![Latest Version](https://img.shields.io/pypi/v/MidtransPay.svg)](https://pypi.python.org/pypi/MidtransPay/)
+[![License](https://img.shields.io/pypi/l/MidtransPay.svg)](https://pypi.python.org/pypi/MidtransPay/)
+[![Download format](https://img.shields.io/pypi/format/MidtransPay.svg)](https://pypi.python.org/pypi/MidtransPay/)
+[![Supported Python versions](https://img.shields.io/pypi/pyversions/MidtransPay.svg)](https://pypi.python.org/pypi/MidtransPay/)
+[![Downloads](https://img.shields.io/pypi/dm/MidtransPay.svg)](https://pypi.python.org/pypi/MidtransPay/)
 
-A Python client library for communicating with the [Veritrans Payment Gateway](http://veritrans.co.id/).
+A Python client library for communicating with the [Midtrans Payment Gateway](http://midtrans.co.id/).
 
 Also, absolutely EVERYTHING in the API is subject to change in early release
 versions (at least until 1.0), so make sure you have a good test suite
@@ -53,17 +53,17 @@ Add support for additional payment methods.
 
 ## Links
 
-- [Project on PyPi](https://pypi.python.org/pypi/VeritransPay)
-- [ReadTheDocs](http://veritranspay.readthedocs.org/en/latest/)
-- [Travis CI](https://travis-ci.org/derekjamescurtis/veritranspay)
-- [Veritrans Indonesia](http://veritrans.co.id)
+- [Project on PyPi](https://pypi.python.org/pypi/MidtransPay)
+- [ReadTheDocs](http://midtranspay.readthedocs.org/en/latest/)
+- [Travis CI](https://travis-ci.org/derekjamescurtis/midtranspay)
+- [Midtrans Indonesia](http://midtrans.co.id)
 
 
 ## Disclaimer
 
 This software is **not** provided by or in any way associated
-with or endorsed by PT. Midtrans (Veritrans Indonesia).  It is
-a 3rd party library to ease communication with the Veritrans API
+with or endorsed by PT. Midtrans (Midtrans Indonesia).  It is
+a 3rd party library to ease communication with the Midtrans API
 from Python Code.
 
 It is entirely USE AT YOUR OWN RISK.

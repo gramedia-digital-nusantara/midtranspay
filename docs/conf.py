@@ -35,7 +35,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Veritrans Py Client Library'
+project = u'Midrans Py Client Library'
 copyright = u'2014, Derek J. Curtis <derek.curtis@apps-foundry.com>'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -43,8 +43,8 @@ copyright = u'2014, Derek J. Curtis <derek.curtis@apps-foundry.com>'
 # built documents.
 #
 # The short X.Y version.
-import veritranspay
-version = veritranspay.__version__
+import midtranspay
+version = midtranspay.__version__
 # The full version, including alpha/beta/rc tags.
 release = version
 
@@ -186,7 +186,7 @@ html_static_path = ['_static']
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'VeritransPyClientLibrarydoc'
+htmlhelp_basename = 'MidtransPyClientLibrarydoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -209,8 +209,8 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   ('index',
-   'VeritransPyClientLibrary.tex',
-   u'Veritrans Py Client Library Documentation',
+   'MidtransPyClientLibrary.tex',
+   u',Midtrans Py Client Library Documentation',
    u'Derek J. Curtis \\textless{}derek.curtis@apps-foundry.com\\textgreater{}',
    'manual'),
 ]
@@ -242,8 +242,8 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index',
-     'veritranspyclientlibrary',
-     u'Veritrans Py Client Library Documentation',
+     'midtranspyclientlibrary',
+     u'Midtrans Py Client Library Documentation',
      [u'Derek J. Curtis <derek.curtis@apps-foundry.com>'],
      1)
 ]
@@ -258,10 +258,10 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'VeritransPyClientLibrary',
-   u'Veritrans Py Client Library Documentation',
+  ('index', 'MidtransPyClientLibrary',
+   u'Midtrans Py Client Library Documentation',
    u'Derek J. Curtis <derek.curtis@apps-foundry.com>',
-   'VeritransPyClientLibrary', 'One line description of project.',
+   'MidtransPyClientLibrary', 'One line description of project.',
    'Miscellaneous'),
 ]
 

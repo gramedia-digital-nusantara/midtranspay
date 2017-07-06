@@ -2,7 +2,7 @@ Quick Start
 ===========
 
 From this point on, we're going to assume that you've signed up for an account
-with Veritrans (if not, go back to the index page of this documentation), 
+with Midtrans (if not, go back to the index page of this documentation),
 and that you've successfully installed this library somewhere on your python
 path.
 
@@ -14,11 +14,11 @@ detail in --this.. link to the section-- Section.
 
 .. code-block:: python
     
-    from veritranspay import veritrans, request, validation, payment_type
-    from veritranspay.response import status
+    from midtranspay import midtrans, request, validation, payment_type
+    from midtranspay.response import status
     
     # this gateway will submit to the sandbox API.
-    gateway = veritrans.VTDirect(api_key='YOUR-API-KEY', sandbox_mode=True)
+    gateway = midtrans.VTDirect(api_key='YOUR-API-KEY', sandbox_mode=True)
 
     # constructor args are omitted here for brevity
     # see sections that follow for more details about building
@@ -44,7 +44,7 @@ detail in --this.. link to the section-- Section.
                   "something nice!")
         elif charge_resp.status_code == status.CHALLENGE:
             # the payment was accepted, but you'll have to manually validate
-            # and approve the transation through http://my.veritrans.co.id
+            # and approve the transation through http://my.midtrans.co.id
             print("Your transaction is approved, but we need to "
                   "check some things out.. just you wait, OK?")
         elif chrage_resp.status_code == status.DENIED:
@@ -57,7 +57,7 @@ detail in --this.. link to the section-- Section.
     catch validation.ValidationError as e:
         # We failed client-side validation
         # This happens automatically before our request is submitted to
-        # veritrans!
+        # midtrans!
         print("Oops.. you need to check your data")
 
     catch Exception as e:

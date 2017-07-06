@@ -4,19 +4,19 @@ Charge A Customer
 Charging a customer is a simple process that involves only 3 steps
 
 .. note::
-    Before submitting charges, but must sign create an account with Veritrans
-    and have access to your Server Key: `Veritrans Signup`_.
-    Also note, please read Veritrans documentation before implementing!
+    Before submitting charges, but must sign create an account with Midtrans
+    and have access to your Server Key: `Midtrans Signup`_.
+    Also note, please read Midtrans documentation before implementing!
     You cannot submit credit card details from your server -- that must
-    be done through a front end javascript library that Veritrans provides.
+    be done through a front end javascript library that Midtrans provides.
 
 .. code-block:: python
     
-    from veritranspay import veritrans, request, validation, payment_type
-    from veritranspay.response import status
+    from midtranspay import midtrans, request, validation, payment_type
+    from midtranspay.response import status
     
     # 1: Create a gateway.
-    gateway = veritrans.VTDirect('YOUR-API-KEY')
+    gateway = midtrans.VTDirect('YOUR-API-KEY')
 
     # 2: Build your Charge Request
     cust = request.CustomerDetails(
@@ -27,7 +27,7 @@ Charging a customer is a simple process that involves only 3 steps
     trans = request.TransactionDetails(
         order_id='1234',
         gross_amount=1200000)
-    # NOTE: the token must be retrieved from the veritrans javascript
+    # NOTE: the token must be retrieved from the midtrans javascript
     # library!!
     cc = payment_type.CreditCard(
         bank='bca',
@@ -40,7 +40,7 @@ Charging a customer is a simple process that involves only 3 steps
                                        customer_details=cust)
 
     
-    # 3: Send the charge request to Veritrans and check the response
+    # 3: Send the charge request to Midtrans and check the response
     try:
         resp = gateway.submit_charge_request(charge_req)
         
@@ -60,7 +60,7 @@ Charging a customer is a simple process that involves only 3 steps
 
     catch Exception as e:
         # something else entirely went wrong
-        # such as a network timeout communicating with veritrans
+        # such as a network timeout communicating with midtrans
         print("Uhm.. Bad things")
 
-.. _Veritrans Signup: https://my.veritrans.co.id/register
+.. _Midtrans Signup: https://my.midtrans.co.id/register

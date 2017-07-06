@@ -1,7 +1,7 @@
 Get Transaction Status
 ======================
 
-After submitting a charge to Veritrans, you can also check on the status
+After submitting a charge to Midtrans, you can also check on the status
 of a previously-issued transaction.
 
 To look up a previous transaction, you must know the **order_id** of that
@@ -11,11 +11,11 @@ This only takes 3 steps
 
 .. code-block:: python
     
-    from veritranspay import veritrans, request
-    from veritranspay.response import status
+    from midtranspay import midtrans, request
+    from midtranspay.response import status
     
-    # 1: Create a gateway to talk to Veritrans
-    gateway = veritrans.VTDirect('your-server-key')
+    # 1: Create a gateway to talk to Midtrans
+    gateway = midtrans.VTDirect('your-server-key')
     
     # 2: Build a request with the order_id you want to check
     req = request.StatusRequest('the-order-id')

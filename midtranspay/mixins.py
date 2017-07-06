@@ -6,7 +6,7 @@ class ValidatableMixin(object):
     Provides a mechanism for validating the attributes of an object instance.
     Expects a dictionary named _validators to be provided with keys that
     represent the names of attributes to be validated, mapped to an instance
-    of a class in the module :py:mod:`veritranspay.validators`.
+    of a class in the module :py:mod:`midtranspay.validators`.
     '''
     def validate_attr(self, name, value, validator):
         '''
@@ -21,8 +21,8 @@ class ValidatableMixin(object):
         :arg validator: The appropriate validator instance that
             value will be checked with.
         :type validator: Subclass of
-            :py:class:`veritranspay.validators.ValidatorBase`
-        :raises: :py:class:`veritranspay.validators.ValidationError`
+            :py:class:`midtranspay.validators.ValidatorBase`
+        :raises: :py:class:`midtranspay.validators.ValidationError`
         '''
         try:
             validator.validate(value)

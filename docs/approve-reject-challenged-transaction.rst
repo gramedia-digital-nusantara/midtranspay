@@ -1,8 +1,8 @@
 Approve/Reject a Challenged Transaction
 =======================================
 
-Veritrans implements it's own fraud detection system.  Sometimes, even if
-a credit card can be charged, Veritrans will set the transaction as Challenge
+Midtrans implements it's own fraud detection system.  Sometimes, even if
+a credit card can be charged, Midtrans will set the transaction as Challenge
 (201).
 
 Those transactions can manually be approved through the MAP website, or can
@@ -10,11 +10,11 @@ be handled by your code.
 
 .. code-block:: python
     
-    from veritranspay import veritrans, request, validation, payment_type
-    from veritranspay.response import status
+    from midtranspay import midtrans, request, validation, payment_type
+    from midtranspay.response import status
     
     # 1: Create a gateway
-    gateway = veritrans.VTDirect('YOUR-API-KEY')
+    gateway = midtrans.VTDirect('YOUR-API-KEY')
 
     # 2: Build a charge request (params omitted)
     charge_req = request.ChargeRequest(**your_charge_req_args)

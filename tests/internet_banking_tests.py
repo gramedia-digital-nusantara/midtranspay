@@ -8,9 +8,9 @@ from requests import codes
 from faker import Faker
 fake = Faker()
 
-import veritranspay
-from veritranspay import request, veritrans, payment_types, response
-from veritranspay.response import status
+import midtranspay
+from midtranspay import request, midtrans, payment_types, response
+from midtranspay.response import status
 
 from . import fixtures
 
@@ -26,7 +26,7 @@ class InternetBankingTests_Base(object):
         if None in [SANDBOX_CLIENT_KEY, SANDBOX_SERVER_KEY]:
             self.skipTest("Live credentials not provided -- skipping tests")
         if not RUN_ALL_ACCEPTANCE_TESTS and \
-                self.VERSION != veritranspay.__version__:
+                self.VERSION != midtranspay.__version__:
             self.skipTest("Skipping this version of tests")
 
         expected = fixtures.CC_REQUEST
@@ -62,7 +62,7 @@ class MandiriClickpayTests_v0_9(InternetBankingTests_Base, unittest.TestCase):
 
     def test_mandiri_click_pay_charge(self):
         # 1: Create a sandbox gateway
-        gateway = veritrans.VTDirect(
+        gateway = midtrans.VTDirect(
             server_key=SANDBOX_SERVER_KEY,
             sandbox_mode=True)
 
@@ -94,7 +94,7 @@ class CimbClicksTests_v0_9(InternetBankingTests_Base, unittest.TestCase):
 
     def test_cimb_clicks_charge(self):
         # 1: Create a sandbox gateway
-        gateway = veritrans.VTDirect(
+        gateway = midtrans.VTDirect(
             server_key=SANDBOX_SERVER_KEY,
             sandbox_mode=True)
 
@@ -122,7 +122,7 @@ class BCAKlikPayTests_v0_9(InternetBankingTests_Base, unittest.TestCase):
 
     def test_bcaklikpay_charger(self):
         # 1: Create a sandbox gateway
-        gateway = veritrans.VTDirect(
+        gateway = midtrans.VTDirect(
             server_key=SANDBOX_SERVER_KEY,
             sandbox_mode=True)
 
@@ -149,7 +149,7 @@ class KlikBCATests_v0_9(InternetBankingTests_Base, unittest.TestCase):
 
     def test_klikbca_charger(self):
         # 1: Create a sandbox gateway
-        gateway = veritrans.VTDirect(
+        gateway = midtrans.VTDirect(
             server_key=SANDBOX_SERVER_KEY,
             sandbox_mode=True)
 

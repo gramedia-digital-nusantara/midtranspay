@@ -1,8 +1,8 @@
 '''
 Contains entities and sub-entities that are used to create a complete
-charge request to the Veritrans API.
+charge request to the Midtrans API.
 
-http://docs.veritranspay.co.id/sandbox/charge.html#specification
+http://docs.midtranspay.co.id/sandbox/charge.html#specification
 '''
 from . import mixins, validators, constraints
 
@@ -99,9 +99,9 @@ class CustomerDetails(mixins.RequestEntity):
             hyphens '-', parenthesis '()',
             spaces ' '; can start with plus symbol '+'
         :param billing_address: Address used to validate the charge.
-        :type billing_address: :py:class:`veritranspay.request.Address`
+        :type billing_address: :py:class:`midtranspay.request.Address`
         :param shipping_address: Address where order should be shipped.
-        :type shipping_address: :py:class:`veritranspay.request.Address`
+        :type shipping_address: :py:class:`midtranspay.request.Address`
         '''
         self.first_name = first_name
         self.last_name = last_name
@@ -144,7 +144,7 @@ class ItemDetails(mixins.RequestEntity):
 
 class ChargeRequest(mixins.RequestEntity):
     '''
-    All the information sent to Veritrans to request a customer be charged
+    All the information sent to Midtrans to request a customer be charged
     for a particular order.
     '''
     _validators = {'charge_type': validators.DummyValidator(),
@@ -159,18 +159,18 @@ class ChargeRequest(mixins.RequestEntity):
         :param charge_type: Account information against which to submit
             the charge.
         :type charge_type: subclass of
-            :py:class:`veritranspay.payment_types.PaymentTypeBase`
+            :py:class:`midtranspay.payment_types.PaymentTypeBase`
         :param transaction_details: Details about the charge being submitted,
             such as the total amount to bill.
         :type transaction_details:
-            :py:class:`veritranspay.request.TransactionDetails`
+            :py:class:`midtranspay.request.TransactionDetails`
         :param customer_details: Personal details about the person
             being billed.
         :type customer_details:
-            :py:class:`veritranspay.request.CustomerDetails`
+            :py:class:`midtranspay.request.CustomerDetails`
         :param item_details: Line item details for this transaction.
         :type item_details: iterable of
-            :py:class:`veritranspay.request.ItemDetails`
+            :py:class:`midtranspay.request.ItemDetails`
         '''
         self.charge_type = charge_type
         self.transaction_details = transaction_details
@@ -195,7 +195,7 @@ class ChargeRequest(mixins.RequestEntity):
 class StatusRequest(mixins.ValidatableMixin):
     '''
     Request used to retrieve information about a single charge
-    that has already been submitted to Veritrans.
+    that has already been submitted to Midtrans.
     '''
     _validators = {'order_id':
                    validators.StringValidator(

@@ -3,21 +3,21 @@ Validation logic tests for our simple validators.
 These generally serve as building block for more complex validator
 types (but not always.  In some cases they're used directly).
 
-All the validators live together in the veritranspay.validators module.
+All the validators live together in the midtranspay.validators module.
 '''
 from random import randint
 import unittest
 
 from faker import Faker
 
-from veritranspay import validators
+from midtranspay import validators
 
 
 fake = Faker()
 
 
 class ValidatorBase_UnitTests(unittest.TestCase):
-    ''' Unit tests for veritranspay.validators.ValidatorBase. '''
+    ''' Unit tests for midtranspay.validators.ValidatorBase. '''
     def test_init_accepts_any_args(self):
         '''
         Init should accept any or no keyword or positionl arguments provided
@@ -63,12 +63,12 @@ class ValidatorBase_UnitTests(unittest.TestCase):
 
 
 class DummyValidator_UnitTests(ValidatorBase_UnitTests):
-    ''' Unit tests for veritranspay.validators.DummyValidator. '''
+    ''' Unit tests for midtranspay.validators.DummyValidator. '''
     pass
 
 
 class RequiredValidator_UnitTests(unittest.TestCase):
-    ''' Unit tests for veritranspay.validators.RequiredValidator. '''
+    ''' Unit tests for midtranspay.validators.RequiredValidator. '''
     def test_is_required_default_true(self):
         '''
         When the is_required init param is not provided, it's expected
@@ -124,7 +124,7 @@ class RequiredValidator_UnitTests(unittest.TestCase):
 
 
 class LengthValidator_UnitTests(unittest.TestCase):
-    ''' Unit tests for veritranspay.validators.LengthValidator '''
+    ''' Unit tests for midtranspay.validators.LengthValidator '''
 
     def test_invalid_init_args_raise_ValueError(self):
         ''' max_length cannot be less than min_length on init. '''
@@ -186,7 +186,7 @@ class LengthValidator_UnitTests(unittest.TestCase):
 
 
 class RegexValidator_UnitTests(unittest.TestCase):
-    ''' Unit tests for veritranspay.validators.RegexValidator '''
+    ''' Unit tests for midtranspay.validators.RegexValidator '''
     def test_pattern_matching(self):
         ''' Verify that regex pattern validation is occurring. '''
         test_digit_pattern = r'^\d+$'
@@ -203,7 +203,7 @@ class RegexValidator_UnitTests(unittest.TestCase):
 
 
 class StringValidator_UnitTests(unittest.TestCase):
-    ''' Unit tests for veritranspay.validators.StringValidator '''
+    ''' Unit tests for midtranspay.validators.StringValidator '''
     def test_strings_accepted(self):
         ''' Any string value should be accepted '''
         v = validators.StringValidator()
@@ -219,7 +219,7 @@ class StringValidator_UnitTests(unittest.TestCase):
 
 
 class NumericValidator_UnitTests(unittest.TestCase):
-    ''' Unit tests for veritranspay.validators.NumericValidator '''
+    ''' Unit tests for midtranspay.validators.NumericValidator '''
     def test_numbers_accepted(self):
         ''' floats, ints, and longs should all pass validation. '''
         v = validators.NumericValidator()

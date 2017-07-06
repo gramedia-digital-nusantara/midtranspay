@@ -1,21 +1,21 @@
 '''
-VeritransPay
+MidtransPay
 -------
 
 Client library for communicating with **VERSION 2** of the
-veritrans.co.id payment gateway.  Note, there is no support for the older
+midtrans.co.id payment gateway.  Note, there is no support for the older
 v1 API as this was dropped in Dec 2014.
 
 Notes
 `````
 This is still an early release and does not provide access to all the
-functionality of the Veritrans.co.id API.  Currently, only submitting
+functionality of the Midtrans.co.id API.  Currently, only submitting
 credit-card payments, and receiving that response is supported.
 
 Links
 `````
 
-* `veritrans website <http://veritrans.co.id/>`_
+* `midtrans website <http://midtrans.co.id/>`_
 
 '''
 from setuptools import setup
@@ -33,16 +33,16 @@ test_req = pkg_req + [
 
 
 setup(
-    name='VeritransPay',
-    version=__import__('veritranspay').__version__,
-    url='https://github.com/derekjamescurtis/veritranspay',
+    name='MidtransPay',
+    version=__import__('midtranspay').__version__,
+    url='https://github.com/derekjamescurtis/midtranspay',
     license='BSD',
     author='Derek J. Curtis',
     author_email='derek.curtis@apps-foundry.com',
-    description='Veritrans.co.id API Client Library ',
+    description='Midtrans.co.id API Client Library ',
     long_description=__doc__,
-    packages=['veritranspay',
-              'veritranspay.response',
+    packages=['midtranspay',
+              'midtranspay.response',
               ],
     include_package_data=True,
     platforms='any',

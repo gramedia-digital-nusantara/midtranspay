@@ -1,13 +1,13 @@
 from unittest import TestCase
 
-from veritranspay.response import IndomaretChargeResponse
+from midtranspay.response import IndomaretChargeResponse
 
 
 class IndomaretChargeResponseTests(TestCase):
 
     def setUp(self):
         # example response data from
-        # http://docs.veritrans.co.id/en/vtdirect/integration_indomrt.html#response-transaction-indomrt
+        # http://docs.midtrans.co.id/en/vtdirect/integration_indomrt.html#response-transaction-indomrt
         self.response_json = {
             "status_code": "201",
             "status_message": "Success, CSTORE transaction is successful",

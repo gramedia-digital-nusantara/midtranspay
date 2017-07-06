@@ -5,9 +5,9 @@ import os
 import requests
 from requests import codes
 
-import veritranspay
-from veritranspay import request, veritrans, payment_types, response
-from veritranspay.response import status
+import midtranspay
+from midtranspay import request, midtrans, payment_types, response
+from midtranspay.response import status
 
 from . import fixtures
 from faker import Faker
@@ -25,7 +25,7 @@ class LiveTests_Base(object):
         if None in [SANDBOX_CLIENT_KEY, SANDBOX_SERVER_KEY]:
             self.skipTest("Live credentials not provided -- skipping tests")
         if not RUN_ALL_ACCEPTANCE_TESTS and \
-                self.VERSION != veritranspay.__version__:
+                self.VERSION != midtranspay.__version__:
             self.skipTest("Skipping this version of tests")
 
         expected = fixtures.CC_REQUEST
@@ -87,7 +87,7 @@ class AcceptanceTests_v0_4(LiveTests_Base, unittest.TestCase):
             SANDBOX_CLIENT_KEY)
 
         # 2: Create a sandbox gateway
-        gateway = veritrans.VTDirect(
+        gateway = midtrans.VTDirect(
             SANDBOX_SERVER_KEY,
             sandbox_mode=True)
 
@@ -123,7 +123,7 @@ class AcceptanceTests_v0_5(LiveTests_Base, unittest.TestCase):
             SANDBOX_CLIENT_KEY)
 
         # 2: Create a sandbox gateway
-        gateway = veritrans.VTDirect(
+        gateway = midtrans.VTDirect(
             SANDBOX_SERVER_KEY,
             sandbox_mode=True)
 
@@ -169,6 +169,8 @@ class AcceptanceTests_v0_5(LiveTests_Base, unittest.TestCase):
 
 class AcceptanceTests_v0_6(LiveTests_Base, unittest.TestCase):
 
+    VERSION = '0.6'
+
     def test_one_click(self):
         pass
 
@@ -188,7 +190,7 @@ class PermataVA_AcceptanceTests_v0_9(unittest.TestCase):
             self.skipTest("Live credentials not provided -- skipping tests")
 
         if not RUN_ALL_ACCEPTANCE_TESTS and \
-                self.VERSION != veritranspay.__version__:
+                self.VERSION != midtranspay.__version__:
             self.skipTest("Skipping %s this version of tests" % (self.VERSION))
 
         expected = fixtures.VIRTUALACCOUNTPERMATA_REQUEST
@@ -225,7 +227,7 @@ class PermataVA_AcceptanceTests_v0_9(unittest.TestCase):
         trans_details.order_id = "".join([fake.random_letter() for _ in range(10)])
 
         # 2: Create a sandbox gateway
-        gateway = veritrans.VTDirect(
+        gateway = midtrans.VTDirect(
             SANDBOX_SERVER_KEY,
             sandbox_mode=True)
 
@@ -255,7 +257,7 @@ class BriEpay_AcceptanceTests_v0_9(unittest.TestCase):
             self.skipTest("Live credentials not provided -- skipping tests")
 
         if not RUN_ALL_ACCEPTANCE_TESTS and \
-                self.VERSION != veritranspay.__version__:
+                self.VERSION != midtranspay.__version__:
             self.skipTest("Skipping %s this version of tests" % self.VERSION)
 
         expected = fixtures.BRIEPAY_REQUEST
@@ -288,7 +290,7 @@ class BriEpay_AcceptanceTests_v0_9(unittest.TestCase):
             Verify Bri Epay payment method
         """
         # 2: Create a sandbox gateway
-        gateway = veritrans.VTDirect(
+        gateway = midtrans.VTDirect(
             SANDBOX_SERVER_KEY,
             sandbox_mode=True)
 
@@ -318,7 +320,7 @@ class MandiriVA_AcceptanceTests_v0_9(unittest.TestCase):
             self.skipTest("Live credentials not provided -- skipping tests")
 
         if not RUN_ALL_ACCEPTANCE_TESTS and \
-                self.VERSION != veritranspay.__version__:
+                self.VERSION != midtranspay.__version__:
             self.skipTest("Skipping %s this version of tests" % self.VERSION)
 
         expected = fixtures.VIRTUALACCOUNTMANDIRI_REQUEST
@@ -353,7 +355,7 @@ class MandiriVA_AcceptanceTests_v0_9(unittest.TestCase):
         """
 
         # 2: Create a sandbox gateway
-        gateway = veritrans.VTDirect(
+        gateway = midtrans.VTDirect(
             SANDBOX_SERVER_KEY,
             sandbox_mode=True)
 

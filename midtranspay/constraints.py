@@ -1,8 +1,8 @@
 '''
 These are the constraints of text field sizes provided by
-veritrans.
+midtrans.
 
-http://docs.veritrans.co.id/sandbox/charge.html
+http://docs.midtrans.co.id/sandbox/charge.html
 '''
 
 MAX_NAME_LENGTH = 20

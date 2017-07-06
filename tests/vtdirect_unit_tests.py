@@ -5,9 +5,9 @@ import unittest
 from faker import Faker
 from mock import MagicMock, patch
 
-from veritranspay import request, validators, payment_types, veritrans, \
+from midtranspay import request, validators, payment_types, midtrans, \
     helpers
-from veritranspay.response import response
+from midtranspay.response import response
 
 from . import fixtures
 
@@ -27,14 +27,14 @@ class VTDirect_Init_Tests(unittest.TestCase):
     def test_requires_server_key(self):
         ''' server_key should be a required init parameter. '''
         self.assertRaises(TypeError,
-                          lambda: veritrans.VTDirect())
+                          lambda: midtrans.VTDirect())
 
     def test_live_mode_is_default(self):
         '''
         When sandbox_mode is NOT explicitally set, VTDirect gateway should
         default to sandbox_mode=False.
         '''
-        v = veritrans.VTDirect(server_key=self.server_key)
+        v = midtrans.VTDirect(server_key=self.server_key)
         self.assertFalse(v.sandbox_mode)
 
     def test_instance_attributes_set(self):
@@ -42,13 +42,13 @@ class VTDirect_Init_Tests(unittest.TestCase):
         Arguments passed to the constructor should persist themselves as
         instance attributes of the same name.
         '''
-        v = veritrans.VTDirect(server_key=self.server_key,
-                               sandbox_mode=False)
+        v = midtrans.VTDirect(server_key=self.server_key,
+                              sandbox_mode=False)
         self.assertEqual(v.server_key, self.server_key)
         self.assertFalse(v.sandbox_mode)
 
-        v = veritrans.VTDirect(server_key=self.server_key,
-                               sandbox_mode=True)
+        v = midtrans.VTDirect(server_key=self.server_key,
+                              sandbox_mode=True)
         self.assertEqual(v.server_key, self.server_key)
         self.assertTrue(v.sandbox_mode)
 
@@ -57,28 +57,28 @@ class VTDirect_Init_Tests(unittest.TestCase):
         The value for 'sandbox_mode' passed to init should be persisted
         as an attribute with the same name.
         '''
-        v = veritrans.VTDirect(server_key=self.server_key,
-                               sandbox_mode=True)
+        v = midtrans.VTDirect(server_key=self.server_key,
+                              sandbox_mode=True)
         self.assertEqual(v.server_key, self.server_key)
         self.assertTrue(v.sandbox_mode)
 
     def test_sandbox_mode_expected_url(self):
         '''
-        When sandbox_mode is True, we should receive the veritrans sandbox api
+        When sandbox_mode is True, we should receive the midtrans sandbox api
         URL back from the base_url property.
         '''
-        v = veritrans.VTDirect(server_key=self.server_key,
-                               sandbox_mode=True)
-        self.assertEqual(v.base_url, veritrans.VTDirect.SANDBOX_API_URL)
+        v = midtrans.VTDirect(server_key=self.server_key,
+                              sandbox_mode=True)
+        self.assertEqual(v.base_url, midtrans.VTDirect.SANDBOX_API_URL)
 
     def test_live_mode_expected_url(self):
         '''
-        When sandbox_mode is False, we should receive the veritrans live api
+        When sandbox_mode is False, we should receive the midtrans live api
         URL back from the base_url property.
         '''
-        v = veritrans.VTDirect(server_key=self.server_key,
-                               sandbox_mode=False)
-        self.assertEqual(v.base_url, veritrans.VTDirect.LIVE_API_URL)
+        v = midtrans.VTDirect(server_key=self.server_key,
+                              sandbox_mode=False)
+        self.assertEqual(v.base_url, midtrans.VTDirect.LIVE_API_URL)
 
 
 class VTDirect_ChargeRequest_Tests(unittest.TestCase):
@@ -92,7 +92,7 @@ class VTDirect_ChargeRequest_Tests(unittest.TestCase):
         Make sure that if any of the sub-entities raise a ValidationError
         that it is bubbled out to calling code.
         '''
-        gateway = veritrans.VTDirect(server_key=self.server_key)
+        gateway = midtrans.VTDirect(server_key=self.server_key)
 
         charge_req = MagicMock(spec=request.ChargeRequest)
         mock_validate = MagicMock(side_effect=validators.ValidationError)
@@ -110,13 +110,13 @@ class VTDirect_ChargeRequest_Tests(unittest.TestCase):
         - Do we get the correct response type back?
         - Does the response contain the data that it should?
         '''
-        with patch('veritranspay.veritrans.requests.post') as mock_post:
+        with patch('midtranspay.midtrans.requests.post') as mock_post:
 
             # create a fake key and request payload
             payload = {'charge_type': 'I am a little tea cup',
                        }
 
-            gateway = veritrans.VTDirect(server_key=self.server_key)
+            gateway = midtrans.VTDirect(server_key=self.server_key)
 
             req = MagicMock()
             req.charge_type = MagicMock(spec=payment_types.CreditCard)
@@ -154,12 +154,12 @@ class VTDirect_ChargeRequest_Tests(unittest.TestCase):
                              resp.__dict__)
 
     def test_submit_indomaret_charge(self):
-        with patch('veritranspay.veritrans.requests.post') as mock_post:
+        with patch('midtranspay.midtrans.requests.post') as mock_post:
             # create a fake key and request payload
             payload = {'charge_type': 'I am a little tea cup',
                        }
 
-            gateway = veritrans.VTDirect(server_key=self.server_key)
+            gateway = midtrans.VTDirect(server_key=self.server_key)
 
             req = MagicMock()
             req.charge_type = MagicMock(spec=payment_types.Indomaret)
@@ -196,12 +196,12 @@ class VTDirect_ChargeRequest_Tests(unittest.TestCase):
                              resp.__dict__)
 
     def test_submit_virtualaccountpermata_charge(self):
-        with patch('veritranspay.veritrans.requests.post') as mock_post:
+        with patch('midtranspay.midtrans.requests.post') as mock_post:
             # create a fake key and request payload
             payload = {'charge_type': 'I am a little tea cup',
                        }
 
-            gateway = veritrans.VTDirect(server_key=self.server_key)
+            gateway = midtrans.VTDirect(server_key=self.server_key)
 
             req = MagicMock()
             req.charge_type = MagicMock(spec=payment_types.VirtualAccountPermata)
@@ -238,12 +238,12 @@ class VTDirect_ChargeRequest_Tests(unittest.TestCase):
                              resp.__dict__)
 
     def test_submit_virtualaccountmandiri_charge(self):
-        with patch('veritranspay.veritrans.requests.post') as mock_post:
+        with patch('midtranspay.midtrans.requests.post') as mock_post:
             # create a fake key and request payload
             payload = {'charge_type': 'I am a little tea cup',
                        }
 
-            gateway = veritrans.VTDirect(server_key=self.server_key)
+            gateway = midtrans.VTDirect(server_key=self.server_key)
 
             req = MagicMock()
             req.charge_type = MagicMock(spec=payment_types.VirtualAccountMandiri)
@@ -280,12 +280,12 @@ class VTDirect_ChargeRequest_Tests(unittest.TestCase):
                              resp.__dict__)
 
     def test_submit_briepay_charge(self):
-        with patch('veritranspay.veritrans.requests.post') as mock_post:
+        with patch('midtranspay.midtrans.requests.post') as mock_post:
             # create a fake key and request payload
             payload = {'charge_type': 'I am a little tea cup',
                        }
 
-            gateway = veritrans.VTDirect(server_key=self.server_key)
+            gateway = midtrans.VTDirect(server_key=self.server_key)
 
             req = MagicMock()
             req.charge_type = MagicMock(spec=payment_types.BriEpay)
@@ -332,7 +332,7 @@ class VTDirect_ApprovalRequest_UnitTests(unittest.TestCase):
         '''
         Validation error should be bubbled-up to the calling client code.
         '''
-        gateway = veritrans.VTDirect(server_key=self.server_key)
+        gateway = midtrans.VTDirect(server_key=self.server_key)
 
         approval_req = MagicMock(spec=request.ApprovalRequest)
         mock_validate = MagicMock(side_effect=validators.ValidationError)
@@ -350,7 +350,7 @@ class VTDirect_ApprovalRequest_UnitTests(unittest.TestCase):
         - Do we get back the proper response type
         - Does the response contain the data we think it should?
         '''
-        with patch('veritranspay.veritrans.requests.post') as mock_post:
+        with patch('midtranspay.midtrans.requests.post') as mock_post:
 
             order_id = ''.join([fake.random_letter() for _ in range(25)])
 
@@ -368,7 +368,7 @@ class VTDirect_ApprovalRequest_UnitTests(unittest.TestCase):
             mock_post.return_value = mock_resp
 
             # get a response from the gateway
-            gateway = veritrans.VTDirect(self.server_key)
+            gateway = midtrans.VTDirect(self.server_key)
             resp = gateway.submit_approval_request(req)
 
             # did we make our HTTP request properly?
@@ -388,9 +388,9 @@ class VTDirect_ApprovalRequest_UnitTests(unittest.TestCase):
             exp = deepcopy(fixtures.APPROVE_RESPONSE)
             exp['status_code'] = int(exp['status_code'])
             exp['transaction_time'] = \
-                helpers.parse_veritrans_datetime(exp['transaction_time'])
+                helpers.parse_midtrans_datetime(exp['transaction_time'])
             exp['gross_amount'] = \
-                helpers.parse_veritrans_amount(exp['gross_amount'])
+                helpers.parse_midtrans_amount(exp['gross_amount'])
 
             # does it have our expected attributes?
             self.assertEqual(resp.status_code,
@@ -416,7 +416,7 @@ class VTDirect_CancelRequest_UnitTests(unittest.TestCase):
         self.server_key = "".join([fake.random_letter() for _ in range(45)])
 
     def test_invalid_cancel_request_raises_ValidationError(self):
-        gateway = veritrans.VTDirect(server_key=self.server_key)
+        gateway = midtrans.VTDirect(server_key=self.server_key)
 
         cancel_req = MagicMock(spec=request.CancelRequest)
         mock_validate = MagicMock(side_effect=validators.ValidationError)
@@ -434,7 +434,7 @@ class VTDirect_CancelRequest_UnitTests(unittest.TestCase):
         - Do we get back the proper response type
         - Does the response contain the data we think it should?
         '''
-        with patch('veritranspay.veritrans.requests.post') as mock_post:
+        with patch('midtranspay.midtrans.requests.post') as mock_post:
 
             order_id = ''.join([fake.random_letter() for _ in range(25)])
 
@@ -452,7 +452,7 @@ class VTDirect_CancelRequest_UnitTests(unittest.TestCase):
             mock_post.return_value = mock_resp
 
             # get a response from the gateway
-            gateway = veritrans.VTDirect(self.server_key)
+            gateway = midtrans.VTDirect(self.server_key)
             resp = gateway.submit_cancel_request(req)
 
             # did we make our HTTP request properly?
@@ -472,9 +472,9 @@ class VTDirect_CancelRequest_UnitTests(unittest.TestCase):
             exp = deepcopy(fixtures.CANCEL_RESPONSE)
             exp['status_code'] = int(exp['status_code'])
             exp['transaction_time'] = \
-                helpers.parse_veritrans_datetime(exp['transaction_time'])
+                helpers.parse_midtrans_datetime(exp['transaction_time'])
             exp['gross_amount'] = \
-                helpers.parse_veritrans_amount(exp['gross_amount'])
+                helpers.parse_midtrans_amount(exp['gross_amount'])
 
             # does it have our expected attributes?
             self.assertEqual(resp.status_code,
@@ -499,7 +499,7 @@ class VTDirect_StatusRequest_UnitTests(unittest.TestCase):
         self.server_key = "".join([fake.random_letter() for _ in range(45)])
 
     def test_invalid_status_request_raises_ValidationError(self):
-        gateway = veritrans.VTDirect(server_key=self.server_key)
+        gateway = midtrans.VTDirect(server_key=self.server_key)
 
         status_req = MagicMock(spec=request.StatusRequest)
         mock_validate = MagicMock(side_effect=validators.ValidationError)
@@ -517,7 +517,7 @@ class VTDirect_StatusRequest_UnitTests(unittest.TestCase):
         - Do we get back the proper response type
         - Does the response contain the data we think it should?
         '''
-        with patch('veritranspay.veritrans.requests.post') as mock_post:
+        with patch('midtranspay.midtrans.requests.post') as mock_post:
 
             order_id = ''.join([fake.random_letter() for _ in range(25)])
 
@@ -535,7 +535,7 @@ class VTDirect_StatusRequest_UnitTests(unittest.TestCase):
             mock_post.return_value = mock_resp
 
             # get a response from the gateway
-            gateway = veritrans.VTDirect(self.server_key)
+            gateway = midtrans.VTDirect(self.server_key)
             resp = gateway.submit_approval_request(req)
 
             # did we make our HTTP request properly?
@@ -555,9 +555,9 @@ class VTDirect_StatusRequest_UnitTests(unittest.TestCase):
             exp = deepcopy(fixtures.STATUS_RESPONSE)
             exp['status_code'] = int(exp['status_code'])
             exp['transaction_time'] = \
-                helpers.parse_veritrans_datetime(exp['transaction_time'])
+                helpers.parse_midtrans_datetime(exp['transaction_time'])
             exp['gross_amount'] = \
-                helpers.parse_veritrans_amount(exp['gross_amount'])
+                helpers.parse_midtrans_amount(exp['gross_amount'])
 
             # does it have our expected attributes?
             self.assertEqual(resp.status_code,

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from veritranspay.response import MandiriChargeResponse
+from midtranspay.response import MandiriChargeResponse
 
 
 class MandiriChargeResponseTests_v0_9(TestCase):

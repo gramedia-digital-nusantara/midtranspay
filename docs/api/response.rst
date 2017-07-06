@@ -1,6 +1,6 @@
 Response
 ========
 
-.. automodule:: veritranspay.response.response
+.. automodule:: midtranspay.response.response
    :members:
    :show-inheritance:

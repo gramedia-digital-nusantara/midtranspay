@@ -6,7 +6,7 @@ import unittest
 
 from faker import Faker
 
-from veritranspay import request, payment_types, validators
+from midtranspay import request, payment_types, validators
 
 from . import fixtures
 

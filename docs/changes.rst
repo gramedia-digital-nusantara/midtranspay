@@ -6,15 +6,15 @@ Changes
 
 You can now query the API for information about previous transactions,
 and cancel/approve transactions that are currently flagged as 'CHALLENGE'
-from the veritrans fraud detection system.
+from the midtrans fraud detection system.
 
 **Added**
 
-- :py:func:`veritranspay.veritrans.VTDirect.submit_status_request`
-- :py:func:`veritranspay.veritrans.VTDirect.submit_approval_request`
-- :py:func:`veritranspay.veritrans.VTDirect.submit_cancel_request`
+- :py:func:`midtranspay.midtrans.VTDirect.submit_status_request`
+- :py:func:`midtranspay.midtrans.VTDirect.submit_approval_request`
+- :py:func:`midtranspay.midtrans.VTDirect.submit_cancel_request`
 
 **Changed**
 
-- :py:func:`veritranspay.veritrans.VTDirect.submit_charge_request`
+- :py:func:`midtranspay.midtrans.VTDirect.submit_charge_request`
     - renamed param 'charge_req' to 'req'

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from veritranspay.response import BCAKlikPayChargeResponse
+from midtranspay.response import BCAKlikPayChargeResponse
 
 
 class BCAKlikPayChargeResponseTests_v0_9(TestCase):
@@ -13,7 +13,7 @@ class BCAKlikPayChargeResponseTests_v0_9(TestCase):
               "status_message": "OK, BCA KlikPay transaction is successful",
               "transaction_id": "ada84cd9-2233-4c67-877a-01884eece45e",
               "order_id": "orderid-01",
-              "redirect_url": "https://api.sandbox.veritrans.co.id/v3/bca/klikpay/redirect/ada84cd9-2233-4c67-877a-01884eece45e",
+              "redirect_url": "https://api.sandbox.midtrans.co.id/v3/bca/klikpay/redirect/ada84cd9-2233-4c67-877a-01884eece45e",
               "gross_amount": "11000.00",
               "payment_type": "bca_klikpay",
               "transaction_time": "2016-06-19 15:42:36",

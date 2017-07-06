@@ -5,17 +5,17 @@ from . import response
 
 class VTDirect(object):
     '''
-    Gateway used to submit requests to Veritrans via the VTDirect method.
+    Gateway used to submit requests to Midtrans via the VTDirect method.
     '''
     LIVE_API_URL = 'https://api.midtrans.com/v2'
     SANDBOX_API_URL = 'https://api.sandbox.midtrans.com/v2'
 
     def __init__(self, server_key, sandbox_mode=False):
         '''
-        :param server_key: Your Veritrans account server key.
+        :param server_key: Your Midtrans account server key.
         :type server_key: :py:class:`str`
         :param sandbox_mode: If True, requests will be submitted to the
-            Veritrans sandbox API, instead of the live API.
+            Midtrans sandbox API, instead of the live API.
         :type sandbox_mode: :py:class:`bool`
         '''
         self.server_key = server_key
@@ -24,7 +24,7 @@ class VTDirect(object):
     @property
     def base_url(self):
         '''
-        Returns the Veritrans base URL for API requests.  This will
+        Returns the Midtrans base URL for API requests.  This will
         differ depending on whether sandbox_mode is enabled or not.
         '''
         return VTDirect.SANDBOX_API_URL if self.sandbox_mode \
@@ -37,8 +37,8 @@ class VTDirect(object):
         a ValidationError will be raised.
 
         :param req: Information about a transaction and a customer to charge.
-        :type req: :py:class:`veritranspay.request.ChargeRequest`
-        :rtype: :py:class:`veritranspay.response.response.ChargeResponseBase`
+        :type req: :py:class:`midtranspay.request.ChargeRequest`
+        :rtype: :py:class:`midtranspay.response.response.ChargeResponseBase`
         '''
         # run validation against our charge
         # request before submitting
@@ -60,21 +60,21 @@ class VTDirect(object):
 
         response_json = http_response.json()
 
-        veritrans_response = response.build_charge_response(
+        midtrans_response = response.build_charge_response(
             request=req,
             **response_json)
 
-        return veritrans_response
+        return midtrans_response
 
     def submit_status_request(self, req):
         '''
-        Retrieve information from Veritrans about a single transaction.
+        Retrieve information from Midtrans about a single transaction.
 
         :param req: Data about a transaction to retrieve the status of.
-        :type req: :py:class:`veritranspay.request.StatusRequest` **or** Any
+        :type req: :py:class:`midtranspay.request.StatusRequest` **or** Any
             response class that has an order_id attribute, such as
-            :py:class:`veritranspay.response.response.ChargeResponseBase`
-        :rtype: :py:class:`veritranspay.response.response.StatusResponse`
+            :py:class:`midtranspay.response.response.ChargeResponseBase`
+        :rtype: :py:class:`midtranspay.response.response.StatusResponse`
         '''
         # specifically skip if it's a response type
         # we don't have a good reason to validate those.
@@ -95,19 +95,19 @@ class VTDirect(object):
 
         response_json = http_response.json()
 
-        veritrans_response = response.StatusResponse(**response_json)
+        midtrans_response = response.StatusResponse(**response_json)
 
-        return veritrans_response
+        return midtrans_response
 
     def submit_cancel_request(self, req):
         '''
-        Sends a request to Veritrans to cancel a single transaction.
+        Sends a request to Midtrans to cancel a single transaction.
 
         :param req: Data about a transaction to cancel.
-        :type req: :py:class:`veritranspay.request.CancelRequest` **or** Any
+        :type req: :py:class:`midtranspay.request.CancelRequest` **or** Any
             response class that has an order_id attribute, such as
-            :py:class:`veritranspay.response.response.ChargeResponseBase`
-        :rtype: :py:class:`veritranspay.response.response.CancelResponse`
+            :py:class:`midtranspay.response.response.ChargeResponseBase`
+        :rtype: :py:class:`midtranspay.response.response.CancelResponse`
         '''
         # specifically skip if it's a response type
         # we don't have a good reason to validate those.
@@ -128,20 +128,20 @@ class VTDirect(object):
 
         response_json = http_response.json()
 
-        veritrans_response = response.CancelResponse(**response_json)
+        midtrans_response = response.CancelResponse(**response_json)
 
-        return veritrans_response
+        return midtrans_response
 
     def submit_approval_request(self, req):
         '''
-        Sends a request to Veritrans to approve a single, challenged
+        Sends a request to Midtrans to approve a single, challenged
         transaction.
 
         :param req: Data about a transaction to approve.
-        :type req: :py:class:`veritranspay.request.ApprovalRequest` **or** Any
+        :type req: :py:class:`midtranspay.request.ApprovalRequest` **or** Any
             response class that has an order_id attribute, such as
-            :py:class:`veritranspay.response.response.ChargeResponseBase`
-        :rtype: :py:class:`veritranspay.response.response.ApproveResponse`
+            :py:class:`midtranspay.response.response.ChargeResponseBase`
+        :rtype: :py:class:`midtranspay.response.response.ApproveResponse`
         '''
         # specifically skip if it's a response type
         # we don't have a good reason to validate those.
@@ -162,9 +162,9 @@ class VTDirect(object):
 
         response_json = http_response.json()
 
-        veritrans_response = response.ApproveResponse(**response_json)
+        midtrans_response = response.ApproveResponse(**response_json)
 
-        return veritrans_response
+        return midtrans_response
 
     def __repr__(self):
         return ("<VTDirect("

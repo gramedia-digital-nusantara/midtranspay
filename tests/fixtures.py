@@ -17,7 +17,7 @@ TOKEN_ID = 'i-am-a-fake-token'
 
 
 # Testing Cards
-# http://docs.veritranspay.co.id/sandbox/card_list.html
+# http://docs.midtranspay.co.id/sandbox/card_list.html
 CC_ACCEPTED = ['4011 1111 1111 1112',
                '5481 1611 1111 1081',
                ]
@@ -35,8 +35,8 @@ CC_EXPIRY_MONTH = '01'
 CC_EXPIRY_YEAR = '2020'
 
 
-# These examples are pulled straight from the Veritrans documentation
-# http://docs.veritranspay.co.id/sandbox/charge.html#the-structure-and-example-of-json-response-vt-direct-using-credit-card
+# These examples are pulled straight from the Midtrans documentation
+# http://docs.midtranspay.co.id/sandbox/charge.html#the-structure-and-example-of-json-response-vt-direct-using-credit-card
 CC_REQUEST = {
     "payment_type": "credit_card",
     "credit_card": {
@@ -442,7 +442,7 @@ BRIEPAY_CHARGE_RESPONSE_SUCCESS = {
     "status_message": "Success, BRI E-Pay transaction is successful",
     "transaction_id": "f8635cd7-615d-4a6d-a806-c9ca4a56257e",
     "order_id": "2014111702",
-    "redirect_url": "https://api.veritrans.co.id/v3/bri/epay/redirect/f8635cd7-615d-4a6d-a806-c9ca4a56257e",
+    "redirect_url": "https://api.midtrans.co.id/v3/bri/epay/redirect/f8635cd7-615d-4a6d-a806-c9ca4a56257e",
     "gross_amount": "145000.00",
     "payment_type": "bri_epay",
     "transaction_time": "2016-06-19 16:00:05",

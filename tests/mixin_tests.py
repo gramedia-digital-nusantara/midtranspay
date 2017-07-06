@@ -3,7 +3,7 @@ import unittest
 from mock import MagicMock
 from faker import Faker
 
-from veritranspay import mixins, validators
+from midtranspay import mixins, validators
 
 
 fake = Faker()

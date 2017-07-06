@@ -2,7 +2,7 @@
 Represents the different HTTP status codes
 returned from the API to indicate errors.
 
-http://docs.veritranspay.co.id/sandbox/status_code.html
+http://docs.midtranspay.co.id/sandbox/status_code.html
 '''
 # 20x - successful submission to api
 SUCCESS = 200  # NOTE: this is returned when manually cancelled too!

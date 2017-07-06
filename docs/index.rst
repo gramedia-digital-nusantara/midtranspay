@@ -4,7 +4,7 @@ Overview
 ========
 
 Vertranspay is a Python client library for submitting requests to the
-http://veritrans.co.id payment gateway.
+http://midtrans.co.id payment gateway.
 
 The only dependency for this library is the `Python Requests`_ package
 
@@ -14,10 +14,10 @@ requests/responses via the VT-Direct method.
 .. note::
     For developing and testing this library's integration with your own code,
     you will need a **SANDBOX ACCOUNT**, which you can sign up for 
-    here: `Veritrans Sandbox Signup`_.
+    here: `Midtrans Sandbox Signup`_.
 
 .. warning::
-    This software is not associated with or endorsed by Veritrans Indonesia.
+    This software is not associated with or endorsed by Midtrans Indonesia.
     None of the contributers accept any responsiblity for any losses incurred
     by using this software, unless local laws say otherwise.  Use at your own
     risk.
@@ -42,7 +42,7 @@ Supported Python Versions:
 - 3.3
 - 3.4
 
-https://travis-ci.org/derekjamescurtis/veritranspay
+https://travis-ci.org/derekjamescurtis/midtranspay
 
 Testing:
 --------
@@ -64,5 +64,5 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-.. _Veritrans Sandbox Signup: https://my.sandbox.veritrans.co.id/register
+.. _Midtrans Sandbox Signup: https://my.sandbox.midtrans.co.id/register
 .. _Python Requests: https://pypi.python.org/pypi/requests

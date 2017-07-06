@@ -1,26 +1,26 @@
 from datetime import datetime
 
 
-VERITRANS_DATE_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+MIDTRANS_DATE_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
 
-def parse_veritrans_datetime(vt_datetime):
+def parse_midtrans_datetime(vt_datetime):
     '''
     Takes a string representing a date and time, in the format
-    returned by Veritrans, and returns a python datetime instance.
+    returned by Midtrans, and returns a python datetime instance.
 
     :param vt_datetime: String in format yyyy-mm-dd hh:mm:ss.
     :type vt_datetime: :py:class:`str`
     :rtype: :py:class:`datetime`
     '''
-    return (datetime.strptime(vt_datetime, VERITRANS_DATE_TIME_FORMAT)
+    return (datetime.strptime(vt_datetime, MIDTRANS_DATE_TIME_FORMAT)
             if vt_datetime
             else None)
 
 
-def parse_veritrans_amount(amount):
+def parse_midtrans_amount(amount):
     '''
-    Given an input string, returns it as an integer.  Veritrans returns
+    Given an input string, returns it as an integer.  Midtrans returns
     an extra .00 appended to the end of every string, we strip that off
     because IDR is the only supported currency.
 

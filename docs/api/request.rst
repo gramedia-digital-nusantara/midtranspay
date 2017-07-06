@@ -2,24 +2,24 @@ Requests
 ========
 
 Request objects are passed to a Gateway object to perform an action or
-retrieve some data from the Veritrans API.
+retrieve some data from the Midtrans API.
 
 Request Types
 -------------
 
-.. autoclass:: veritranspay.request.ChargeRequest
+.. autoclass:: midtranspay.request.ChargeRequest
     :members:
     :show-inheritance:
 
-.. autoclass:: veritranspay.request.StatusRequest
+.. autoclass:: midtranspay.request.StatusRequest
     :members:
     :show-inheritance:
 
-.. autoclass:: veritranspay.request.ApprovalRequest
+.. autoclass:: midtranspay.request.ApprovalRequest
     :members:
     :show-inheritance:
 
-.. autoclass:: veritranspay.request.CancelRequest
+.. autoclass:: midtranspay.request.CancelRequest
     :members:
     :show-inheritance:
 
@@ -35,7 +35,7 @@ Payment Types
 .. warning::
     At the current time **ONLY** Credit Card payments are supported.
 
-.. automodule:: veritranspay.payment_types
+.. automodule:: midtranspay.payment_types
     :members:
     :show-inheritance:
 
@@ -44,20 +44,20 @@ Others
 
 .. note::
     These have no use beyond building a 
-    :py:class:`veritranspay.request.ChargeRequest`.
+    :py:class:`midtranspay.request.ChargeRequest`.
 
-.. autoclass:: veritranspay.request.Address
+.. autoclass:: midtranspay.request.Address
     :members:
     :show-inheritance:
 
-.. autoclass:: veritranspay.request.CustomerDetails
+.. autoclass:: midtranspay.request.CustomerDetails
     :members:
     :show-inheritance:
 
-.. autoclass:: veritranspay.request.TransactionDetails
+.. autoclass:: midtranspay.request.TransactionDetails
     :members:
     :show-inheritance:
 
-.. autoclass:: veritranspay.request.ItemDetails
+.. autoclass:: midtranspay.request.ItemDetails
     :members:
     :show-inheritance:
