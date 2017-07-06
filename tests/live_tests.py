@@ -179,9 +179,9 @@ class AcceptanceTests_v0_6(LiveTests_Base, unittest.TestCase):
         pass
 
 
-class PermataVA_AcceptanceTests_v0_8(unittest.TestCase):
+class PermataVA_AcceptanceTests_v0_9(unittest.TestCase):
 
-    VERSION = '0.8'
+    VERSION = '0.9'
 
     def setUp(self):
         if None in [SANDBOX_CLIENT_KEY, SANDBOX_SERVER_KEY]:
@@ -246,9 +246,9 @@ class PermataVA_AcceptanceTests_v0_8(unittest.TestCase):
         self.assertEqual(self.trans_details.order_id, resp.order_id)
 
 
-class BriEpay_AcceptanceTests_v0_8(unittest.TestCase):
+class BriEpay_AcceptanceTests_v0_9(unittest.TestCase):
 
-    VERSION = '0.8'
+    VERSION = '0.9'
 
     def setUp(self):
         if None in [SANDBOX_CLIENT_KEY, SANDBOX_SERVER_KEY]:
@@ -309,9 +309,9 @@ class BriEpay_AcceptanceTests_v0_8(unittest.TestCase):
         self.assertEqual(self.trans_details.order_id, resp.order_id)
 
 
-class MandiriVA_AcceptanceTests_v0_8(unittest.TestCase):
+class MandiriVA_AcceptanceTests_v0_9(unittest.TestCase):
 
-    VERSION = '0.8'
+    VERSION = '0.9'
 
     def setUp(self):
         if None in [SANDBOX_CLIENT_KEY, SANDBOX_SERVER_KEY]:

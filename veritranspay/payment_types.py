@@ -138,23 +138,94 @@ class BriEpay(PaymentTypeBase):
     PAYMENT_TYPE_KEY = 'bri_epay'
 
 
-#
-# NOTE:
-# The following types are not yet supported!
-# They will be added to the documentation as support is added
-#
-
-
 class MandiriClickpay(PaymentTypeBase):
-    # http://docs.veritranspay.co.id/sandbox/charge.html#vtdirect-mandiri
+    """
+    A payment made with a Mandiri Click Pay.
+
+    http://api-docs.midtrans.com/#mandiri-clickpay
+    """
     PAYMENT_TYPE_KEY = 'mandiri_clickpay'
 
-    def __init__(self, card_number, input1, input2, input3):
-        raise NotImplementedError("Only CreditCard is implemented.")
+    def __init__(self, card_number, input1, input2, input3, token):
+        self.card_number = card_number
+        self.input1 = input1
+        self.input2 = input2
+        self.input3 = input3
+        self.token = token
+
+    def serialize(self):
+        rv = super(MandiriClickpay, self).serialize()
+        rv[self.PAYMENT_TYPE_KEY].update({
+            'card_number': self.card_number,
+            'input1': self.input1,
+            'input2': self.input2,
+            'input3': self.input3,
+            'token': self.token
+        })
+
+        return rv
+
 
 class CimbClicks(PaymentTypeBase):
-    # http://docs.veritranspay.co.id/sandbox/charge.html#vtdirect-cimb
+    """
+    A payment made with a Cimb Clicks.
+
+    http://api-docs.midtrans.com/#cimb-clicks
+    """
+
     PAYMENT_TYPE_KEY = 'cimb_clicks'
 
     def __init__(self, description):
-        raise NotImplementedError("Only CreditCard is implemented.")
+        self.description = description
+
+    def serialize(self):
+        rv = super(CimbClicks, self).serialize()
+        rv[self.PAYMENT_TYPE_KEY].update({
+            'description': self.description
+        })
+
+        return rv
+
+
+class BCAKlikPay(PaymentTypeBase):
+    """
+    A payment made with a BCA Klik Pay.
+
+    http://api-docs.midtrans.com/#bca-klikpay
+    """
+    PAYMENT_TYPE_KEY = 'bca_klikpay'
+
+    def __init__(self, type_id, description):
+        self.type = type_id
+        self.description = description
+
+    def serialize(self):
+        rv = super(BCAKlikPay, self).serialize()
+        rv[self.PAYMENT_TYPE_KEY].update({
+            'type': self.type,
+            'description': self.description
+        })
+
+        return rv
+
+
+class KlikBCA(PaymentTypeBase):
+    """
+    A payment made with a BCA Klik Pay.
+
+    http://api-docs.midtrans.com/#klikbca
+    """
+    PAYMENT_TYPE_KEY = 'bca_klikbca'
+
+    def __init__(self, user_id, description):
+        self.user_id = user_id
+        self.description = description
+
+    def serialize(self):
+        rv = super(KlikBCA, self).serialize()
+        rv[self.PAYMENT_TYPE_KEY].update({
+            'user_id': self.user_id,
+            'description': self.description})
+
+        return rv
+

@@ -3,7 +3,7 @@ import unittest
 from faker import Faker
 
 from veritranspay.payment_types import CreditCard, Indomaret, VirtualAccountPermata, VirtualAccountBca, \
-    VirtualAccountBni, VirtualAccountMandiri, BriEpay
+    VirtualAccountBni, VirtualAccountMandiri, BriEpay, MandiriClickpay, CimbClicks, BCAKlikPay, KlikBCA
 
 fake = Faker()
 
@@ -149,3 +149,75 @@ class BriEpayTests(unittest.TestCase):
         }
 
         self.assertDictEqual(expected, bri.serialize())
+
+
+class BCAKliPayTest(unittest.TestCase):
+    def test_serialization(self):
+        bca_klikpay = BCAKlikPay(type_id=1, description="Pembelian Barang")
+
+        expected = {
+            'payment_type': 'bca_klikpay',
+            'bca_klikpay': {
+                'type': 1,
+                'description': 'Pembelian Barang'
+            }
+        }
+
+        self.assertDictEqual(expected, bca_klikpay.serialize())
+
+
+class KlikBCATest(unittest.TestCase):
+
+    def test_serialization(self):
+        klik_bca = KlikBCA(user_id="midtrans1012", description="testing transaction")
+
+        expected = {
+            'payment_type': 'bca_klikbca',
+            'bca_klikbca': {
+                'description': 'testing transaction',
+                'user_id': 'midtrans1012'
+            }
+        }
+
+        self.assertDictEqual(expected, klik_bca.serialize())
+
+
+class MandiriClickpayTest(unittest.TestCase):
+
+    def test_serialization(self):
+        data_init = {
+            'card_number': '4111111111111111',
+            'input1': '1111111111',
+            'input2': '145000',
+            'input3': '54321',
+            'token': '000000'
+        }
+
+        mandiri_clickpay = MandiriClickpay(**data_init)
+
+        expected = {
+            'payment_type': 'mandiri_clickpay',
+            'mandiri_clickpay': {
+                'card_number': '4111111111111111',
+                'input1': '1111111111',
+                'input2': '145000',
+                'input3': '54321',
+                'token': '000000'
+            }
+        }
+
+        self.assertDictEqual(expected, mandiri_clickpay.serialize())
+
+
+class CimbClicksTest(unittest.TestCase):
+    def test_serialization(self):
+        cimb_clicks = CimbClicks(description='Purchase of a special event item')
+
+        expected = {
+            'payment_type': 'cimb_clicks',
+            'cimb_clicks': {
+                'description': 'Purchase of a special event item'
+            }
+        }
+
+        self.assertDictEqual(expected, cimb_clicks.serialize())
