@@ -215,6 +215,15 @@ class EpayBriChargeResponse(ChargeResponseBase):
         self.redirect_url = kwargs.get('redirect_url', None)
 
 
+class GoPayChargeResponse(ChargeResponseBase):
+    def __init__(self, *args, **kwargs):
+        super(GoPayChargeResponse, self).__init__(*args, **kwargs)
+        self.channel_response_code = kwargs.get('channel_response_code')
+        self.channel_response_message = kwargs.get('channel_response_message')
+        self.actions = kwargs.get('actions')
+
+
+
 def build_charge_response(request, *args, **kwargs):
     '''
     Builds a response appropriate for a given type of request.
@@ -246,6 +255,8 @@ def build_charge_response(request, *args, **kwargs):
         return BCAKlikPayChargeResponse(*args, **kwargs)
     elif isinstance(request.charge_type, payment_types.KlikBCA):
         return KlikBCAChargeResponse(*args, **kwargs)
+    elif isinstance(request.charge_type, payment_types.GoPayEWallet):
+        return GoPayChargeResponse(*args, **kwargs)
     else:
         return ChargeResponseBase(*args, **kwargs)
 

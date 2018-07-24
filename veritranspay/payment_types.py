@@ -229,3 +229,7 @@ class KlikBCA(PaymentTypeBase):
 
         return rv
 
+class GoPayEWallet(PaymentTypeBase):
+    PAYMENT_TYPE_KEY = 'gopay'
+
+
