@@ -115,17 +115,15 @@ class ItemDetails(mixins.RequestEntity):
     '''
     Line items details for a transaction.
     '''
-    _validators = {'id':
-                   validators.StringValidator(
-                       max_length=constraints.MAX_ITEMID_LENGTH),
+    _validators = {'id': validators.StringValidator(max_length=constraints.MAX_ITEMID_LENGTH),
                    'price': validators.NumericValidator(),
                    'quantity': validators.NumericValidator(),
-                   'name':
-                   validators.StringValidator(
-                       max_length=constraints.MAX_ITEMNAME_LENGTH),
+                   'name': validators.StringValidator(max_length=constraints.MAX_ITEMNAME_LENGTH),
+                   'store_id': validators.NumericValidator(),
+                   'store_name': validators.StringValidator()
                    }
 
-    def __init__(self, item_id, price, quantity, name):
+    def __init__(self, item_id, price, quantity, name, store_id=None, store_name=None):
         '''
         :param item_id: Identifier for a given item.
         :type item_id: :py:class:`str` <= 50
@@ -140,6 +138,8 @@ class ItemDetails(mixins.RequestEntity):
         self.price = price
         self.quantity = quantity
         self.name = name
+        self.store_id = store_id
+        self.store_name = store_name
 
 
 class ChargeRequest(mixins.RequestEntity):
