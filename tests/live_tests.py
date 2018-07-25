@@ -400,7 +400,7 @@ class GoPay_AcceptanceTests_v0_9(unittest.TestCase):
             phone=expected['customer_details']['phone'],
             )
         self.item_details = \
-            [request.ItemDetails(item_id=item['id'],
+            [request.GoPayItemDetails(item_id=item['id'],
                                  price=item['price'],
                                  quantity=item['quantity'],
                                  name=item['name'],
