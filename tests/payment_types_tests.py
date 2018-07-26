@@ -3,7 +3,7 @@ import unittest
 from faker import Faker
 
 from veritranspay.payment_types import CreditCard, Indomaret, VirtualAccountPermata, VirtualAccountBca, \
-    VirtualAccountBni, VirtualAccountMandiri, BriEpay, MandiriClickpay, CimbClicks, BCAKlikPay, KlikBCA
+    VirtualAccountBni, VirtualAccountMandiri, BriEpay, MandiriClickpay, CimbClicks, BCAKlikPay, KlikBCA, GoPay
 
 fake = Faker()
 
@@ -221,3 +221,16 @@ class CimbClicksTest(unittest.TestCase):
         }
 
         self.assertDictEqual(expected, cimb_clicks.serialize())
+
+
+class GoPayTests(unittest.TestCase):
+    def test_serialization(self):
+        gopay = GoPay()
+
+        expected = {
+            'payment_type': 'gopay',
+            'gopay': {
+            }
+        }
+
+        self.assertDictEqual(expected, gopay.serialize())

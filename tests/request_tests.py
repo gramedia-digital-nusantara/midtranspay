@@ -15,6 +15,7 @@ fake = Faker()
 
 
 class ChargeRequest_UnitTests(unittest.TestCase):
+    maxDiff = None
 
     def test_serialization(self):
         '''

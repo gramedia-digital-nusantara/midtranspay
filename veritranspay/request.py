@@ -115,14 +115,10 @@ class ItemDetails(mixins.RequestEntity):
     '''
     Line items details for a transaction.
     '''
-    _validators = {'id':
-                   validators.StringValidator(
-                       max_length=constraints.MAX_ITEMID_LENGTH),
+    _validators = {'id': validators.StringValidator(max_length=constraints.MAX_ITEMID_LENGTH),
                    'price': validators.NumericValidator(),
                    'quantity': validators.NumericValidator(),
-                   'name':
-                   validators.StringValidator(
-                       max_length=constraints.MAX_ITEMNAME_LENGTH),
+                   'name': validators.StringValidator(max_length=constraints.MAX_ITEMNAME_LENGTH)
                    }
 
     def __init__(self, item_id, price, quantity, name):

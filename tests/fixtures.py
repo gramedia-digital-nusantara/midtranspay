@@ -437,6 +437,28 @@ BRIEPAY_REQUEST = {
     ],
 }
 
+GOPAY_REQUEST = {
+  "payment_type": "gopay",
+  "transaction_details": {
+    "order_id": "".join([fake.random_letter() for _ in range(10)]),
+    "gross_amount": 225000
+  },
+  "item_details": [
+    {
+      "id": "id1",
+      "price": 225000,
+      "quantity": 1,
+      "name": "Bluedio H+ Turbine Headphone with Bluetooth 4.1 -",
+    }
+  ],
+  "customer_details": {
+    "first_name": "Budi",
+    "last_name": "Utomo",
+    "email": "budi.utomo@midtrans.com",
+    "phone": "081223323423"
+  }
+}
+
 BRIEPAY_CHARGE_RESPONSE_SUCCESS = {
     "status_code": "201",
     "status_message": "Success, BRI E-Pay transaction is successful",

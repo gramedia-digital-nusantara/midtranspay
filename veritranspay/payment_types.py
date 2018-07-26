@@ -229,3 +229,11 @@ class KlikBCA(PaymentTypeBase):
 
         return rv
 
+
+class GoPay(PaymentTypeBase):
+    """
+    A payment made with a BCA Klik Pay.
+
+    https://api-docs.midtrans.com/#go-pay
+    """
+    PAYMENT_TYPE_KEY = 'gopay'

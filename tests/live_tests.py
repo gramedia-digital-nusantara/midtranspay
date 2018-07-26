@@ -169,6 +169,8 @@ class AcceptanceTests_v0_5(LiveTests_Base, unittest.TestCase):
 
 class AcceptanceTests_v0_6(LiveTests_Base, unittest.TestCase):
 
+    VERSION = '0.9'
+
     def test_one_click(self):
         pass
 
@@ -370,5 +372,64 @@ class MandiriVA_AcceptanceTests_v0_9(unittest.TestCase):
         resp = gateway.submit_charge_request(charge_req)
 
         self.assertIsInstance(resp, response.VirtualAccountMandiriChargeResponse)
+        self.assertEqual(status.PENDING, resp.status_code)
+        self.assertEqual(self.trans_details.order_id, resp.order_id)
+
+
+class GoPay_AcceptanceTests_v0_9(unittest.TestCase):
+
+    VERSION = '0.9'
+
+    def setUp(self):
+        if None in [SANDBOX_CLIENT_KEY, SANDBOX_SERVER_KEY]:
+            self.skipTest("Live credentials not provided -- skipping tests")
+
+        if not RUN_ALL_ACCEPTANCE_TESTS and \
+                self.VERSION != veritranspay.__version__:
+            self.skipTest("Skipping %s this version of tests" % self.VERSION)
+
+        expected = fixtures.GOPAY_REQUEST
+        self.expected = expected
+
+        self.trans_details = request.TransactionDetails(
+            order_id=expected['transaction_details']['order_id'],
+            gross_amount=expected['transaction_details']['gross_amount'])
+
+        self.cust_details = request.CustomerDetails(
+            first_name=expected['customer_details']['first_name'],
+            last_name=expected['customer_details']['last_name'],
+            email=expected['customer_details']['email'],
+            phone=expected['customer_details']['phone'],
+            )
+        self.item_details = \
+            [request.ItemDetails(item_id=item['id'],
+                                 price=item['price'],
+                                 quantity=item['quantity'],
+                                 name=item['name'])
+             for item
+             in expected['item_details']]
+
+    def test_gopay(self):
+        """
+            Verify GoPay payment method
+        """
+        # 2: Create a sandbox gateway
+        gateway = veritrans.VTDirect(
+            SANDBOX_SERVER_KEY,
+            sandbox_mode=True)
+
+        # 3: Create a charge request
+        payment = payment_types.GoPay()
+
+        charge_req = request.ChargeRequest(
+            charge_type=payment,
+            transaction_details=self.trans_details,
+            customer_details=self.cust_details,
+            item_details=self.item_details)
+
+        # 4: Submit our request
+        resp = gateway.submit_charge_request(charge_req)
+
+        self.assertIsInstance(resp, response.GoPayChargeResponse)
         self.assertEqual(status.PENDING, resp.status_code)
         self.assertEqual(self.trans_details.order_id, resp.order_id)

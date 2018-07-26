@@ -7,7 +7,8 @@ http://docs.veritranspay.co.id/sandbox/status_code.html
 # 20x - successful submission to api
 SUCCESS = 200  # NOTE: this is returned when manually cancelled too!
 CHALLENGE = 201
-PENDING = 201  # NOTE: returned when payment ype is VirtualAccount, Cimb, Bri Epay, KlikBCA, Klikpay BCA,
+PENDING = 201  # NOTE: returned when payment type is VirtualAccount, Cimb, Bri Epay, KlikBCA, Klikpay BCA,
+EXPIRED = 202 # NOTE: returned when payment type is GoPay
 
 
 # 30x
