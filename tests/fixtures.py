@@ -449,8 +449,6 @@ GOPAY_REQUEST = {
       "price": 225000,
       "quantity": 1,
       "name": "Bluedio H+ Turbine Headphone with Bluetooth 4.1 -",
-      "store_id": 1,
-      "store_name": "gramedia.com"
     }
   ],
   "customer_details": {

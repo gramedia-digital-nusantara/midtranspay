@@ -169,6 +169,8 @@ class AcceptanceTests_v0_5(LiveTests_Base, unittest.TestCase):
 
 class AcceptanceTests_v0_6(LiveTests_Base, unittest.TestCase):
 
+    VERSION = '0.9'
+
     def test_one_click(self):
         pass
 
@@ -400,12 +402,10 @@ class GoPay_AcceptanceTests_v0_9(unittest.TestCase):
             phone=expected['customer_details']['phone'],
             )
         self.item_details = \
-            [request.GoPayItemDetails(item_id=item['id'],
+            [request.ItemDetails(item_id=item['id'],
                                  price=item['price'],
                                  quantity=item['quantity'],
-                                 name=item['name'],
-                                 store_id=item['store_id'],
-                                 store_name=item['store_name'])
+                                 name=item['name'])
              for item
              in expected['item_details']]
 
