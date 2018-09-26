@@ -459,6 +459,12 @@ GOPAY_REQUEST = {
   }
 }
 
+CREDIT_CARD_REQUEST = {
+  "card_number": "4811111111111114",
+  "card_exp_month": "12",
+  "card_exp_year": "2021"
+}
+
 BRIEPAY_CHARGE_RESPONSE_SUCCESS = {
     "status_code": "201",
     "status_message": "Success, BRI E-Pay transaction is successful",

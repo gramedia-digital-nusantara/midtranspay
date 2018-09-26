@@ -172,3 +172,41 @@ class VTDirect(object):
                 "sandbox_mode: {sandbox_mode})>"
                 .format(server_key=self.server_key,
                         sandbox_mode=self.sandbox_mode))
+
+    def register_card(self, req):
+        '''
+        Request a credit card to be registered to the API.  Before submitting, all the
+        data in the req is validated and if a failure occurs
+        a ValidationError will be raised.
+
+        :param req: Information about a card number to be registered.
+        :type req: :py:class:`veritranspay.request.RegisterCardRequest`
+        :rtype: :py:class:`veritranspay.response.response.RegisterCardResponse`
+        '''
+        # run validation against our charge
+        # request before submitting
+        req.validate_all()
+
+        # build up our application payload and manually
+        # specify the header type.
+        payload = req.serialize()
+        headers = {}
+
+        # now cross our fingers that all went well!
+        query_params = f"card_number={payload.get('card_number')}"
+        query_params += f"&card_exp_month={payload.get('card_exp_month')}"
+        query_params += f"&card_exp_year={payload.get('card_exp_year')}&client_key={payload.get('client_key')}"
+        if payload.get('callback') is not None:
+            query_params += f"&callback={payload.get('callback')}"
+        http_response = requests.get(
+            f'{self.base_url}/card/register?{query_params}',
+
+            headers=headers)
+
+        response_json = http_response.json()
+
+        veritrans_response = response.build_charge_response(
+            request=req,
+            **response_json)
+
+        return veritrans_response

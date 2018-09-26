@@ -12,6 +12,8 @@ the documentation at:
 - http://docs.veritrans.co.id/sandbox/other_commands.html
 - http://docs.veritrans.co.id/sandbox/charge.html
 '''
+from veritranspay.request import RegisterCardRequest
+
 __all__ = ['ResponseBase', 'ChargeResponseBase', 'CreditCardChargeResponse',
            'IndomaretChargeResponse', 'CimbsChargeResponse', 'MandiriChargeResponse', 'BCAKlikPayChargeResponse',
            'KlikBCAChargeResponse', 'StatusResponse', 'CancelResponse', 'VirtualAccountChargeResponse',
@@ -237,7 +239,9 @@ def build_charge_response(request, *args, **kwargs):
         response type to build.
     :type request: :py:class:`veritranspay.request.ChargeRequest`
     '''
-    if isinstance(request.charge_type, payment_types.CreditCard):
+    if isinstance(request, RegisterCardRequest):
+        return RegisterCardResponse(*args, **kwargs)
+    elif isinstance(request.charge_type, payment_types.CreditCard):
         return CreditCardChargeResponse(*args, **kwargs)
     elif isinstance(request.charge_type, payment_types.Indomaret):
         return IndomaretChargeResponse(*args, **kwargs)
@@ -354,3 +358,26 @@ class ApproveResponse(ResponseBase):
         self.gross_amount = \
             helpers.parse_veritrans_amount(
                 kwargs.get('gross_amount', None))
+
+
+class RegisterCardResponse(mixins.SerializableMixin):
+    '''
+    Data returned from Veritrans after submitting a
+    :py:class:`veritranspay.request.RegisterCardRequest`
+    '''
+
+    def __init__(self, *args, **kwargs):
+        '''
+        :param status_code: Transaction status code supplied by Veritrans.
+        :type status_code: :py:class:`str`
+        '''
+        super(RegisterCardResponse, self).__init__()
+        self.status_code = int(kwargs.get('status_code'))
+        self.saved_token_id = kwargs.get('saved_token_id', None)
+        self.transaction_id = kwargs.get('transaction_id', None)
+        self.masked_card = kwargs.get('masked_card', None)
+
+    def __repr__(self):
+        return "<{klass}(code: {code})>".format(
+            klass=self.__class__.__name__,
+            code=self.status_code)

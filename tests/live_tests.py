@@ -433,3 +433,44 @@ class GoPay_AcceptanceTests_v0_9(unittest.TestCase):
         self.assertIsInstance(resp, response.GoPayChargeResponse)
         self.assertEqual(status.PENDING, resp.status_code)
         self.assertEqual(self.trans_details.order_id, resp.order_id)
+
+
+class RegisterCard_AcceptanceTests_v0_9(unittest.TestCase):
+
+    VERSION = '0.9'
+
+    def setUp(self):
+        if None in [SANDBOX_CLIENT_KEY, SANDBOX_SERVER_KEY]:
+            self.skipTest("Live credentials not provided -- skipping tests")
+
+        if not RUN_ALL_ACCEPTANCE_TESTS and \
+                self.VERSION != veritranspay.__version__:
+            self.skipTest("Skipping %s this version of tests" % self.VERSION)
+
+        expected = fixtures.CREDIT_CARD_REQUEST
+        expected['client_key'] = SANDBOX_CLIENT_KEY
+        self.expected = expected
+
+    def test_register_card(self):
+        """
+            Verify Register credit card payment method
+        """
+        # 2: Create a sandbox gateway
+        gateway = veritrans.VTDirect(
+            SANDBOX_SERVER_KEY,
+            sandbox_mode=True)
+
+
+        register_req = request.RegisterCardRequest(
+            card_number=self.expected.get('card_number'),
+            card_exp_month=self.expected.get('card_exp_month'),
+            card_exp_year=self.expected.get('card_exp_year'),
+            client_key=self.expected.get('client_key')
+        )
+
+        # 4: Submit our request
+        resp = gateway.register_card(register_req)
+
+        self.assertIsInstance(resp, response.RegisterCardResponse)
+        self.assertEqual(codes.OK, resp.status_code)
+        self.assertEqual(f'{register_req.card_number[:6]}-{register_req.card_number[-4:]}', resp.masked_card)

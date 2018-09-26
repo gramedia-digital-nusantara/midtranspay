@@ -239,3 +239,48 @@ class ApprovalRequest(mixins.ValidatableMixin):
         :type order_id: :py:class:`str` <= 50
         '''
         self.order_id = order_id
+
+
+class RegisterCardRequest(mixins.ValidatableMixin):
+    '''
+    All information to register card into midtrans.
+    '''
+    _validators = {'card_number': validators.StringValidator(),
+                   'card_exp_month': validators.StringValidator(),
+                   'card_exp_year': validators.StringValidator(),
+                   'client_key': validators.StringValidator(),
+                   'callback': validators.StringValidator(is_required=False),
+                   }
+
+    def __init__(self, card_number, card_exp_month, card_exp_year, client_key, call_back=None):
+        '''
+        :param card_number: Customer card number.
+        :type card_number: :py:class:`str` <= 50
+        :param card_exp_month: Card expired month.
+        :type card_exp_month: :py:class:`int`
+        :param card_exp_year: Card expired year
+        :type: card_exp_year: :py:class:`int`
+        :param: client_key: Client key
+        :type: client_key: :py:class:`str`
+        :param: callback: Url callback of site that register card.
+        :type: callback: :py:class:`str`
+        '''
+        self.card_number = card_number
+        self.card_exp_month = card_exp_month
+        self.card_exp_year = card_exp_year
+        self.client_key = client_key
+        self.callback = call_back
+
+    def serialize(self):
+        # Manually override the standard logic for serialize().  `charge_type`
+        # needs to add two keys to the resulting dictionary, and all
+        # other types need to be placed under specific dictionary keys.
+        rv = {
+            'card_number': self.card_number,
+            'card_exp_month': self.card_exp_month,
+            'card_exp_year': self.card_exp_year,
+            'client_key': self.client_key
+        }
+        if self.callback:
+            rv.update({'callback': self.callback})
+        return rv
