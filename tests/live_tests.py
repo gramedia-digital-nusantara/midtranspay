@@ -437,7 +437,7 @@ class GoPay_AcceptanceTests_v0_9(unittest.TestCase):
 
 class RegisterCard_AcceptanceTests_v0_9(unittest.TestCase):
 
-    VERSION = '0.9'
+    VERSION = '0.9.1'
 
     def setUp(self):
         if None in [SANDBOX_CLIENT_KEY, SANDBOX_SERVER_KEY]:
@@ -451,7 +451,7 @@ class RegisterCard_AcceptanceTests_v0_9(unittest.TestCase):
         expected['client_key'] = SANDBOX_CLIENT_KEY
         self.expected = expected
 
-    def test_register_card(self):
+    def test_register_card_success(self):
         """
             Verify Register credit card payment method
         """
@@ -459,7 +459,6 @@ class RegisterCard_AcceptanceTests_v0_9(unittest.TestCase):
         gateway = veritrans.VTDirect(
             SANDBOX_SERVER_KEY,
             sandbox_mode=True)
-
 
         register_req = request.RegisterCardRequest(
             card_number=self.expected.get('card_number'),
@@ -474,3 +473,25 @@ class RegisterCard_AcceptanceTests_v0_9(unittest.TestCase):
         self.assertIsInstance(resp, response.RegisterCardResponse)
         self.assertEqual(codes.OK, resp.status_code)
         self.assertEqual(f'{register_req.card_number[:6]}-{register_req.card_number[-4:]}', resp.masked_card)
+
+    def test_register_card_failed_bad_request(self):
+        """
+            Verify Register credit card payment method
+        """
+        # 2: Create a sandbox gateway
+        gateway = veritrans.VTDirect(
+            SANDBOX_SERVER_KEY,
+            sandbox_mode=True)
+
+        wrong_card_register_req = request.RegisterCardRequest(
+            card_number="abc123",
+            card_exp_month=self.expected.get('card_exp_month'),
+            card_exp_year=self.expected.get('card_exp_year'),
+            client_key=self.expected.get('client_key')
+        )
+
+        # 4: Submit our request
+        resp = gateway.register_card(wrong_card_register_req)
+
+        self.assertIsInstance(resp, response.RegisterCardResponse)
+        self.assertEqual(codes.BAD_REQUEST, resp.status_code)
