@@ -18,7 +18,7 @@ class CreditCard(PaymentTypeBase):
     '''
     PAYMENT_TYPE_KEY = 'credit_card'
 
-    def __init__(self, bank, token_id, save_token_id=False):
+    def __init__(self, bank, token_id, save_token_id=False, bins=None):
         '''
         :param bank: Represents the acquiring bank.
         :type bank: :py:class:`str`
@@ -31,6 +31,7 @@ class CreditCard(PaymentTypeBase):
         self.bank = bank
         self.token_id = token_id
         self.save_token_id = save_token_id
+        self.bins = bins
 
     def serialize(self):
 
@@ -44,6 +45,11 @@ class CreditCard(PaymentTypeBase):
         if self.save_token_id:
             rv[self.PAYMENT_TYPE_KEY].update(
                 {'save_token_id': self.save_token_id})
+
+        if self.bins:
+            rv[self.PAYMENT_TYPE_KEY].update({
+                'bins': self.bins
+            })
 
         return rv
 

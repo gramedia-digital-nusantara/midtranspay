@@ -34,6 +34,7 @@ CC_CVV = '123'
 CC_EXPIRY_MONTH = '01'
 CC_EXPIRY_YEAR = '2020'
 
+CC_PREFIXES_SAMPLE = ['481111', '4811', '4833']
 
 # These examples are pulled straight from the Veritrans documentation
 # http://docs.veritranspay.co.id/sandbox/charge.html#the-structure-and-example-of-json-response-vt-direct-using-credit-card
@@ -41,7 +42,8 @@ CC_REQUEST = {
     "payment_type": "credit_card",
     "credit_card": {
         "bank": "bni",
-        "token_id": TOKEN_ID
+        "token_id": TOKEN_ID,
+        "bins": CC_PREFIXES_SAMPLE
     },
     "transaction_details": {
         "order_id": "".join([fake.random_letter() for _ in range(10)]),
