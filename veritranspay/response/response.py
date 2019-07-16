@@ -38,12 +38,15 @@ class ResponseBase(mixins.SerializableMixin):
         '''
         self.status_code = int(status_code)
         self.status_message = status_message
+        self.validation_messages = kwargs.get('validation_messages') if kwargs.get('validation_messages') else []
 
     def __repr__(self):
-        return "<{klass}(code: {code}, message: {msg})>".format(
+        return "<{klass}(code: {code}, message: {msg} , validation_messages: {validation_msg})>".format(
             klass=self.__class__.__name__,
             code=self.status_code,
-            msg=self.status_message)
+            msg=self.status_message,
+            validation_msg=self.validation_messages
+        )
 
 
 class ChargeResponseBase(ResponseBase):
