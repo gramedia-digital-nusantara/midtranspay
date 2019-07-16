@@ -26,7 +26,8 @@ class ChargeRequest_UnitTests(unittest.TestCase):
 
         cc_payment = payment_types.CreditCard(
             bank=expected['credit_card']['bank'],
-            token_id=expected['credit_card']['token_id'])
+            token_id=expected['credit_card']['token_id'],
+            bins=expected['credit_card']['bins'])
         trans_details = request.TransactionDetails(
             order_id=expected['transaction_details']['order_id'],
             gross_amount=expected['transaction_details']['gross_amount'])

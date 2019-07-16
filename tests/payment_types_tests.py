@@ -16,24 +16,30 @@ class CreditCardTests(unittest.TestCase):
         '''
         bank = fake.word()
         token_id = fake.word()
+        bins = fake.sentences()
 
-        cc = CreditCard(bank=bank, token_id=token_id)
+        cc = CreditCard(bank=bank, token_id=token_id, bins=bins)
 
         self.assertEqual(cc.bank, bank)
         self.assertEqual(cc.token_id, token_id)
+        self.assertEqual(cc.bins, bins)
 
     def test_serialization(self):
         bank = fake.word()
         token_id = fake.word()
+        bins = fake.sentences()
 
-        cc = CreditCard(bank=bank, token_id=token_id)
+        cc = CreditCard(bank=bank, token_id=token_id, bins=bins)
 
         serialized = cc.serialize()
-        expected = {'payment_type': CreditCard.PAYMENT_TYPE_KEY,
-                    CreditCard.PAYMENT_TYPE_KEY: {
-                        'bank': bank,
-                        'token_id': token_id,
-                    }}
+        expected = {
+            'payment_type': CreditCard.PAYMENT_TYPE_KEY,
+            CreditCard.PAYMENT_TYPE_KEY: {
+                'bank': bank,
+                'token_id': token_id,
+                'bins': bins
+            }
+        }
 
         self.assertEqual(serialized, expected)
 
