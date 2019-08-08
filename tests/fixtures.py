@@ -533,3 +533,17 @@ CANCEL_RESPONSE = {
     "bank": "bni",
     "gross_amount": "10000.00"
 }
+
+
+BIN_RESPONSE = {
+    "data": {
+        "country_name": "Indonesia",
+        "country_code": "id",
+        "brand": "visa",
+        "bin_type": "credit",
+        "bin_class": "gold",
+        "bin": "455633",
+        "bank_code": "bca",
+        "bank": "bank central asia"
+    }
+}

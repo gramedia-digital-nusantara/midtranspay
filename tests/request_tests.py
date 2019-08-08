@@ -98,3 +98,11 @@ class CancelRequest_UnitTests(unittest.TestCase):
         req = request.CancelRequest(order_id)
         self.assertRaises(validators.ValidationError,
                           lambda: req.validate_all())
+
+
+class BinRequest_UnitTests(unittest.TestCase):
+
+    def test_init_args_persisted_as_attribues(self):
+        bin_number = ''.join([str(fake.random_number()) for _ in range(6)])
+        req = request.BinsRequest(bin_number=bin_number)
+        self.assertEqual(req.bin_number, bin_number)

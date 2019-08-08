@@ -239,3 +239,18 @@ class ApprovalRequest(mixins.ValidatableMixin):
         :type order_id: :py:class:`str` <= 50
         '''
         self.order_id = order_id
+
+
+class BinsRequest(mixins.ValidatableMixin):
+    '''
+    Get bin information
+    '''
+    _validators = {
+        'bin_number': validators.NumericValidator()
+    }
+
+    def __init__(self, bin_number):
+        '''
+        :param bin_number: Bin number of the card.
+        '''
+        self.bin_number = bin_number
