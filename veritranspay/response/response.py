@@ -357,3 +357,20 @@ class ApproveResponse(ResponseBase):
         self.gross_amount = \
             helpers.parse_veritrans_amount(
                 kwargs.get('gross_amount', None))
+
+
+class BinResponse(ResponseBase):
+    '''
+    Data returned from Veritrans after submitting a
+    :py:class:`veritranspay.request.BinsRequest`
+    '''
+
+    def __init__(self, *args, **kwargs):
+        '''
+        :param status_code: Transaction status code supplied by Veritrans.
+        :type status_code: :py:class:`str`
+        :param status_message: Human-readable status message.
+        :type status_message: :py:class:`str`
+        '''
+        super(BinResponse, self).__init__(*args, **kwargs)
+        self.data = kwargs.get('data', None)

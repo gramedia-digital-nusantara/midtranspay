@@ -166,6 +166,41 @@ class VTDirect(object):
 
         return veritrans_response
 
+    def bin_request(self, req):
+        '''
+        Send a request to Veritrans to get bin info
+        :param req: Bin number of credit card.
+        :type req: :py:class:`veritranspay.request.BinsRequest`
+        :rtype: :py:class:`veritranspay.response.response.BinResponse`
+        '''
+        if not isinstance(req, response.ResponseBase):
+            req.validate_all()
+
+        headers = {
+            'accept': 'application/json',
+        }
+
+        http_response = requests.post(
+            '{base_url}/bins/{bin_number}'.format(
+                base_url=self.base_url.replace('v2', 'v1'), bin_number=req.bin_number
+            ),
+            auth=(self.server_key, ''),
+            headers=headers
+        )
+
+        response_json = http_response.json()
+        status_code = http_response.status_code
+        response_json['status_code'] = status_code
+        if status_code != 200:
+            response_json['status_message'] = 'failed'
+        else:
+            response_json['status_message'] = ''
+
+        veritrans_response = response.BinResponse(**response_json)
+
+        return veritrans_response
+
+
     def __repr__(self):
         return ("<VTDirect("
                 "server_key: '{server_key}', "

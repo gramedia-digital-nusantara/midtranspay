@@ -3,7 +3,7 @@ import json
 import unittest
 
 from faker import Faker
-from mock import MagicMock, patch
+from mock import MagicMock, patch, PropertyMock
 
 from veritranspay import request, validators, payment_types, veritrans, \
     helpers
@@ -575,3 +575,71 @@ class VTDirect_StatusRequest_UnitTests(unittest.TestCase):
             self.assertEqual(resp.signature_key, exp['signature_key'])
             self.assertEqual(resp.bank, exp['bank'])
             self.assertEqual(resp.gross_amount, exp['gross_amount'])
+
+
+class VTDirect_BinRequest_UnitTests(unittest.TestCase):
+
+    def setUp(self):
+        self.maxDiff = None
+        self.server_key = "".join([fake.random_letter() for _ in range(45)])
+
+    def test_invalid_bin_request_raises_ValidationError(self):
+        gateway = veritrans.VTDirect(server_key=self.server_key)
+
+        bins_req = MagicMock(spec=request.BinsRequest)
+        mock_validate = MagicMock(side_effect=validators.ValidationError)
+        bins_req.attach_mock(mock_validate, 'validate_all')
+
+        self.assertRaises(validators.ValidationError,
+                          lambda: gateway.bin_request(bins_req))
+
+        self.assertEqual(mock_validate.call_count, 1)
+
+    def test_bin_request(self):
+        '''
+        Large test:
+        - Do we make our HTTP request with the expected values?
+        - Do we get back the proper response type
+        - Does the response contain the data we think it should?
+        '''
+        with patch('veritranspay.veritrans.requests.post') as mock_post:
+
+            bin_number = fixtures.BIN_RESPONSE.get('data').get('bin')
+
+            # mock out our approval request
+            req = MagicMock(spec=request.BinsRequest)
+            req.bin_number = bin_number
+            # req.attach_mock(MagicMock(return_value=order_id), 'order_id')
+            req.attach_mock(MagicMock(return_value=None), 'validate_all')
+
+            # mock out our HTTP post
+            mock_resp = MagicMock()
+            type(mock_resp).status_code = PropertyMock(return_value=200)
+            mock_resp.json.return_value = fixtures.BIN_RESPONSE
+            mock_resp.return_value.status_message = ''
+            mock_post.return_value = mock_resp
+
+            # get a response from the gateway
+            gateway = veritrans.VTDirect(self.server_key)
+            resp = gateway.bin_request(req)
+
+            # did we make our HTTP request properly?
+            mock_post.assert_called_once_with(
+                'https://api.midtrans.com/v1/bins/'
+                '{bin_number}'.format(bin_number=bin_number),
+                auth=(self.server_key, ''),
+                headers={'accept': 'application/json'}
+            )
+
+            # was it the correct type?
+            self.assertIsInstance(resp, response.BinResponse)
+
+            # last, take our expected return values and do a little
+            # massaging out to account for modifications performed
+            # by response object
+            exp = deepcopy(fixtures.BIN_RESPONSE)
+            exp['status_code'] = 200
+            self.assertEqual(resp.status_code,
+                             int(exp['status_code']))
+            self.assertEqual(resp.status_message, exp['status_message'])
+            self.assertEqual(bin_number, exp.get('data').get('bin'))
