@@ -180,7 +180,7 @@ class VTDirect(object):
             'accept': 'application/json',
         }
 
-        http_response = requests.post(
+        http_response = requests.get(
             '{base_url}/bins/{bin_number}'.format(
                 base_url=self.base_url.replace('v2', 'v1'), bin_number=req.bin_number
             ),
