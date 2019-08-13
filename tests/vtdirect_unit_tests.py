@@ -602,7 +602,7 @@ class VTDirect_BinRequest_UnitTests(unittest.TestCase):
         - Do we get back the proper response type
         - Does the response contain the data we think it should?
         '''
-        with patch('veritranspay.veritrans.requests.post') as mock_post:
+        with patch('veritranspay.veritrans.requests.get') as mock_get:
 
             bin_number = fixtures.BIN_RESPONSE.get('data').get('bin')
 
@@ -617,14 +617,14 @@ class VTDirect_BinRequest_UnitTests(unittest.TestCase):
             type(mock_resp).status_code = PropertyMock(return_value=200)
             mock_resp.json.return_value = fixtures.BIN_RESPONSE
             mock_resp.return_value.status_message = ''
-            mock_post.return_value = mock_resp
+            mock_get.return_value = mock_resp
 
             # get a response from the gateway
             gateway = veritrans.VTDirect(self.server_key)
             resp = gateway.bin_request(req)
 
             # did we make our HTTP request properly?
-            mock_post.assert_called_once_with(
+            mock_get.assert_called_once_with(
                 'https://api.midtrans.com/v1/bins/'
                 '{bin_number}'.format(bin_number=bin_number),
                 auth=(self.server_key, ''),
