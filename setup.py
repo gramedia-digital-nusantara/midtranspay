@@ -1,6 +1,6 @@
 '''
 VeritransPay
--------
+------------
 
 Client library for communicating with **VERSION 2** of the
 veritrans.co.id payment gateway.  Note, there is no support for the older
