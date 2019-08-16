@@ -8,7 +8,17 @@
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
 [![Downloads](https://img.shields.io/pypi/dm/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
 
-A Python client library for communicating with the [Veritrans Payment Gateway](http://veritrans.co.id/).
+
+## Please Note
+
+Midtrans now has release their own maintained Python client library
+you can find it here [https://github.com/midtrans/midtrans-python-client/](https://github.com/midtrans/midtrans-python-client/)
+
+
+
+## Description
+
+A non official Python client library for communicating with the [Veritrans Payment Gateway](http://veritrans.co.id/).
 
 Also, absolutely EVERYTHING in the API is subject to change in early release
 versions (at least until 1.0), so make sure you have a good test suite
