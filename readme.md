@@ -1,4 +1,4 @@
-# DEPRECATED Veritranspay 
+# [DEPRECATED] Veritranspay -- move to [offical midtrans client](https://github.com/Midtrans/midtrans-python-client)
 
 [![Build Status](https://travis-ci.org/derekjamescurtis/veritranspay.svg?branch=master)](https://travis-ci.org/derekjamescurtis/veritranspay)
 [![Documentation Status](https://readthedocs.org/projects/veritranspay/badge/?version=latest)](https://readthedocs.org/projects/veritranspay/?badge=latest)
@@ -11,7 +11,7 @@
 
 ## Notice
 
-Midtrans has released an (officially-supported python client)[https://github.com/Midtrans/midtrans-python-client].  We recommend migrating to that library as soon as practical, as midtranspay has not been updated or supported in quite some time.
+Midtrans has released an [officially-supported python client](https://github.com/Midtrans/midtrans-python-client).  We recommend migrating to that library as soon as practical, as midtranspay has not been updated or supported in quite some time.
 
 ## Overview
 
