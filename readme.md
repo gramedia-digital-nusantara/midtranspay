@@ -1,4 +1,4 @@
-# Veritranspay 
+# DEPRECATED Veritranspay 
 
 [![Build Status](https://travis-ci.org/derekjamescurtis/veritranspay.svg?branch=master)](https://travis-ci.org/derekjamescurtis/veritranspay)
 [![Documentation Status](https://readthedocs.org/projects/veritranspay/badge/?version=latest)](https://readthedocs.org/projects/veritranspay/?badge=latest)
@@ -7,6 +7,13 @@
 [![Download format](https://img.shields.io/pypi/format/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
 [![Supported Python versions](https://img.shields.io/pypi/pyversions/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
 [![Downloads](https://img.shields.io/pypi/dm/VeritransPay.svg)](https://pypi.python.org/pypi/VeritransPay/)
+
+
+## Notice
+
+Midtrans has released an (officially-supported python client)[https://github.com/Midtrans/midtrans-python-client].  We recommend migrating to that library as soon as practical, as midtranspay has not been updated or supported in quite some time.
+
+## Overview
 
 A Python client library for communicating with the [Veritrans Payment Gateway](http://veritrans.co.id/).
 
